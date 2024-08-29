@@ -1,0 +1,8 @@
+node_modules
+kraftkollectors backup.zip
+package-lock.json
+.expo
+.idea
+.vscode
+tsconfig.json
+docs

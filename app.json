@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Kraft Kollectors is requesting access to your photos",
+          "cameraPermission": "Kraft Kollectors is requesting access to your camera"
+        }
+      ],
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/photos/logo.png",
+          "color": "#FFFFFF",
+          "defaultChannel": "default"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Kraft Kollectors is requesting access to use your location."
+        }
+      ]
+    ],
+    "name": "Kraft Kollectors",
+    "slug": "kraftkollectors",
+    "description": "kraftkollectors mobile app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/photos/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/photos/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    },
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["tel", "http", "https"]
+      }
+    },
+    "android": {
+      "adapativeIcon": {
+        "foregroundImage": "./assets/photos/logo.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    }
+  }
+}

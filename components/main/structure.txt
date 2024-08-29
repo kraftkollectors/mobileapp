@@ -1,0 +1,11 @@
+
+
+//////////LOGINS
+JUSTICE
+email: ekenejustice6@gmail.com
+password: Donkeshd2001!
+
+
+TEST
+email: testmail@gmail.com
+password: testpass
