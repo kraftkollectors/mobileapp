@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DefaultStatusBar from "../../../components/general/defaultStatusBar.comp";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../auth.style";
@@ -7,9 +7,37 @@ import ChoiceTab from "../../../components/auth/choiceTab.comp";
 import SimpleTab from "../../../components/auth/simpleTab";
 import { useRouter } from "expo-router";
 
+import {
+  GoogleSignIn,
+  GoogleSignInButton,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
+
 export default function Signin() {
   const router = useRouter();
   const [socketConn, setSocketConn] = useState(false);
+
+  //GOOGLE AUTH CONFIG
+  const configureGoogleSignIn = () => {
+    GoogleSignIn.configure({
+      webClientId:
+        "912930599984-0ojggkv87gcrf25f661kvffft90qckmc.apps.googleusercontent.com",
+      androidClientId:
+        "912930599984-muu4f7tbo143m1rkl71vul9gua05idv6.apps.googleusercontent.com",
+      iosClientId:
+        "912930599984-qn00lf228935vjpid346r7ncag6us5hc.apps.googleusercontent.com",
+    });
+  };
+
+  useEffect(() => {
+    configureGoogleSignIn();
+  }, []);
+
+  const signIn = () => {
+    console.log("Sign up pressed");
+  };
+
+  ///////
 
   function goBack() {
     router.back();
@@ -75,7 +103,14 @@ export default function Signin() {
 
                 <SimpleTab />
 
-                <ChoiceTab choice={"google"} />
+                {/*<ChoiceTab choice={"google"} />*/}
+                <GoogleSignInButton
+                  size={GoogleSignInButton.Size.Standard}
+                  color={GoogleSignInButton.Color.Dark}
+                  onPress={() => {
+                    signIn();
+                  }}
+                />
               </View>
               {/** */}
               <Text style={styles.baseTextTab}>
