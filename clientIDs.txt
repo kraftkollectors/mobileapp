@@ -1,0 +1,3 @@
+kraftkollectors ios {
+    client id: 912930599984-qn00lf228935vjpid346r7ncag6us5hc.apps.googleusercontent.com
+}

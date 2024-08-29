@@ -1,7 +1,30 @@
 {
-    "build": {
-      "preview": {
-        "distribution": "internal"
+  "cli": {
+    "version": ">= 11.0.2",
+    "requireCommit": true
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m1-medium",
+        "simulator": true
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m1-medium"
+      }
+    },
+    "production": {
+      "ios": {
+        "resourceClass": "m1-medium"
       }
     }
+  },
+  "submit": {
+    "production": {}
+  }
 }

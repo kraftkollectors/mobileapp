@@ -44,19 +44,40 @@
     "extra": {
       "router": {
         "origin": false
+      },
+      "eas": {
+        "projectId": "125c9891-5d66-4f08-a6cb-9f5781412b72"
       }
     },
     "ios": {
+      "bundleIdentifier": "com.polybotics.kraftkollectors",
       "supportsTablet": false,
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["tel", "http", "https"]
+        "LSApplicationQueriesSchemes": [
+          "tel",
+          "http",
+          "https"
+        ],
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.912930599984-qn00lf228935vjpid346r7ncag6us5hc"
+            ]
+          }
+        ]
       }
     },
     "android": {
+      "package": "com.polybotics.kraftkollectors",
       "adapativeIcon": {
         "foregroundImage": "./assets/photos/logo.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     }
   }
 }

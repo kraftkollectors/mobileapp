@@ -16,6 +16,7 @@
     "@types/react": "~18.2.79",
     "axios": "0.24.0",
     "deprecated-react-native-prop-types": "^5.0.0",
+    "eas-cli": "^11.0.2",
     "expo": "^51.0.31",
     "expo-clipboard": "~6.0.3",
     "expo-constants": "~16.0.2",
@@ -50,7 +51,8 @@
     "react-native-svg": "15.2.0",
     "react-native-web": "^0.19.12",
     "socket.io-client": "^4.7.5",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "expo-dev-client": "~4.0.25"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2"
