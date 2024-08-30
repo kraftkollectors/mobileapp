@@ -273,16 +273,6 @@ export default function SearchPage() {
         )}
       </View>
 
-      {/**ALERT BOX */}
-      {isAlert && (
-        <AlertBox
-          status={alertStat}
-          heading={alertHeading}
-          message={alertMsg}
-          showAlert={showAlert}
-        />
-      )}
-
       {/**NAVIGATION */}
       <BottomNavigationComp activePage={"search"} userData={userData} />
 
@@ -318,6 +308,16 @@ export default function SearchPage() {
           location={locationString}
           setLocation={setLocationString}
           showAlert={popAlert}
+        />
+      )}
+
+      {/**ALERT BOX */}
+      {isAlert && (
+        <AlertBox
+          status={alertStat}
+          heading={alertHeading}
+          message={alertMsg}
+          showAlert={showAlert}
         />
       )}
     </SafeAreaView>

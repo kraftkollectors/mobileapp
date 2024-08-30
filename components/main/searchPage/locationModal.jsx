@@ -49,7 +49,7 @@ export default function LocationModal({
     if (findPlace && searchQuery && searchQuery.length > 3) {
       FETCH_PLACES_LIST(
         searchQuery,
-        LOCAL_STORAGE_PATH.API.geolocationPlaces,
+        LOCAL_STORAGE_PATH.API.glp,
         setPlaceList,
         setPlaceLoading,
         showAlert
@@ -63,7 +63,7 @@ export default function LocationModal({
 
     axios
       .get(
-        `https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=${LOCAL_STORAGE_PATH.API.geolocationPlaces}&fields=${queryFields}&language=en-US`
+        `https://maps.googleapis.com/maps/api/place/details/json?placeid=${id}&key=${LOCAL_STORAGE_PATH.API.glp}&fields=${queryFields}&language=en-US`
       )
       .then((res) => {
         setLocation(res.data?.result?.formatted_address);
@@ -108,7 +108,7 @@ export default function LocationModal({
 
       axios
         .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${LOCAL_STORAGE_PATH.API.geolocationPlaces}&fields=${queryFields}&language=en-US&sensor=true`
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${LOCAL_STORAGE_PATH.API.glp}&fields=${queryFields}&language=en-US&sensor=true`
         )
         .then((res) => {
           if (res.data?.status.toLowerCase() === "ok") {

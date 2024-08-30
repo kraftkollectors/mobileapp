@@ -53,11 +53,7 @@
       "bundleIdentifier": "com.polybotics.kraftkollectors",
       "supportsTablet": false,
       "infoPlist": {
-        "LSApplicationQueriesSchemes": [
-          "tel",
-          "http",
-          "https"
-        ],
+        "LSApplicationQueriesSchemes": ["tel", "http", "https"],
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [

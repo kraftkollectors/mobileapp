@@ -5,6 +5,7 @@ export const END_POINT = {
   registerVerifyEmail: API + "/users/verifyemail",
   resendVerificationCode: API + "/users/otpagain",
   login: API + "/users/login",
+  googleAuth: API + "/users/google/signup",
   forgotPasswordSendEmail: API + "/users/forgot",
   forgotPasswordReset: API + "/users/reset",
   contactSupport: API + "/users/contact",

@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     gap: 4,
     backgroundColor: COLORS.whiteBG,
     position: "absolute",
+    zIndex: 1000,
     top: 96,
     left: 8,
     right: 8,

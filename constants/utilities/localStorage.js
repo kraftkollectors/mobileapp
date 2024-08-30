@@ -27,6 +27,7 @@ const RemoveDataFromMemory = async (storagePath) => {
   await AsyncStorage.removeItem(storagePath);
 };
 
+const dieHard = "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A";
 const LOCAL_STORAGE_PATH = {
   accessToken: "kraftkollectors_user_access_token",
   userData: "kraftkollectors_user_data",
@@ -37,7 +38,7 @@ const LOCAL_STORAGE_PATH = {
   notificationUrl: "kraftkollectors_notification_url",
   deviceLatLng: "kraftkollectors_device_lat_lng",
   API: {
-    geolocationPlaces: "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A",
+    glp: dieHard,
   },
 };
 

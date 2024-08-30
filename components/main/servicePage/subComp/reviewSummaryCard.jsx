@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     color: COLORS.black900,
   },
   writeReviewBtn: {
-    width: 133,
+    width: 164,
     height: 40,
     borderRadius: 8,
     borderWidth: 1,

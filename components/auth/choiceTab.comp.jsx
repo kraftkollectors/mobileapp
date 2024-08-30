@@ -8,8 +8,9 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORS } from "../../constants/themes/colors";
+import { ActivityIndicator } from "react-native";
 
-export default function ChoiceTab({ choice, choiceFunction }) {
+export default function ChoiceTab({ choice, choiceFunction, isLoading }) {
   const [photoIcon, setPhotoIcon] = useState(
     require("../../assets/icons/mail.png")
   );
@@ -40,7 +41,11 @@ export default function ChoiceTab({ choice, choiceFunction }) {
 
       <Text style={styles.choiceText}>Continue with {choice}</Text>
 
-      <View style={styles.iconTab}></View>
+      <View style={styles.iconTab}>
+        {isLoading && (
+          <ActivityIndicator size={"small"} color={COLORS.black400} />
+        )}
+      </View>
     </TouchableOpacity>
   );
 }

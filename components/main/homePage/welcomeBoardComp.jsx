@@ -36,7 +36,7 @@ export default function WelcomeBoardComp({ data }) {
 
       axios
         .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${deviceLatLng}&key=${LOCAL_STORAGE_PATH.API.geolocationPlaces}&fields=${queryFields}&language=en-US&sensor=true`
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${deviceLatLng}&key=${LOCAL_STORAGE_PATH.API.glp}&fields=${queryFields}&language=en-US&sensor=true`
         )
         .then((res) => {
           if (res.data?.status.toLowerCase() === "ok") {
@@ -56,10 +56,6 @@ export default function WelcomeBoardComp({ data }) {
 
   function goToProfile() {
     router.navigate("/main/account/");
-  }
-
-  function goToSignIn() {
-    router.navigate("/auth/signin/");
   }
 
   return (
@@ -82,7 +78,7 @@ export default function WelcomeBoardComp({ data }) {
               ) : (
                 <TouchableOpacity
                   onPress={() => {
-                    goToSignIn();
+                    goToProfile();
                   }}
                 >
                   <Text style={styles.wftGreetingBtn}>Log in to continue</Text>
