@@ -121,7 +121,11 @@ export default function ProfileCardComp({
               />
             </View>
             {/**CHECK IF USER ONLINE OR OFFLINE */}
-            <View style={styles.profileThumbnailOnline}></View>
+            {profile &&
+              profile?.lastSeen &&
+              CHECK_IS_ONLINE(profile?.lastSeen) && (
+                <View style={styles.profileThumbnailOnline}></View>
+              )}
           </View>
         </View>
 

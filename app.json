@@ -25,7 +25,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Kraft Kollectors is requesting access to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Kraft Kollectors is requesting access to your location."
         }
       ]
     ],

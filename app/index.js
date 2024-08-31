@@ -1,9 +1,9 @@
-import { View, Text, Dimensions, Image } from "react-native";
 import React, { useState } from "react";
+import { View, Dimensions, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import * as Location from "expo-location";
 import DefaultStatusBar from "../components/general/defaultStatusBar.comp";
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
   LOCAL_STORAGE_PATH,
   StoreDataToMemory,

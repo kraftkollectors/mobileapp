@@ -53,6 +53,7 @@ export default function SearchDefaultComp({
   setSubCategory,
   setSearch,
   beginSearch,
+  fromParams,
 }) {
   const [categorySelected, setCategorySelected] = useState();
 
@@ -60,6 +61,16 @@ export default function SearchDefaultComp({
   useEffect(() => {
     setCategoryList(SERVICE_CATEGORIES);
   }, []);
+
+  useEffect(() => {
+    if (categoryList && fromParams) {
+      categoryList.forEach((elem, index) => {
+        if (elem.category === fromParams) {
+          setCategorySelected(index);
+        }
+      });
+    }
+  }, [categoryList, fromParams]);
 
   const [subList, setSubList] = useState();
   useEffect(() => {

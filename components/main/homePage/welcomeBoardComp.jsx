@@ -15,6 +15,7 @@ import { COLORS } from "../../../constants/themes/colors";
 import { useRouter } from "expo-router";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import {
+  GENERATE_CURRENT_GREETING,
   GENERATE_RANDOM_NUMBER,
   LOAD_PROFILE_THUMBNAIL,
 } from "../../../constants/utilities";
@@ -70,7 +71,9 @@ export default function WelcomeBoardComp({ data }) {
         <View style={styles.wftUserCont}>
           <View style={styles.wftUserGreetingTab}>
             <View>
-              <Text style={styles.wftGreeting}>Good morning</Text>
+              <Text style={styles.wftGreeting}>
+                {GENERATE_CURRENT_GREETING()} 👋
+              </Text>
               {data ? (
                 <Text style={styles.wftGreetingTag} numberOfLines={1}>
                   {data?.firstName} {data?.lastName}

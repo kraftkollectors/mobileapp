@@ -38,20 +38,18 @@ export default function AccountLinkTabComp({
       //REMOVE USERDATA FROM STORAGE
       try {
         RemoveDataFromMemory(LOCAL_STORAGE_PATH.userData);
+        setTimeout(() => {
+          setTLO(false);
+          setILO(false);
+
+          if (router.canDismiss()) {
+            router.dismissAll();
+          }
+          router.replace("/main/home/");
+        }, 15000);
       } catch (error) {
         //
       }
-
-      setTimeout(() => {
-        console.log("user logged out");
-        setTLO(false);
-        setILO(false);
-
-        if (router.canDismiss()) {
-          router.dismissAll();
-        }
-        router.replace("/main/home/");
-      }, 10000);
     }
   }, [tryLogOut]);
 

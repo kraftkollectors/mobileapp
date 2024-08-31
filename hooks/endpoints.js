@@ -1,4 +1,4 @@
-const API = "https://api.kraftkollectors.com";
+const API = "https://api.kraftkollectors.com"; //https://backends-865y.onrender.com //https://api.kraftkollectors.com
 
 export const END_POINT = {
   register: API + "/users/register",

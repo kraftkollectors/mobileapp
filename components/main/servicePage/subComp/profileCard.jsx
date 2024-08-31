@@ -13,6 +13,7 @@ import { Octicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../../constants/themes/colors";
 import { useRouter } from "expo-router";
 import {
+  CHECK_IS_ONLINE,
   CHECK_WITHIN_WORKTIME,
   LOAD_PROFILE_THUMBNAIL,
 } from "../../../../constants/utilities";
@@ -124,7 +125,11 @@ export default function ProfileCard({
             </View>
 
             {/**ACTIVE STATE INDICATOR */}
-            <View style={styles.activeStateIndicator}></View>
+            {profile &&
+              profile?.lastSeen &&
+              CHECK_IS_ONLINE(profile?.lastSeen) && (
+                <View style={styles.activeStateIndicator}></View>
+              )}
           </View>
         </View>
 
@@ -144,10 +149,12 @@ export default function ProfileCard({
             {
               //CHECK IF USER VEIRIFIED
             }
-            <Image
-              source={require("../../../../assets/icons/verified.png")}
-              style={{ width: 16, height: 16, objectFit: "cover" }}
-            />
+            {profile.isArtisan && (
+              <Image
+                source={require("../../../../assets/icons/verified.png")}
+                style={{ width: 16, height: 16, objectFit: "cover" }}
+              />
+            )}
           </View>
 
           <Text style={styles.pudRole}>{artisan?.areaOfSpecialization}</Text>

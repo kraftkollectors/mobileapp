@@ -131,7 +131,7 @@ export default function Account() {
         GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
 
         setRefreshing(false);
-      }, 2000);
+      }, 3000);
     }
   }, [newUser]);
 

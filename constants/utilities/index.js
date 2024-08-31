@@ -221,6 +221,21 @@ function GENERATE_RANDOM_NUMBER(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function GENERATE_CURRENT_GREETING() {
+  let dt = new Date();
+  let hour = dt.getHours();
+
+  if (hour >= 0 && hour < 12) {
+    return "Good morning";
+  }
+
+  if (hour > 12 && hour < 16) {
+    return "Good afternoon";
+  }
+
+  return "Good evening";
+}
+
 export {
   ROUNDTO,
   TRUNCATESTRING,
@@ -237,4 +252,5 @@ export {
   CHECK_IS_ONLINE,
   FORMAT_CHAT_TIME,
   GENERATE_RANDOM_NUMBER,
+  GENERATE_CURRENT_GREETING,
 };

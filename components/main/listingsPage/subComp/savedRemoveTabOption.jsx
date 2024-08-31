@@ -38,7 +38,7 @@ export default function SavedRemoveTabOption({
       refreshList();
       handleOptionVisibility();
     }
-  }, [favLoading, userData, isFavourite]);
+  }, [favLoading, userData]);
 
   return (
     <View style={styles.optionTab}>

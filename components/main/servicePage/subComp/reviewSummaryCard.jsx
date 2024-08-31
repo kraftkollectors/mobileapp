@@ -208,18 +208,20 @@ export default function ReviewSummaryCard({
         </View>
         {/** */}
         <>
-          <TouchableOpacity
-            onPress={() => {
-              setMakeReview(true);
-            }}
-            style={styles.writeReviewBtn}
-          >
-            {makeReview ? (
-              <ActivityIndicator size={16} color={COLORS.black400} />
-            ) : (
-              <Text style={styles.writeReviewBtnText}>Write a review</Text>
-            )}
-          </TouchableOpacity>
+          {userData?._id != serviceData?.userId && (
+            <TouchableOpacity
+              onPress={() => {
+                setMakeReview(true);
+              }}
+              style={styles.writeReviewBtn}
+            >
+              {makeReview ? (
+                <ActivityIndicator size={16} color={COLORS.black400} />
+              ) : (
+                <Text style={styles.writeReviewBtnText}>Write a review</Text>
+              )}
+            </TouchableOpacity>
+          )}
         </>
       </View>
 

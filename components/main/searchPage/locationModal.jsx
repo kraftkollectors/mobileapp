@@ -74,7 +74,6 @@ export default function LocationModal({
         setPlaceList();
       })
       .catch((err) => {
-        console.log("Error: ", err);
         showAlert(
           "error",
           "Location Error",
@@ -118,7 +117,6 @@ export default function LocationModal({
             );
             let mainData = res.data?.results[target];
 
-            console.log("MainData: ", mainData);
             setLocation(mainData?.formatted_address);
             setSearchQuery(mainData?.formatted_address);
             setLongitude(mainData?.geometry?.location?.lng);
@@ -135,7 +133,6 @@ export default function LocationModal({
           setLocationLoading(false);
         })
         .catch((err) => {
-          console.log("Error: ", err);
           showAlert(
             "error",
             "Error Getting Location",

@@ -67,17 +67,14 @@ export default function ReportServiceModal({
             },
           })
           .then((res) => {
-            console.log(res.data);
             setBtnIsLoading(false);
             hideModal();
           })
           .catch((err) => {
-            console.log(err.response.data);
             setReportErr("Authentication Error: please log in and try again");
             setBtnIsLoading(false);
           });
       } catch (error) {
-        console.log(error.message);
         setReportErr(
           "Network Error: check your internet connection and try again"
         );

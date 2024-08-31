@@ -14,6 +14,7 @@ import { UIActivityIndicator } from "react-native-indicators";
 import { COLORS } from "../../../constants/themes/colors";
 import EditPhotoModal from "./subComps/editPhotoModal";
 import { LOAD_PROFILE_THUMBNAIL } from "../../../constants/utilities";
+import SubscribePremiumModal from "./subComps/subscribePremiumModal";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -26,28 +27,26 @@ export default function AccountHeaderComp({
   const [imageIsLoading, setImageIsLoading] = useState(false);
   //HANDLE EDIT PHOTO MODAL
   const [editPhotoModalIsVisible, setEditPhotoModalIsVisible] = useState(false);
-  function showPhotoModal() {
-    setEditPhotoModalIsVisible(true);
-  }
-  function hidePhotoModal() {
-    setEditPhotoModalIsVisible(false);
-  }
+
+  //HANDLE SUBSCRIBE TO PREMIUM
+  const [showPremiumBlock, setShowPremiumBlock] = useState(false);
 
   return (
     <>
       <View style={styles.accountHeader}>
-        {data?.isArtisan ? (
-          <></>
-        ) : (
-          <TouchableOpacity style={styles.accountPremiumBtn}>
-            <SimpleLineIcons
-              name="diamond"
-              size={20}
-              color={COLORS.blueDark2}
-            />
-            <Text style={styles.accountPremiumBtnText}>Upgrade account</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          onPress={() => {
+            setShowPremiumBlock(true);
+          }}
+          style={styles.accountPremiumBtn}
+        >
+          {/*<SimpleLineIcons name="diamond" size={20} color={COLORS.blueDark2} />*/}
+          <Image
+            source={require("../../../assets/icons/gem.png")}
+            style={{ width: 20, height: 20, objectFit: "fill" }}
+          />
+          <Text style={styles.accountPremiumBtnText}>Go Premium</Text>
+        </TouchableOpacity>
 
         {data ? (
           <View style={styles.accountBlock}>
@@ -70,7 +69,7 @@ export default function AccountHeaderComp({
 
               <TouchableOpacity
                 onPress={() => {
-                  showPhotoModal();
+                  setEditPhotoModalIsVisible(true);
                 }}
                 style={styles.ahEditPhotoBtn}
               >
@@ -104,7 +103,8 @@ export default function AccountHeaderComp({
           <ActivityIndicator color={COLORS.black100} size={"large"} />
         )}
       </View>
-      {editPhotoModalIsVisible ? (
+
+      {editPhotoModalIsVisible && (
         <EditPhotoModal
           userData={data}
           accessToken={accessToken}
@@ -112,11 +112,17 @@ export default function AccountHeaderComp({
           isLoading={setImageIsLoading}
           refreshPage={refreshPage}
           hideModal={() => {
-            hidePhotoModal();
+            setEditPhotoModalIsVisible(false);
           }}
         />
-      ) : (
-        <></>
+      )}
+
+      {showPremiumBlock && (
+        <SubscribePremiumModal
+          hideModal={() => {
+            setShowPremiumBlock(false);
+          }}
+        />
       )}
     </>
   );
@@ -131,25 +137,26 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.black50,
     gap: 36,
     paddingHorizontal: 16,
-    paddingVertical: 16,
-    paddingBottom: 24,
+    paddingVertical: 24,
   },
   accountPremiumBtn: {
-    height: Platform.OS === "ios" ? 48 : 36,
+    height: 36,
     borderRadius: 30,
+    borderWidth: 1,
+    borderColor: COLORS.violetFaded,
     marginLeft: "auto",
     flexDirection: "row",
     gap: 8,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: Platform.OS === "ios" ? 16 : 12,
-    backgroundColor: COLORS.blueLight,
+    paddingHorizontal: 21,
+    backgroundColor: COLORS.violetLight,
   },
   accountPremiumBtnText: {
     fontFamily: "EinaSemiBold",
     fontSize: 14,
     lineHeight: 20,
-    color: COLORS.blueDark2,
+    color: COLORS.violetNormal,
   },
   accountBlock: {
     width: "100%",

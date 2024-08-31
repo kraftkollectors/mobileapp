@@ -5,36 +5,67 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { COLORS } from "../../../constants/themes/colors";
+import { SERVICE_CATEGORIES } from "../../../constants/json/data";
+import { useRouter } from "expo-router";
 
 const screenWidth = Dimensions.get("screen").width;
 
 export default function HireCategoryComp() {
-  const [serviceCategories, setServiceCategories] = useState([
-    "illustration",
-    "graphics design",
-    "online tutor",
-    "plumber",
-    "electrician",
-    "car wash",
-    "fashion designer",
-    "builder",
-  ]);
+  const router = useRouter();
+  const [categoryList, setCategoryList] = useState([]);
+
+  useEffect(() => {
+    const sCat = SERVICE_CATEGORIES();
+
+    let clone = [];
+    for (x = 0; x < 7; x++) {
+      clone.push(sCat[x].category);
+    }
+
+    clone.push("view all");
+
+    setCategoryList([...clone]);
+  }, []);
+
+  function goToSearch(cat) {
+    if (cat === "view all") {
+      router.navigate(`/main/search/`);
+    } else {
+      router.navigate(`/main/search/?category=${cat}`);
+    }
+  }
 
   return (
     <View style={styles.hireCont}>
       <View style={styles.hireBlockCont}>
-        <TouchableOpacity style={styles.hireTabUpper}></TouchableOpacity>
-        <TouchableOpacity style={styles.hireTabUpper}></TouchableOpacity>
-      </View>
-
-      <View style={styles.hireBlockCont}>
-        <TouchableOpacity style={styles.hireTabLower}></TouchableOpacity>
-        <TouchableOpacity style={styles.hireTabLower}></TouchableOpacity>
-        <TouchableOpacity style={styles.hireTabLower}></TouchableOpacity>
-        <TouchableOpacity style={styles.hireTabLower}></TouchableOpacity>
+        {categoryList &&
+          categoryList.map((item, index) => (
+            <TouchableOpacity
+              onPress={() => {
+                goToSearch(item);
+              }}
+              key={index}
+              style={styles.hireTab}
+            >
+              <View style={styles.hireTabInner}>
+                <Image
+                  source={require("../../../assets/icons/service-icon.png")}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              </View>
+              <Text style={styles.hireTabText} numberOfLines={1}>
+                {item}
+              </Text>
+            </TouchableOpacity>
+          ))}
       </View>
     </View>
   );
@@ -56,31 +87,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
   },
-  hireTabUpper: {
-    minWidth: (screenWidth - (8 + 32)) / 2,
-    width: (screenWidth - (8 + 32)) / 2,
-    height: (screenWidth - (3 * 8 + 32)) / 4,
-    padding: 5,
-    backgroundColor: COLORS.whiteBG,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  hireTabLower: {
+  hireTab: {
     minWidth: (screenWidth - (3 * 8 + 32)) / 4,
     width: (screenWidth - (3 * 8 + 32)) / 4,
-    height: (screenWidth - (3 * 8 + 32)) / 4,
-    padding: 5,
-    backgroundColor: COLORS.whiteBG,
-    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
+    gap: 6,
+  },
+  hireTabInner: {
+    width: "100%",
+    height: 72,
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: COLORS.whiteBG,
+    overflow: "hidden",
   },
   hireTabText: {
     fontFamily: "EinaSemiBold",
-    fontSize: Platform.OS === "ios" ? 10 : 12,
-    lineHeight: Platform.OS === "ios" ? 14 : 18,
-    color: COLORS.black1000,
+    fontSize: 12,
+    lineHeight: 16,
+    color: COLORS.black400,
     textTransform: "capitalize",
     textAlign: "center",
   },

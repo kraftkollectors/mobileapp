@@ -16,6 +16,7 @@ import {
   LOCAL_STORAGE_PATH,
 } from "../../../constants/utilities/localStorage";
 import AlertBox from "../../../components/general/alertBox";
+import { useLocalSearchParams } from "expo-router";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -37,6 +38,15 @@ export default function SearchPage() {
   const [accessToken, setAccessToken] = useState("");
 
   const [activeGroup, setActiveGroup] = useState("services"); //services, artisans
+  const [catFromParams, setCFP] = useState("");
+
+  //CHECK IF CATEGORY PARAMS SET
+  let local = useLocalSearchParams();
+  useEffect(() => {
+    if (local?.category) {
+      setCFP(local?.category);
+    }
+  }, []);
 
   //TAKE SEARCH PARAMS
   const [q, setSearch] = useState("");
@@ -121,7 +131,11 @@ export default function SearchPage() {
               setServiceSearchIsLoading(false);
             })
             .catch((err) => {
-              console.log("Error: ", err.response.data);
+              popAlert(
+                "error",
+                "Search Attempt Unsuccessful",
+                "Something went wrong while searching. Please try again later"
+              );
               setStartSearch(false);
               setServiceSearchIsLoading(false);
             });
@@ -157,13 +171,21 @@ export default function SearchPage() {
               setArtisanSearchIsLoading(false);
             })
             .catch((err) => {
-              console.log("Artisan Error: ", err.response.data);
+              popAlert(
+                "error",
+                "Search Attempt Unsuccessful",
+                "Something went wrong while searching. Please try again later"
+              );
               setStartSearch(false);
               setArtisanSearchIsLoading(false);
             });
         }
       } catch (error) {
-        console.log("Net Error: ", error.message);
+        popAlert(
+          "error",
+          "Search Attempt Unsuccessful",
+          "Network Error. Please check your connection and try again"
+        );
         setStartSearch(false);
         setServiceSearchIsLoading(false);
         setArtisanSearchIsLoading(false);
@@ -269,6 +291,7 @@ export default function SearchPage() {
             setSubCategory={setSubCategory}
             setSearch={setSearch}
             beginSearch={setStartSearch}
+            fromParams={catFromParams}
           />
         )}
       </View>

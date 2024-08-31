@@ -101,7 +101,7 @@ export default function BeginAccountVerifyTab({
         phoneNumber: phone,
         areaOfSpecialization: `${occupation.trim()}`,
       };
-      console.log("Raw form: ", formData);
+
       try {
         axios
           .post(END_POINT.becomeArtisan, formData, {
@@ -111,9 +111,7 @@ export default function BeginAccountVerifyTab({
             },
           })
           .then((res) => {
-            console.log("Verify Res: ", res.data);
             //IF SUCCESS
-
             if (res.data.statusCode === 201) {
               //UPDATE USER DATA
               let updatedUser = [...userData, { isArtisan: true }];
@@ -121,14 +119,12 @@ export default function BeginAccountVerifyTab({
 
               setTimeout(() => {
                 setVerificationSuccessfull("success");
-              }, 2000);
+              }, 3000);
             }
 
             setBtnIsLoading(false);
           })
           .catch((err) => {
-            console.log("Verify Error: ", err.response.data);
-            setBtnIsLoading(false);
             if (err.response.data.data.toLowerCase() === "check nin provided") {
               setErrorMsg("Ensure you have provided an accurate NIN");
               setVerificationSuccessfull("error");
@@ -140,15 +136,22 @@ export default function BeginAccountVerifyTab({
                 "Some of the details provided does not correspond with what is stored on your NIN"
               );
               setVerificationSuccessfull("error");
+            } else if (
+              err.response.data.data.toLowerCase() ===
+              "account already an artisan"
+            ) {
+              //PROCEED
+              setVerificationSuccessfull("success");
             } else {
               setErrorMsg(
                 "Something went wrong. Please check your details and try again"
               );
               setVerificationSuccessfull("error");
             }
+
+            setBtnIsLoading(false);
           });
       } catch (error) {
-        console.log("Net Verify Error: ", error.message);
         setBtnIsLoading(false);
         setErrorMsg("Network Error. Check your connection and try again");
         setVerificationSuccessfull("error");

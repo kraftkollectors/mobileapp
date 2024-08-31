@@ -71,17 +71,14 @@ export default function RateServiceModal({
             },
           })
           .then((res) => {
-            console.log(res.data);
             setBtnIsLoading(false);
             hideModal();
           })
           .catch((err) => {
-            console.log(err.response.data);
             setReviewErr("Authentication Error: please log in and try again");
             setBtnIsLoading(false);
           });
       } catch (error) {
-        console.log(error.message);
         setReviewErr(
           "Network Error: check your internet connection and try again"
         );

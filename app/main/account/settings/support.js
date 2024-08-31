@@ -106,6 +106,8 @@ export default function Support() {
   useEffect(() => {
     if (btnIsLoading) {
       const formData = {
+        userEmail: `${email}`,
+        userId: `${userData?._id}`,
         email: `${email.toLowerCase()}`,
         name: `${name.trim()}`,
         phone: `${phone}`,
@@ -121,7 +123,6 @@ export default function Support() {
             },
           })
           .then((res) => {
-            //console.log(res.data);
             if (res.data.statusCode === 201) {
               popAlert(
                 "success",
@@ -132,7 +133,6 @@ export default function Support() {
             setBtnIsLoading(false);
           })
           .catch((err) => {
-            console.log("Error: ", err.respond.data);
             popAlert(
               "error",
               "Contact Support Error",
@@ -141,7 +141,6 @@ export default function Support() {
             setBtnIsLoading(false);
           });
       } catch (error) {
-        console.log("Net Error: ", error.message);
         popAlert(
           "error",
           "Contact Support Error",

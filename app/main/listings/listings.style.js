@@ -5,8 +5,8 @@ const screenWidth = Dimensions.get("screen").width;
 const styles = StyleSheet.create({
   notFoundTab: {
     width: "100%",
-    minHeight: 250,
-    height: "100%",
+    height: 240,
+    maxHeight: "100%",
     alignItems: "center",
     justifyContent: "center",
   },

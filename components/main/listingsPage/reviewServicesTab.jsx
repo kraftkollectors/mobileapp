@@ -6,7 +6,6 @@ import ListReviewCardLoadingTemp from "../../loadingTemplates/listingsPage/revie
 import { COLORS } from "../../../constants/themes/colors";
 
 export default function ReviewServicesTab({ userData }) {
-  //DUMMY DATA
   const [reviewList, setReviewList] = useState();
   const [reviewsLoading, setReviewsLoading] = useState(false);
 
