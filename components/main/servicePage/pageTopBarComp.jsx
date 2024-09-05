@@ -1,16 +1,11 @@
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import {
-  AntDesign,
-  MaterialCommunityIcons,
-  FontAwesome6,
-} from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
 import { useRouter } from "expo-router";
 import {

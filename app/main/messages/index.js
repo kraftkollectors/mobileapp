@@ -38,7 +38,7 @@ export default function Messages() {
         userId: userData?._id,
       });
     } else {
-      setThreadsLoading(true);
+      setThreadsLoading(false);
     }
   }, [userData, socketConn]);
 
