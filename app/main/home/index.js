@@ -68,14 +68,14 @@ export default function Home() {
   const [searchServicesLoading, setSearchedServicesLoading] = useState(false);
 
   useEffect(() => {
-    if (savedServices) {
+    if (savedServices && userData) {
       FETCH_SAVED_SEARCH(
         savedServices,
         setSearchedServicesLoading,
         setSearchedServices
       );
     }
-  }, [savedServices]);
+  }, [savedServices, userData]);
 
   return (
     <SafeAreaView

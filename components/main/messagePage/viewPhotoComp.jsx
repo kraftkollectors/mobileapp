@@ -12,6 +12,7 @@ import { Octicons } from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
 import { COLORS } from "../../../constants/themes/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Stack } from "expo-router";
 
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
@@ -48,6 +49,14 @@ export default function ViewPhotoComp({ guestName, photoList, setPhotoList }) {
         style={"light"}
         translucent={true}
       />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          navigationBarHidden: false,
+          navigationBarColor: COLORS.black900,
+          animation: "ios",
+        }}
+      />
 
       <View style={styles.viewCancelBlock}>
         <TouchableOpacity
@@ -71,7 +80,7 @@ export default function ViewPhotoComp({ guestName, photoList, setPhotoList }) {
           imageLoadingColor={COLORS.whiteBG}
           sliderBoxHeight={screenHeight - 64}
           resizeMethod={"resize"}
-          resizeMode={"cover"}
+          resizeMode={"contain"}
           disableOnPress={true}
           dotColor={COLORS.blueNormal}
           inactiveDotColor={COLORS.gray200}
@@ -87,7 +96,7 @@ export default function ViewPhotoComp({ guestName, photoList, setPhotoList }) {
           paginationBoxStyle={{
             justifyContent: "center",
             gap: 4,
-            backgroundColor: "rgba(0,0,0,0.3)",
+            backgroundColor: "rgba(0,0,0,0.8)",
             borderRadius: 40,
             height: 45,
             padding: 0,

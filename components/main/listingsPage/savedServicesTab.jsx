@@ -11,13 +11,9 @@ import {
 } from "../../../constants/utilities/localStorage";
 import ServiceCardLoadingTemp from "../../loadingTemplates/listingsPage/serviceCardLoadingTemp";
 
-export default function SavedServicesTab({
-  userData,
-  accessToken,
-  setConfirmDelete,
-  showAlert,
-}) {
+export default function SavedServicesTab({ userData, accessToken, showAlert }) {
   const [pageIsLoading, setPageIsLoading] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   //DUMMY DATA
   const [savedServices, setSavedServices] = useState();
   const [noSavedMsg, setNoSavedMsg] = useState("You have saved no services"); //DEFAULT: You have saved no services

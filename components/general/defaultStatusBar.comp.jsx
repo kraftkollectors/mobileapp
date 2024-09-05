@@ -104,12 +104,7 @@ export default function DefaultStatusBar({
         options={{
           headerShown: false,
           navigationBarHidden: false,
-          navigationBarColor:
-            theme === "dark"
-              ? COLORS.blueDark
-              : theme === "blue"
-              ? COLORS.blueNormal
-              : COLORS.whiteBG,
+          navigationBarColor: statusBackgroundColor,
           animation: "ios",
         }}
       />

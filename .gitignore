@@ -1,4 +1,5 @@
 node_modules
+.env
 kraftkollectors backup.zip
 package-lock.json
 .expo
@@ -7,3 +8,4 @@ package-lock.json
 tsconfig.json
 docs
 apkBuilds
+diehard.js

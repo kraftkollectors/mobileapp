@@ -442,6 +442,7 @@ async function FETCH_STATES_LIST(result, showError) {
 async function UPLOAD_COVER_PHOTO(file, result, showError) {
   const formData = new FormData();
   formData.append("file", file);
+  console.log("file: ", file);
 
   try {
     axios
@@ -451,11 +452,13 @@ async function UPLOAD_COVER_PHOTO(file, result, showError) {
         },
       })
       .then((res) => {
+        console.log("cover: ", res.data);
         if (res.data.statusCode === 201) {
           result(`${res.data.data.uploadUrl}`);
         }
       })
       .catch((err) => {
+        console.log("cover err: ", err.response);
         showError(
           "error",
           "Cover Photo Upload Failed",
@@ -463,6 +466,7 @@ async function UPLOAD_COVER_PHOTO(file, result, showError) {
         );
       });
   } catch (error) {
+    console.log("cover net err: ", err.message);
     showError(
       "error",
       "Cover Photo Upload Failed",
@@ -486,6 +490,7 @@ async function UPLOAD_PORTFOLIO_PHOTOS(files, result, showError) {
         },
       })
       .then((res) => {
+        console.log("portf: ", res.data);
         if (res.data.statusCode === 201) {
           let uploads = res.data.data;
           let urlClone = [];
@@ -497,6 +502,7 @@ async function UPLOAD_PORTFOLIO_PHOTOS(files, result, showError) {
         }
       })
       .catch((err) => {
+        console.log("portf err: ", err.response);
         showError(
           "error",
           "Service Photo Upload Failed",
@@ -504,6 +510,7 @@ async function UPLOAD_PORTFOLIO_PHOTOS(files, result, showError) {
         );
       });
   } catch (error) {
+    console.log("portf net err: ", err.message);
     showError(
       "error",
       "Service Photo Upload Failed",
@@ -591,17 +598,13 @@ async function FETCH_SAVED_SEARCH(idList, isLoading, result) {
 
   try {
     axios
-      .post(
-        END_POINT.getSavedSearch,
-        { IDs: idList },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .post(END_POINT.getSavedSearch, idList, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
-        result(res.data.data.existingRecords);
+        result(res.data.data.serviceObjects);
         isLoading(false);
       })
       .catch((err) => {

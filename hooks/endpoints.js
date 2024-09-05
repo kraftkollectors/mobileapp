@@ -44,6 +44,7 @@ export const END_POINT = {
   updateArtisanProfile: (id) => `${API}/users/artisan/${id}`,
   getArtisanServices: (id) => `${API}/users/myads/${id}`,
   getSingleArtisanService: (id) => `${API}/users/ads/${id}`,
+  editArtisanService: (id) => `${API}/users/ads/edit/${id}`,
   checkFavourite: (user, service) =>
     `${API}/users/checksavead?userid=${user}&serviceid=${service}`,
   deleteFavourite: (userId, serviceId) =>

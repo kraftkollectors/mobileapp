@@ -59,7 +59,7 @@ export default function ServiceReviewCard({ data }) {
             {
               //CHECK IF USER VEIRIFIED
             }
-            {reviewerData.isArtisan && (
+            {reviewerData?.isArtisan && (
               <Image
                 source={require("../../../../assets/icons/verified.png")}
                 style={{ width: 16, height: 16, objectFit: "cover" }}

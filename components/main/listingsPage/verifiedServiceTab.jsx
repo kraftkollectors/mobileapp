@@ -6,6 +6,9 @@ import ServiceCard from "./subComp/serviceCard";
 import { FETCH_ARTISAN_SERVICES } from "../../../hooks/requests";
 import ServiceCardLoadingTemp from "../../loadingTemplates/listingsPage/serviceCardLoadingTemp";
 import { useRouter } from "expo-router";
+import ListingConfirmDeleteComp from "./subComp/confirmDeleteComp";
+import axios from "axios";
+import { END_POINT } from "../../../hooks/endpoints";
 
 const NoPost = () => {
   const router = useRouter();
@@ -33,8 +36,8 @@ const NoPost = () => {
 };
 
 export default function VerifiedServiceTab({
-  userId,
-  setConfirmDelete,
+  userData,
+  accessToken,
   showAlert,
 }) {
   const router = useRouter();
@@ -47,7 +50,7 @@ export default function VerifiedServiceTab({
   const [serviceIsLoading, setServiceIsLoading] = useState(false);
   useEffect(() => {
     FETCH_ARTISAN_SERVICES(
-      userId,
+      userData?._id,
       setServiceIsLoading,
       setServiceList,
       showAlert
@@ -66,6 +69,47 @@ export default function VerifiedServiceTab({
       setShowTabOptions(true);
     }
   }
+
+  //CONFIRM DELETE
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [idToDelete, setIdToDelete] = useState("");
+  const [startDelete, setStartDelete] = useState(false);
+
+  useEffect(() => {
+    if (startDelete && idToDelete) {
+      axios
+        .delete(END_POINT.getSingleArtisanService(idToDelete), {
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": `${accessToken}`,
+          },
+        })
+        .then((res) => {
+          if (res.data.statusCode === 201) {
+            FETCH_ARTISAN_SERVICES(
+              userData?._id,
+              setServiceIsLoading,
+              setServiceList,
+              showAlert
+            );
+          }
+
+          //show alert
+          showAlert(
+            "success",
+            "Service Deleted Successfully",
+            "You have deleted chosen service from your listings"
+          );
+
+          setConfirmDelete(false);
+          setStartDelete(false);
+        })
+        .catch((err) => {
+          console.log("delete err: ", err.response.data);
+          setStartDelete(false);
+        });
+    }
+  }, [startDelete]);
 
   return (
     <>
@@ -109,6 +153,7 @@ export default function VerifiedServiceTab({
                       confirmDelete={() => {
                         setConfirmDelete(true);
                       }}
+                      toDelete={setIdToDelete}
                     />
                   ))
                 ) : (
@@ -120,6 +165,19 @@ export default function VerifiedServiceTab({
             <NoPost />
           )}
         </>
+      )}
+
+      {/**POPUP TO CONFIRM DELETE */}
+      {confirmDelete && (
+        <ListingConfirmDeleteComp
+          cancel={() => {
+            setConfirmDelete(false);
+          }}
+          confirm={() => {
+            setStartDelete(true);
+          }}
+          deleting={startDelete}
+        />
       )}
     </>
   );

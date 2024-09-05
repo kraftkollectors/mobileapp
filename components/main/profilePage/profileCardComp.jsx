@@ -10,10 +10,12 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Octicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import * as Linking from "expo-linking";
 import { COLORS } from "../../../constants/themes/colors";
 import ProfileNavBarTab from "./subComp/profileNavBarTab";
 import { useRouter } from "expo-router";
 import {
+  CHECK_IS_ONLINE,
   CHECK_WITHIN_WORKTIME,
   FORMAT_DATE_MEMBER_SINCE,
   LOAD_PROFILE_THUMBNAIL,
@@ -75,7 +77,7 @@ export default function ProfileCardComp({
     setCntBtnIsLoading(true);
     //CHECK IF WITHIN WORK TIME
     let dt = new Date();
-    let curTime = `${dt.getHours()}:00`;
+    let curTime = `${String(dt.getHours()).padStart(2, "0")}:00`;
 
     let isWorkHour = CHECK_WITHIN_WORKTIME(
       curTime,
@@ -186,9 +188,12 @@ export default function ProfileCardComp({
           {numberIsVisible ? (
             <TouchableOpacity
               style={[styles.ctaTab, { backgroundColor: COLORS.whiteBG }]}
+              onPress={() => {
+                Linking.openURL(`tel:${artisan?.phoneNumber}`);
+              }}
             >
               <MaterialCommunityIcons
-                name="content-copy"
+                name="phone-outline"
                 size={20}
                 color={COLORS.blueNormal}
               />

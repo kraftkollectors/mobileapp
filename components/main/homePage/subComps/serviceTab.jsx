@@ -42,9 +42,7 @@ export default function ServiceTab({ data }) {
           <Text style={styles.servicePrice}>
             N{" "}
             {data.estimatedPrice && FORMATNUMBERWITHCOMMA(data?.estimatedPrice)}{" "}
-            <Text style={styles.serviceCharge}>
-              /{data?.charge === "hourly" ? "hr" : "fixed"}
-            </Text>
+            <Text style={styles.serviceCharge}>- {data?.charge}</Text>
           </Text>
           <Text style={styles.serviceTitle} numberOfLines={2}>
             {data?.title}
@@ -54,7 +52,7 @@ export default function ServiceTab({ data }) {
         <View style={styles.serviceBottom}>
           <Octicons name="location" size={16} color={COLORS.black200} />
           <Text style={styles.serviceLocation} numberOfLines={1}>
-            {data?.address}
+            {data?.state}
           </Text>
         </View>
       </View>
@@ -95,10 +93,11 @@ const styles = StyleSheet.create({
     color: COLORS.black900,
   },
   serviceCharge: {
-    fontFamily: "EinaRegular",
+    fontFamily: "EinaSemiBold",
     fontSize: 14,
     lineHeight: 24,
-    color: COLORS.black900,
+    color: COLORS.black200,
+    textTransform: "capitalize",
   },
   serviceTitle: {
     fontFamily: "EinaSemiBold",

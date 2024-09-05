@@ -39,11 +39,12 @@ import {
 } from "../../../constants/utilities/localStorage";
 import axios from "axios";
 import { END_POINT } from "../../../hooks/endpoints";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import PhotoSliderComp from "../../../components/main/servicePage/photoSliderComp";
 
 const screenHeight = Dimensions.get("screen").height;
 
-export default function CreatePost() {
+export default function EditPost() {
   const [socketConn, setSocketConn] = useState(false);
   //ALERTS
   const [isAlert, showAlert] = useState(false);
@@ -141,6 +142,31 @@ export default function CreatePost() {
     }
   }, [onlineStates]);
 
+  //check if editting or creating
+  const local = useLocalSearchParams();
+  const [serviceToEdit, setSTE] = useState();
+  const [STEloading, setSTELoading] = useState(false);
+  useEffect(() => {
+    if (local && local?._id) {
+      FETCH_SERVICE_DATA(local?._id, setSTE, setSTELoading, popAlert);
+    }
+  }, [local]);
+  //if(edit) adjust
+  useEffect(() => {
+    if (serviceToEdit) {
+      setTitle(serviceToEdit?.title);
+      setCategory(serviceToEdit?.category);
+      setSubCategory(serviceToEdit?.subCategory);
+      setDescription(serviceToEdit?.description);
+      setEstPrice(parseInt(serviceToEdit?.estimatedPrice));
+      setCharge(serviceToEdit?.charge);
+      setState(serviceToEdit?.state);
+      setAddress(serviceToEdit?.address);
+      setLongitude(serviceToEdit?.longitude);
+      setLatitude(serviceToEdit?.latitude);
+    }
+  }, [serviceToEdit]);
+
   //***ADDRESS HANDLE ***//
   const [findPlace, setFindPlace] = useState(false);
   const [placeList, setPlaceList] = useState();
@@ -173,6 +199,7 @@ export default function CreatePost() {
         setPlaceList();
       })
       .catch((err) => {
+        console.log("Error: ", err);
         setAddress(place);
       });
   }
@@ -363,7 +390,7 @@ export default function CreatePost() {
     }
 
     //COVER PHOTO
-    if (!coverPhotoFile) {
+    /*if (!coverPhotoFile) {
       setCoverPhotoErr(
         "You must upload a cover photo for your service thumbnail"
       );
@@ -376,14 +403,14 @@ export default function CreatePost() {
         "You must upload atleast one photo for your service gallery"
       );
       return;
-    }
+    }*/
 
     //PROCEED
     setBtnIsLoading(true);
   }
 
   //CREATING POST HANDLE
-  useEffect(() => {
+  /*useEffect(() => {
     if (btnIsLoading) {
       //ATTEMPT COVER PHOTO UPLOAD
       UPLOAD_COVER_PHOTO(coverPhotoFile, setCoverPhoto, popAlert);
@@ -394,11 +421,11 @@ export default function CreatePost() {
       //ATTEMPT PORTFOLIO UPLOADS
       UPLOAD_PORTFOLIO_PHOTOS(portfolioPhotoFiles, setPortfolio, popAlert);
     }
-  }, [coverPhoto]);
+  }, [coverPhoto]);*/
 
   useEffect(() => {
-    if (portfolio) {
-      //PROCEED WITH SERVICE CREATION
+    if (btnIsLoading) {
+      //PROCEED WITH SERVICE EDIT
       console.log("start here");
       const formData = {
         address: `${address.trim()}`,
@@ -411,14 +438,12 @@ export default function CreatePost() {
         charge: `${charge}`,
         userId: `${userData?._id}`,
         userEmail: `${userData?.email}`,
-        portfolio: portfolio,
-        coverPhoto: `${coverPhoto}`,
         longitude: longitude,
         latitude: latitude,
       };
 
       axios
-        .post(END_POINT.services, formData, {
+        .patch(END_POINT.editArtisanService, formData, {
           headers: {
             "Content-Type": "application/json",
             "x-access-token": `${accessToken}`,
@@ -432,8 +457,8 @@ export default function CreatePost() {
 
             popAlert(
               "success",
-              "Service Creation Successful",
-              "You have listed a new service on kraftkollectors. You will be redirected shortly"
+              "Service Edit Successful",
+              "You have updated your service details on kraftkollectors. You will be redirected shortly"
             );
 
             setTimeout(() => {
@@ -445,11 +470,15 @@ export default function CreatePost() {
           }
         })
         .catch((err) => {
-          console.log("Error: ", err.response.data);
+          popAlert(
+            "error",
+            "Service Edit Failed",
+            "Something went wrong. Please try again later"
+          );
           setBtnIsLoading(false);
         });
     }
-  }, [portfolio]);
+  }, [btnIsLoading]);
 
   return (
     <SafeAreaView
@@ -472,7 +501,7 @@ export default function CreatePost() {
       />
 
       {/**STICKY HEADER */}
-      <CreatePageTopBar pageTitle={"Create New Service"} />
+      <CreatePageTopBar pageTitle={"Edit Service"} />
       {/**PAGE DISPLAY */}
       <KeyboardAvoidingView
         enabled
@@ -493,6 +522,14 @@ export default function CreatePost() {
             gap: 16,
           }}
         >
+          {!serviceToEdit && STEloading && (
+            <View style={{ padding: 16, alignItems: "center" }}>
+              <ActivityIndicator size={"small"} color={COLORS.black500} />
+            </View>
+          )}
+
+          {serviceToEdit && <PhotoSliderComp data={serviceToEdit} />}
+
           <View style={styles.createSection}>
             <Text style={styles.sectionLabel}>Title</Text>
 
@@ -556,7 +593,7 @@ export default function CreatePost() {
               placeholder={"Ex. 1000"}
               input={estimatedPrice}
               setInput={setEstPrice}
-              isNumber={true}
+              isNumber={serviceToEdit ? true : false}
               hasError={estimatedPriceErr}
             />
 
@@ -653,105 +690,9 @@ export default function CreatePost() {
             )}
           </View>
 
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Cover Photo</Text>
-
-            <TouchableOpacity
-              onPress={() => {
-                handleMediaPermission("cover");
-              }}
-              style={styles.photoSelectorTouchpad}
-            >
-              <View style={styles.photoSelectorInner}>
-                <Feather name="upload" size={20} color={COLORS.blueNormal} />
-                <Text style={styles.photoSelectorText}>Upload Photo</Text>
-              </View>
-
-              <Text style={styles.photoSelectorPlaceholder}>
-                .jpg and .png {"\n"} Photo must not exceed 5mb
-              </Text>
-            </TouchableOpacity>
-
-            {coverPhotoErr.length > 0 && (
-              <Text style={styles.sectionBtmErrText}>{coverPhotoErr}</Text>
-            )}
-
-            {coverPhotoFile && (
-              <View style={styles.photoPreviewTab}>
-                <TouchableOpacity
-                  onPress={() => {
-                    removeCoverPhoto();
-                  }}
-                  style={styles.photoPreviewTabClear}
-                >
-                  <Feather name="x" size={16} color={COLORS.black900} />
-                </TouchableOpacity>
-
-                <Image
-                  source={{ uri: coverPhotoFile?.uri }}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </View>
-            )}
-          </View>
-
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Service Photo Gallery</Text>
-
-            <TouchableOpacity
-              onPress={() => {
-                handleMediaPermission("portfolio");
-              }}
-              style={styles.photoSelectorTouchpad}
-            >
-              <View style={styles.photoSelectorInner}>
-                <Feather name="upload" size={20} color={COLORS.blueNormal} />
-                <Text style={styles.photoSelectorText}>Select Photos</Text>
-              </View>
-
-              <Text style={styles.photoSelectorPlaceholder}>
-                .jpg and .png {"\n"} Each photo must not exceed 5mb
-              </Text>
-            </TouchableOpacity>
-
-            {portfolioErr.length > 0 && (
-              <Text style={styles.sectionBtmErrText}>{portfolioErr}</Text>
-            )}
-
-            {portfolioPhotoFiles && portfolioPhotoFiles.length > 0 && (
-              <ScrollView horizontal={true} contentContainerStyle={{ gap: 8 }}>
-                {portfolioPhotoFiles.map((item, index) => (
-                  <View style={styles.photoPreviewTab} key={index}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        removePortfolioPhoto(index);
-                      }}
-                      style={styles.photoPreviewTabClear}
-                    >
-                      <Feather name="x" size={16} color={COLORS.black900} />
-                    </TouchableOpacity>
-
-                    <Image
-                      source={{ uri: item?.uri }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </View>
-                ))}
-              </ScrollView>
-            )}
-          </View>
-
           <View style={{ padding: 16 }}>
             <SaveBtn
-              btnText={"Publish"}
+              btnText={"Update"}
               isLoading={btnIsLoading}
               handleClick={() => {
                 validateInputs();

@@ -71,13 +71,17 @@ export default function ListReviewCard({ data }) {
         </View>
         <View style={styles.reviewUserDetails}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-            <Text numberOfLines={1} style={styles.reviewUserName}>
-              {reviewerData?.firstName} {reviewerData?.lastName}
-            </Text>
+            {reviewerDataIsLoading || !reviewerData ? (
+              <View style={styles.reviewUserNameLoading}></View>
+            ) : (
+              <Text numberOfLines={1} style={styles.reviewUserName}>
+                {reviewerData?.firstName} {reviewerData?.lastName}
+              </Text>
+            )}
             {
               //CHECK IF USER VEIRIFIED
             }
-            {reviewerData.isArtisan && (
+            {reviewerData?.isArtisan && (
               <Image
                 source={require("../../../../assets/icons/verified.png")}
                 style={{ width: 16, height: 16, objectFit: "cover" }}
@@ -169,5 +173,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: COLORS.black500,
+  },
+  reviewUserNameLoading: {
+    height: 14,
+    width: "70%",
+    borderRadius: 20,
+    backgroundColor: COLORS.black50,
   },
 });

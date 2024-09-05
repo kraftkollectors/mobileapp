@@ -27,7 +27,6 @@ const RemoveDataFromMemory = async (storagePath) => {
   await AsyncStorage.removeItem(storagePath);
 };
 
-const dieHard = "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A";
 const LOCAL_STORAGE_PATH = {
   accessToken: "kraftkollectors_user_access_token",
   userData: "kraftkollectors_user_data",
@@ -38,7 +37,7 @@ const LOCAL_STORAGE_PATH = {
   notificationUrl: "kraftkollectors_notification_url",
   deviceLatLng: "kraftkollectors_device_lat_lng",
   API: {
-    glp: dieHard,
+    glp: process.env.EXPO_PUBLIC_API_KEY, //your geolocation api key
   },
 };
 
@@ -79,13 +78,18 @@ async function AddToSearchedService(serviceId) {
     //LIST EXIST
     if (!searchClone.includes(serviceId)) {
       if (searchClone.length < 20) {
-        newList = [...searchClone, serviceId];
+        newList = [serviceId, ...searchClone];
       } else {
         searchClone.splice(0, 1);
-        newList = [...searchClone, serviceId];
+        newList = [serviceId, ...searchClone];
       }
     } else {
-      newList = [...searchClone];
+      searchClone.forEach((item, index) => {
+        if (item === serviceId) {
+          searchClone.splice(index, 1);
+        }
+      });
+      newList = [serviceId, ...searchClone];
     }
   } else {
     //ADD NEW LIST

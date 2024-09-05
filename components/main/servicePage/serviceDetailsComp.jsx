@@ -4,8 +4,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import { Octicons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
 import {
   FORMATNUMBERWITHCOMMA,
@@ -43,22 +45,29 @@ export default function ServiceDetailsComp({ data, isLoading }) {
         <>
           {data && (
             <View style={styles.serviceDetailComp}>
-              <View style={styles.serviceCategoryTab}>
-                <Text style={styles.serviceCategory}>{data?.category}</Text>
-                <View style={styles.serviceCategorySplit}></View>
-                <Text style={styles.serviceCategory}>{data?.subCategory}</Text>
-              </View>
-
               <View style={styles.sdcTop}>
                 <Text style={styles.serviceTitle}>{data?.title}</Text>
                 {data && (
                   <Text style={styles.servicePrice}>
                     N {FORMATNUMBERWITHCOMMA(data?.estimatedPrice)}{" "}
-                    <Text style={styles.serviceCharge}>
-                      /{data?.charge === "hourly" ? "hr" : "fixed"}
-                    </Text>
+                    <Text style={styles.serviceCharge}>- {data?.charge}</Text>
                   </Text>
                 )}
+
+                <View style={styles.serviceBottom}>
+                  <Octicons name="location" size={16} color={COLORS.black200} />
+                  <Text style={styles.serviceLocation} numberOfLines={2}>
+                    {data?.address}
+                  </Text>
+                </View>
+
+                <View style={styles.serviceCategoryTab}>
+                  <Text style={styles.serviceCategory}>{data?.category}</Text>
+                  <View style={styles.serviceCategorySplit}></View>
+                  <Text style={styles.serviceCategory}>
+                    {data?.subCategory}
+                  </Text>
+                </View>
               </View>
 
               <View style={styles.sdcBtm}>
@@ -93,6 +102,8 @@ export default function ServiceDetailsComp({ data, isLoading }) {
   );
 }
 
+const screenWidth = Dimensions.get("screen").width;
+
 const styles = StyleSheet.create({
   serviceDetailComp: {
     width: "100%",
@@ -121,10 +132,11 @@ const styles = StyleSheet.create({
     color: COLORS.blueNormal,
   },
   serviceCharge: {
-    fontFamily: "EinaRegular",
+    fontFamily: "EinaSemiBold",
     fontSize: 16,
     lineHeight: 28,
-    color: COLORS.black500,
+    color: COLORS.black200,
+    textTransform: "capitalize",
   },
   sdcBtm: {
     width: "100%",
@@ -165,5 +177,20 @@ const styles = StyleSheet.create({
     width: 1,
     height: 16,
     backgroundColor: COLORS.black100,
+  },
+  serviceBottom: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingVertical: 0,
+  },
+  serviceLocation: {
+    maxWidth: screenWidth - (32 + 16 + 4),
+    fontFamily: "EinaSemiBold",
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS.black200,
+    textTransform: "capitalize",
   },
 });

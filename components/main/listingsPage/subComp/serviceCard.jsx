@@ -29,11 +29,17 @@ export default function ServiceCard({
   userData,
   accessToken,
   refreshList,
+  toDelete,
 }) {
   const router = useRouter();
 
   function goToService() {
     router.navigate(`/main/service?_id=${data?._id}`);
+  }
+
+  function startEdit(id) {
+    router.navigate(`/main/listings/edit/?_id=${id}`);
+    handleOptionVisibility();
   }
 
   return (
@@ -58,9 +64,7 @@ export default function ServiceCard({
             </Text>
             <Text style={styles.serviceCardPrice}>
               N {FORMATNUMBERWITHCOMMA(data?.estimatedPrice)}{" "}
-              <Text style={styles.serviceCardCharge}>
-                /{data?.charge === "hourly" ? "hr" : "fixed"}
-              </Text>
+              <Text style={styles.serviceCardCharge}>- {data?.charge}</Text>
             </Text>
           </View>
           <View style={styles.pcdBottom}>
@@ -98,6 +102,10 @@ export default function ServiceCard({
                 confirmDelete={() => {
                   confirmDelete();
                   handleOptionVisibility();
+                  toDelete(data?._id);
+                }}
+                commenceEdit={() => {
+                  startEdit(data?._id);
                 }}
               />
             )}
@@ -168,10 +176,11 @@ const styles = StyleSheet.create({
     color: COLORS.black600,
   },
   serviceCardCharge: {
-    fontFamily: "EinaRegular",
+    fontFamily: "EinaSemiBold",
     fontSize: 14,
     lineHeight: 24,
-    color: COLORS.black600,
+    color: COLORS.black200,
+    textTransform: "capitalize",
   },
   serviceCardLocation: {
     fontFamily: "EinaSemiBold",

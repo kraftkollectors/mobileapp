@@ -74,7 +74,14 @@ export default function ChatThread({ data, id }) {
 
       <View style={styles.ctDetails}>
         <View style={styles.ctdCont}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+          <View
+            style={{
+              maxWidth: screenWidth - (48 + 12 + 32 + 4 + 92),
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
             <Text style={styles.ctdUserName} numberOfLines={1}>
               {data?.firstName} {data?.lastName}
             </Text>
@@ -180,6 +187,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   ctdUserName: {
+    maxWidth: "95%",
     fontFamily: "EinaSemiBold",
     fontSize: 16,
     lineHeight: 24,

@@ -48,15 +48,13 @@ export default function RecommendCard({ data }) {
             {data.estimatedPrice
               ? FORMATNUMBERWITHCOMMA(data?.estimatedPrice)
               : "------"}{" "}
-            <Text style={styles.postCardCharge}>
-              /{data?.charge === "hourly" ? "hr" : "fixed"}
-            </Text>
+            <Text style={styles.postCardCharge}>- {data?.charge}</Text>
           </Text>
         </View>
         <View style={styles.pcdBottom}>
           <Octicons name="location" size={16} color={COLORS.black200} />
           <Text style={styles.postCardLocation} numberOfLines={1}>
-            {data?.address}
+            {data?.state}
           </Text>
         </View>
       </View>
@@ -118,10 +116,11 @@ const styles = StyleSheet.create({
     color: COLORS.black900,
   },
   postCardCharge: {
-    fontFamily: "EinaRegular",
+    fontFamily: "EinaSemiBold",
     fontSize: 14,
     lineHeight: 24,
-    color: COLORS.black900,
+    color: COLORS.black200,
+    textTransform: "capitalize",
   },
   postCardLocation: {
     width: screenWidth - (16 + 4 + 150 + 16 + 32),

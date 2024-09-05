@@ -10,7 +10,7 @@ import {
   StoreDataToMemory,
 } from "../constants/utilities/localStorage";
 
-//SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 //HANDLE NOTIFICATION TAP
 function useNotificationObserver() {

@@ -5,15 +5,15 @@ import { COLORS } from "../../../constants/themes/colors";
 export default function ServiceDetailsLoadingTemp() {
   return (
     <View style={styles.serviceDetailComp}>
-      <View style={styles.serviceCategoryTab}>
-        <View style={styles.serviceCategory}></View>
-        <View style={styles.serviceCategorySplit}></View>
-        <View style={styles.serviceCategory}></View>
-      </View>
-
       <View style={styles.sdcTop}>
         <View style={styles.serviceTitle}></View>
         <View style={styles.servicePrice}></View>
+
+        <View style={styles.serviceCategoryTab}>
+          <View style={styles.serviceCategory}></View>
+          <View style={styles.serviceCategorySplit}></View>
+          <View style={styles.serviceCategory}></View>
+        </View>
       </View>
 
       <View style={styles.sdcBtm}>

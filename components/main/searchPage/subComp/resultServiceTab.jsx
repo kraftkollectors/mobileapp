@@ -47,7 +47,8 @@ export default function ResultServiceTab({ data }) {
             N{" "}
             {data.estimatedPrice
               ? FORMATNUMBERWITHCOMMA(data?.estimatedPrice)
-              : "------"}
+              : "------"}{" "}
+            <Text style={styles.postCardCharge}>- {data?.charge}</Text>
           </Text>
         </View>
         <View style={styles.pcdBottom}>
@@ -109,6 +110,13 @@ const styles = StyleSheet.create({
     fontSize: Platform.OS === "ios" ? 14 : 16,
     lineHeight: 24,
     color: COLORS.black900,
+  },
+  postCardCharge: {
+    fontFamily: "EinaSemiBold",
+    fontSize: 16,
+    lineHeight: 28,
+    color: COLORS.black200,
+    textTransform: "capitalize",
   },
   postCardLocation: {
     fontFamily: "EinaSemiBold",

@@ -1,4 +1,4 @@
-import { Dimensions, Platform, ScrollView, View } from "react-native";
+import { Dimensions, Platform, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
 import DefaultStatusBar from "../../../components/general/defaultStatusBar.comp";
@@ -12,10 +12,13 @@ import SavedServicesTab from "../../../components/main/listingsPage/savedService
 import ReviewServicesTab from "../../../components/main/listingsPage/reviewServicesTab";
 import BeginAccountVerifyTab from "../../../components/main/listingsPage/beginAccountVerifyTab";
 import {
+  CheckLoginStatus,
   GetDataFromMemory,
   LOCAL_STORAGE_PATH,
+  StoreDataToMemory,
 } from "../../../constants/utilities/localStorage";
 import AlertBox from "../../../components/general/alertBox";
+import styles from "./listings.style";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -33,6 +36,22 @@ export default function Listings() {
     showAlert(true);
   }
   ///////////////////////////////////////////////
+  const [isLogged, setIsLogged] = useState("");
+  const [noSavedMsg, setNoSavedMsg] = useState("");
+
+  useEffect(() => {
+    if (isLogged === "logged" || (isLogged === "not-verified" && userData)) {
+      setNoSavedMsg("");
+    } else if (isLogged === "not-logged") {
+      setNoSavedMsg("Please log in to see your services");
+    } else {
+      //SAVE CURRENT PATH
+      StoreDataToMemory(LOCAL_STORAGE_PATH.redirectPath, `/main/listings`);
+
+      //CHECK LOGIN STATUS
+      CheckLoginStatus(setIsLogged);
+    }
+  }, [isLogged]);
 
   const [userData, setUserData] = useState();
   const [accessToken, setAccessToken] = useState("");
@@ -48,9 +67,6 @@ export default function Listings() {
 
   //HANDLE TAB SWITCHES
   const [currentTab, setCurrentTab] = useState("services"); //services, reviews, saved
-
-  //CONFIRM DELETE
-  const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
     <SafeAreaView
@@ -101,17 +117,16 @@ export default function Listings() {
             <SavedServicesTab
               userData={userData}
               accessToken={accessToken}
-              setConfirmDelete={setConfirmDelete}
               showAlert={popAlert}
             />
           ) : (
             <>
-              {userData && (
+              {userData ? (
                 <>
                   {userVerified ? (
                     <VerifiedServiceTab
-                      setConfirmDelete={setConfirmDelete}
-                      userId={userData?._id}
+                      userData={userData}
+                      accessToken={accessToken}
                       showAlert={popAlert}
                     />
                   ) : (
@@ -122,6 +137,10 @@ export default function Listings() {
                     />
                   )}
                 </>
+              ) : (
+                <View style={styles.notFoundTab}>
+                  <Text style={styles.notFoundText}>{noSavedMsg}</Text>
+                </View>
               )}
             </>
           )}
@@ -140,17 +159,6 @@ export default function Listings() {
 
       {/**NAVIGATION */}
       <BottomNavigationComp activePage={"listings"} userData={userData} />
-
-      {/**POPUP TO CONFIRM DELETE */}
-      {confirmDelete ? (
-        <ConfirmDeleteComp
-          cancel={() => {
-            setConfirmDelete(false);
-          }}
-        />
-      ) : (
-        <></>
-      )}
 
       {/**VERIFY ACCOUNT POPUP MODAL */}
       {!userVerified && beginVerifyAccount ? (
