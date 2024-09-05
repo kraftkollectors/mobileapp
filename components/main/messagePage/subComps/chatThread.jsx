@@ -46,7 +46,7 @@ export default function ChatThread({ data, id }) {
   //GOTO CHAT
   function joinChatRoom() {
     router.navigate(
-      `/main/messages/chat?userId=${id}&guestId=${data?._id}&fname=${data?.firstName}&lname=${data?.lastName}&thumbnail=${data?.image}`
+      `/main/messages/chat/?userId=${id}&guestId=${data?._id}&fname=${data?.firstName}&lname=${data?.lastName}&thumbnail=${data?.image}`
     );
   }
 
