@@ -33,7 +33,7 @@ import ViewPhotoComp from "../../../components/main/messagePage/viewPhotoComp";
 
 const screenHeight = Dimensions.get("screen").height;
 
-export default function ChatPage() {
+export default function ChatsPage() {
   const [socketConn, setSocketConn] = useState(false);
   //ALERTS
   const [isAlert, showAlert] = useState(false);

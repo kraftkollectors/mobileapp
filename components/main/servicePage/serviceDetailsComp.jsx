@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-  Dimensions,
-} from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
@@ -47,7 +40,7 @@ export default function ServiceDetailsComp({ data, isLoading }) {
             <View style={styles.serviceDetailComp}>
               <View style={styles.sdcTop}>
                 <Text style={styles.serviceTitle}>{data?.title}</Text>
-                {data && (
+                {data?.estimatedPrice && (
                   <Text style={styles.servicePrice}>
                     N {FORMATNUMBERWITHCOMMA(data?.estimatedPrice)}{" "}
                     <Text style={styles.serviceCharge}>- {data?.charge}</Text>

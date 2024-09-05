@@ -52,7 +52,7 @@ export default function PageTopBarComp({ userData, serviceData, accessToken }) {
       //SAVE CURRENT PATH
       StoreDataToMemory(
         LOCAL_STORAGE_PATH.redirectPath,
-        `/main/service?_id=${serviceData?._id}`
+        `/main/service/?_id=${serviceData?._id}`
       );
 
       //CHECK LOGIN STATUS

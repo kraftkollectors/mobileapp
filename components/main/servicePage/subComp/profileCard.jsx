@@ -6,7 +6,6 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
-  Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Octicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,8 +17,6 @@ import {
   CHECK_WITHIN_WORKTIME,
   LOAD_PROFILE_THUMBNAIL,
 } from "../../../../constants/utilities";
-import socketServices from "../../../../hooks/socket";
-import { SOCKET_EVENTS } from "../../../../hooks/endpoints";
 import {
   CheckLoginStatus,
   LOCAL_STORAGE_PATH,
@@ -45,13 +42,13 @@ export default function ProfileCard({
 
   //GOTO PROFILE
   function goToProfile() {
-    router.navigate(`/main/profile?_id=${profile?._id}`);
+    router.navigate(`/main/profile/?_id=${profile?._id}`);
   }
 
   //GOTO CHAT
   function joinChatRoom() {
     router.navigate(
-      `/main/messages/chat?userId=${userData?._id}&guestId=${profile?._id}&fname=${profile?.firstName}&lname=${profile?.lastName}&thumbnail=${profile?.image}`
+      `/main/messages/chat/?userId=${userData?._id}&guestId=${profile?._id}&fname=${profile?.firstName}&lname=${profile?.lastName}&thumbnail=${profile?.image}`
     );
   }
 
@@ -73,7 +70,7 @@ export default function ProfileCard({
       //SAVE CURRENT PATH
       StoreDataToMemory(
         LOCAL_STORAGE_PATH.redirectPath,
-        `/main/service?_id=${serviceData?._id}`
+        `/main/service/?_id=${serviceData?._id}`
       );
 
       //CHECK LOGIN STATUS

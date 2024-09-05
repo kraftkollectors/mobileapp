@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
-  Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
@@ -46,7 +45,7 @@ export default function UserDetailComp({
       //SAVE CURRENT PATH
       StoreDataToMemory(
         LOCAL_STORAGE_PATH.redirectPath,
-        `/main/service?_id=${serviceData?._id}`
+        `/main/service/?_id=${serviceData?._id}`
       );
 
       //CHECK LOGIN STATUS

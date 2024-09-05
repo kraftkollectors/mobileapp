@@ -1,6 +1,6 @@
+import React, { useCallback, useEffect, useState } from "react";
 import { Dimensions, Platform, RefreshControl, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useCallback, useEffect, useState } from "react";
 import DefaultStatusBar from "../../../components/general/defaultStatusBar.comp";
 import BottomNavigationComp from "../../../components/main/bottomNavigationComp";
 import { COLORS } from "../../../constants/themes/colors";
@@ -100,7 +100,7 @@ export default function Service() {
           popAlert
         );
       } else {
-        router.replace(`/main/service?_id=${serviceId}`);
+        router.replace(`/main/service/?_id=${serviceId}`);
       }
     }
   }, [refreshing]);
