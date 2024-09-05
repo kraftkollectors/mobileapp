@@ -71,7 +71,7 @@ export default function ListReviewCard({ data }) {
         </View>
         <View style={styles.reviewUserDetails}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-            {reviewerDataIsLoading || !reviewerData ? (
+            {reviewerDataIsLoading && !reviewerData ? (
               <View style={styles.reviewUserNameLoading}></View>
             ) : (
               <Text numberOfLines={1} style={styles.reviewUserName}>
