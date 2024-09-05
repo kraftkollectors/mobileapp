@@ -44,8 +44,20 @@ export default function Service() {
 
   const router = useRouter();
   const local = useLocalSearchParams();
-  const serviceId = local?._id;
-  const ref = local?.ref;
+  const [serviceId, setServiceId] = useState("");
+  const [ref, setRef] = useState("");
+
+  useEffect(() => {
+    if (local) {
+      if (local?._id) {
+        setServiceId(local?._id);
+      }
+
+      if (local?.ref) {
+        setRef(local?.ref);
+      }
+    }
+  }, [local]);
 
   //SAVE SERVICE IF FROM SEARCH
   useEffect(() => {

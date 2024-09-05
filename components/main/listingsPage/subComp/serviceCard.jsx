@@ -34,7 +34,7 @@ export default function ServiceCard({
   const router = useRouter();
 
   function goToService() {
-    router.navigate(`/main/service?_id=${data?._id}`);
+    router.navigate(`/main/service/?_id=${data?._id}`);
   }
 
   function startEdit(id) {

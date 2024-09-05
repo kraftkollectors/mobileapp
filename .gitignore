@@ -9,3 +9,4 @@ tsconfig.json
 docs
 apkBuilds
 diehard.js
+.easignore

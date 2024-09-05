@@ -21,7 +21,9 @@ export default function RecommendCard({ data }) {
 
   //SERVICE DETAILS
   function goToService() {
-    router.navigate(`/main/service?_id=${data?._id}`);
+    if (data?._id) {
+      router.navigate(`/main/service/?_id=${data?._id}`);
+    }
   }
 
   return (

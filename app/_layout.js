@@ -1,10 +1,8 @@
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
 import { useCallback, useEffect } from "react";
-import { ActivityIndicator } from "react-native";
-import { COLORS } from "../constants/themes/colors";
 import {
   LOCAL_STORAGE_PATH,
   StoreDataToMemory,
