@@ -9,7 +9,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
-import SliderBox from "../../general/sliderBox";
+import { SliderBox } from "react-native-image-slider-box";
 import { COLORS } from "../../../constants/themes/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack } from "expo-router";

@@ -1,7 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORS } from "../../../constants/themes/colors";
-import SliderBox from "../../general/sliderBox";
+import { SliderBox } from "react-native-image-slider-box";
 
 export default function PhotoSliderComp({ data }) {
   const [photos, setPhotos] = useState([]);
