@@ -4,13 +4,31 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  Dimensions,
 } from "react-native";
 import React from "react";
+import * as Linking from "expo-linking";
 import { Octicons, SimpleLineIcons, FontAwesome6 } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
 import { FORMAT_TIME_STRING_12H } from "../../../constants/utilities";
 
 export default function ContactListComp({ profile, artisan }) {
+  async function openSocialHandle(link) {
+    let url = "";
+
+    if (link.includes("http")) {
+      url = link;
+    } else {
+      url = `https://${link}`;
+    }
+
+    Linking.openURL(url);
+  }
+
+  async function openMail(email) {
+    Linking.openURL(`mailto:${email}`);
+  }
+
   return (
     <View style={styles.contactListComp}>
       {/**CONTACT INFO */}
@@ -46,7 +64,11 @@ export default function ContactListComp({ profile, artisan }) {
               </View>
               <Text style={styles.ltTitle}>Email</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                openMail(profile?.email);
+              }}
+            >
               <Text style={styles.ltValue} numberOfLines={1}>
                 {profile?.email}
               </Text>
@@ -54,30 +76,32 @@ export default function ContactListComp({ profile, artisan }) {
           </View>
           {/** */}
           {/** */}
-          <View style={styles.listTab}>
-            <View style={styles.listTabLeft}>
-              <View style={styles.ltIcon}>
-                <Octicons name="globe" size={24} color={COLORS.black300} />
+          {artisan && artisan?.website && (
+            <View style={styles.listTab}>
+              <View style={styles.listTabLeft}>
+                <View style={styles.ltIcon}>
+                  <Octicons name="globe" size={24} color={COLORS.black300} />
+                </View>
+                <Text style={styles.ltTitle}>Website</Text>
               </View>
-              <Text style={styles.ltTitle}>Website</Text>
-            </View>
-            {!artisan || !artisan.website ? (
-              <Text style={styles.notAddedText}>Nil</Text>
-            ) : (
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  openSocialHandle(artisan?.website);
+                }}
+              >
                 <Text style={styles.ltValueLink} numberOfLines={1}>
                   {artisan?.website}
                 </Text>
               </TouchableOpacity>
-            )}
-          </View>
+            </View>
+          )}
           {/** */}
         </View>
       </View>
 
       {/**SOCIAL INFO */}
       <View style={styles.contactSectionBlocks}>
-        <Text style={styles.contactSectionTitle}>Social Links</Text>
+        <Text style={styles.contactSectionTitle}>Social Handles</Text>
 
         {artisan &&
         (artisan.instagram ||
@@ -86,7 +110,7 @@ export default function ContactListComp({ profile, artisan }) {
           artisan.linkedin) ? (
           <View style={styles.contactDetailsBlock}>
             {/**INSTAGRAM */}
-            {artisan.instagram != "" && (
+            {artisan?.instagram != "" && (
               <View style={styles.listTab}>
                 <View style={styles.listTabLeft}>
                   <View style={styles.ltIcon}>
@@ -98,7 +122,12 @@ export default function ContactListComp({ profile, artisan }) {
                   </View>
                   <Text style={styles.ltTitle}>Instagram</Text>
                 </View>
-                <TouchableOpacity style={styles.ltSocialBtn}>
+                <TouchableOpacity
+                  onPress={() => {
+                    openSocialHandle(artisan?.instagram);
+                  }}
+                  style={styles.ltSocialBtn}
+                >
                   <Text style={styles.ltSocialLink} numberOfLines={1}>
                     View Profile
                   </Text>
@@ -112,7 +141,7 @@ export default function ContactListComp({ profile, artisan }) {
             )}
             {/** */}
             {/**TWITTER */}
-            {artisan.twitter != "" && (
+            {artisan?.twitter != "" && (
               <View style={styles.listTab}>
                 <View style={styles.listTabLeft}>
                   <View style={styles.ltIcon}>
@@ -124,7 +153,12 @@ export default function ContactListComp({ profile, artisan }) {
                   </View>
                   <Text style={styles.ltTitle}>Twitter</Text>
                 </View>
-                <TouchableOpacity style={styles.ltSocialBtn}>
+                <TouchableOpacity
+                  onPress={() => {
+                    openSocialHandle(artisan?.twitter);
+                  }}
+                  style={styles.ltSocialBtn}
+                >
                   <Text style={styles.ltSocialLink} numberOfLines={1}>
                     View Profile
                   </Text>
@@ -138,7 +172,7 @@ export default function ContactListComp({ profile, artisan }) {
             )}
             {/** */}
             {/**FACEBOOK */}
-            {artisan.facebook != "" && (
+            {artisan?.facebook != "" && (
               <View style={styles.listTab}>
                 <View style={styles.listTabLeft}>
                   <View style={styles.ltIcon}>
@@ -150,7 +184,12 @@ export default function ContactListComp({ profile, artisan }) {
                   </View>
                   <Text style={styles.ltTitle}>Facebook</Text>
                 </View>
-                <TouchableOpacity style={styles.ltSocialBtn}>
+                <TouchableOpacity
+                  onPress={() => {
+                    openSocialHandle(artisan?.facebook);
+                  }}
+                  style={styles.ltSocialBtn}
+                >
                   <Text style={styles.ltSocialLink} numberOfLines={1}>
                     View Profile
                   </Text>
@@ -164,7 +203,7 @@ export default function ContactListComp({ profile, artisan }) {
             )}
             {/** */}
             {/**LINKEDIN */}
-            {artisan.linkedin != "" && (
+            {artisan?.linkedin != "" && (
               <View style={[styles.listTab, { borderBottomWidth: 0 }]}>
                 <View style={styles.listTabLeft}>
                   <View style={styles.ltIcon}>
@@ -176,7 +215,12 @@ export default function ContactListComp({ profile, artisan }) {
                   </View>
                   <Text style={styles.ltTitle}>LinkedIn</Text>
                 </View>
-                <TouchableOpacity style={styles.ltSocialBtn}>
+                <TouchableOpacity
+                  onPress={() => {
+                    openSocialHandle(artisan?.linkedin);
+                  }}
+                  style={styles.ltSocialBtn}
+                >
                   <Text style={styles.ltSocialLink} numberOfLines={1}>
                     View Profile
                   </Text>
@@ -191,12 +235,14 @@ export default function ContactListComp({ profile, artisan }) {
             {/** */}
           </View>
         ) : (
-          <Text style={styles.notAddedText}>Not added yet</Text>
+          <Text style={styles.notAddedText}>No Social Handle added yet</Text>
         )}
       </View>
     </View>
   );
 }
+
+const screenWidth = Dimensions.get("screen").width;
 
 const styles = StyleSheet.create({
   contactListComp: {
@@ -248,12 +294,14 @@ const styles = StyleSheet.create({
     color: COLORS.black300,
   },
   ltValue: {
+    maxWidth: screenWidth - (32 + 16 + 92),
     fontFamily: "EinaSemiBold",
     fontSize: Platform.OS === "ios" ? 14 : 16,
     lineHeight: 24,
     color: COLORS.black400,
   },
   ltValueLink: {
+    maxWidth: screenWidth - (32 + 16 + 92),
     fontFamily: "EinaSemiBold",
     fontSize: Platform.OS === "ios" ? 14 : 16,
     lineHeight: 24,

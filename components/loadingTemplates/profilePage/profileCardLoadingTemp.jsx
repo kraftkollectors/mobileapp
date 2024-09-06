@@ -2,10 +2,16 @@ import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import React from "react";
 import { Octicons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
+import { useRouter } from "expo-router";
 
 const screenWidth = Dimensions.get("screen").width;
 
 export default function ProfileCardLoadingTemp() {
+  const router = useRouter();
+
+  function goBack() {
+    router.back();
+  }
   return (
     <View style={styles.profileCard}>
       {/**BACK BTN */}

@@ -1,7 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
-//import { SliderBox } from "react-native-image-slider-box";
 import { COLORS } from "../../../constants/themes/colors";
+import SliderBox from "../../general/sliderBox";
 
 export default function PhotoSliderComp({ data }) {
   const [photos, setPhotos] = useState([]);
@@ -26,7 +26,7 @@ export default function PhotoSliderComp({ data }) {
   }, [data]);
   return (
     <View style={styles.sliderComp}>
-      {/*<SliderBox
+      <SliderBox
         images={photos}
         imageLoadingColor={COLORS.whiteBG}
         sliderBoxHeight={264}
@@ -48,7 +48,7 @@ export default function PhotoSliderComp({ data }) {
           justifyContent: "center",
           gap: 4,
         }}
-      />*/}
+      />
     </View>
   );
 }

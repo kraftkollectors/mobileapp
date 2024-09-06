@@ -43,7 +43,7 @@ export default function AboutUserComp({ profile, artisan }) {
             />
           ))
         ) : (
-          <Text style={styles.notAddedText}>Not added yet</Text>
+          <Text style={styles.notAddedText}>No educational history found</Text>
         )}
       </View>
 
@@ -62,7 +62,7 @@ export default function AboutUserComp({ profile, artisan }) {
             />
           ))
         ) : (
-          <Text style={styles.notAddedText}>Not added yet</Text>
+          <Text style={styles.notAddedText}>No certificates found</Text>
         )}
       </View>
     </View>

@@ -5,7 +5,6 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  Platform,
 } from "react-native";
 import React from "react";
 import { Octicons } from "@expo/vector-icons";
@@ -21,7 +20,7 @@ export default function PostCard({ data }) {
 
   //SERVICE DETAILS
   function goToService() {
-    router.push(`/main/service?_id=${data?._id}`);
+    router.push(`/main/service/?_id=${data?._id}`);
   }
 
   return (
@@ -45,18 +44,16 @@ export default function PostCard({ data }) {
           </Text>
           <Text style={styles.postCardPrice}>
             N{" "}
-            {data.estimatedPrice
+            {data?.estimatedPrice
               ? FORMATNUMBERWITHCOMMA(data?.estimatedPrice)
               : "------"}{" "}
-            <Text style={styles.postCardCharge}>
-              /{data?.charge === "hourly" ? "hr" : "fixed"}
-            </Text>
+            <Text style={styles.postCardCharge}>- {data?.charge}</Text>
           </Text>
         </View>
         <View style={styles.pcdBottom}>
           <Octicons name="location" size={16} color={COLORS.black200} />
           <Text style={styles.postCardLocation} numberOfLines={1}>
-            {data?.address}
+            {data?.state}
           </Text>
         </View>
       </View>
@@ -115,10 +112,11 @@ const styles = StyleSheet.create({
     color: COLORS.black900,
   },
   postCardCharge: {
-    fontFamily: "EinaRegular",
+    fontFamily: "EinaSemiBold",
     fontSize: 14,
     lineHeight: 24,
-    color: COLORS.black900,
+    color: COLORS.black200,
+    textTransform: "capitalize",
   },
   postCardLocation: {
     width: screenWidth - (16 + 4 + 150 + 16 + 16),

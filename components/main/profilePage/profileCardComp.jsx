@@ -78,12 +78,10 @@ export default function ProfileCardComp({
     //CHECK IF WITHIN WORK TIME
     let dt = new Date();
     let curTime = `${String(dt.getHours()).padStart(2, "0")}:00`;
+    let timeFrom = `${String(artisan?.workHourFrom).padStart(2, "0")}:00`;
+    let timeTo = `${String(artisan?.workHourTo).padStart(2, "0")}:00`;
 
-    let isWorkHour = CHECK_WITHIN_WORKTIME(
-      curTime,
-      artisan?.workHourFrom,
-      artisan?.workHourTo
-    );
+    let isWorkHour = CHECK_WITHIN_WORKTIME(curTime, timeFrom, timeTo);
 
     setTimeout(() => {
       if (isWorkHour === false || !artisan?.phoneNumber) {
@@ -166,65 +164,69 @@ export default function ProfileCardComp({
         </View>
 
         {/**CTA */}
-        <View style={styles.ctaBlock}>
-          <TouchableOpacity
-            style={[styles.ctaTab, { backgroundColor: COLORS.blueNormal }]}
-            onPress={() => {
-              setAttemptJoin(true);
-            }}
-          >
-            {messageBtnIsLoading ? (
-              <ActivityIndicator size={"small"} color={COLORS.whiteBG} />
-            ) : (
-              <>
-                <Octicons name="mail" size={20} color={COLORS.whiteBG} />
-                <Text style={[styles.ctaText, { color: COLORS.whiteBG }]}>
-                  Message
-                </Text>
-              </>
-            )}
-          </TouchableOpacity>
-
-          {numberIsVisible ? (
+        {userData?._id != profile?._id && (
+          <View style={styles.ctaBlock}>
             <TouchableOpacity
-              style={[styles.ctaTab, { backgroundColor: COLORS.whiteBG }]}
+              style={[styles.ctaTab, { backgroundColor: COLORS.blueNormal }]}
               onPress={() => {
-                Linking.openURL(`tel:${artisan?.phoneNumber}`);
+                setAttemptJoin(true);
               }}
             >
-              <MaterialCommunityIcons
-                name="phone-outline"
-                size={20}
-                color={COLORS.blueNormal}
-              />
-              <Text style={[styles.ctaText, { color: COLORS.blueNormal }]}>
-                {artisan?.phoneNumber}
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                showContactNumber();
-              }}
-              style={[styles.ctaTab, { backgroundColor: COLORS.whiteBG }]}
-            >
-              {contactBtnIsLoading ? (
-                <ActivityIndicator size={"small"} color={COLORS.blueNormal} />
+              {messageBtnIsLoading ? (
+                <ActivityIndicator size={"small"} color={COLORS.whiteBG} />
               ) : (
                 <>
-                  <MaterialCommunityIcons
-                    name="phone-outline"
-                    size={20}
-                    color={COLORS.blueNormal}
-                  />
-                  <Text style={[styles.ctaText, { color: COLORS.blueNormal }]}>
-                    Show Contact
+                  <Octicons name="mail" size={20} color={COLORS.whiteBG} />
+                  <Text style={[styles.ctaText, { color: COLORS.whiteBG }]}>
+                    Message
                   </Text>
                 </>
               )}
             </TouchableOpacity>
-          )}
-        </View>
+
+            {numberIsVisible ? (
+              <TouchableOpacity
+                style={[styles.ctaTab, { backgroundColor: COLORS.whiteBG }]}
+                onPress={() => {
+                  Linking.openURL(`tel:${artisan?.phoneNumber}`);
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="phone-outline"
+                  size={20}
+                  color={COLORS.blueNormal}
+                />
+                <Text style={[styles.ctaText, { color: COLORS.blueNormal }]}>
+                  {artisan?.phoneNumber}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  showContactNumber();
+                }}
+                style={[styles.ctaTab, { backgroundColor: COLORS.whiteBG }]}
+              >
+                {contactBtnIsLoading ? (
+                  <ActivityIndicator size={"small"} color={COLORS.blueNormal} />
+                ) : (
+                  <>
+                    <MaterialCommunityIcons
+                      name="phone-outline"
+                      size={20}
+                      color={COLORS.blueNormal}
+                    />
+                    <Text
+                      style={[styles.ctaText, { color: COLORS.blueNormal }]}
+                    >
+                      Show Contact
+                    </Text>
+                  </>
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
       </View>
 
       {/**BOTTOM NAV BAR */}

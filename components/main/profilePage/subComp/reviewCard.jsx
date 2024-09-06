@@ -32,12 +32,12 @@ export default function ReviewCard({ data }) {
 
   //GOTO PROFILE
   function goToProfile() {
-    router.push(`/main/profile?_id=${reviewerData?._id}`);
+    router.push(`/main/profile/?_id=${reviewerData?._id}`);
   }
 
   //GO TO SERVICE
   function goToService() {
-    router.push(`/main/service?_id=${serviceData?._id}`);
+    router.push(`/main/service/?_id=${serviceData?._id}`);
   }
 
   return (
