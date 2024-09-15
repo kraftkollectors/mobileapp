@@ -105,7 +105,7 @@ export default function DefaultStatusBar({
           headerShown: false,
           navigationBarHidden: false,
           navigationBarColor: statusBackgroundColor,
-          animation: "ios",
+          animation: "none",
         }}
       />
     </>

@@ -32,18 +32,22 @@ export default function Messages() {
   const [chatThreads, setChatThreads] = useState();
 
   useEffect(() => {
-    if (userData && socketConn) {
-      //ALERT SERVER I'M READY
-      socketServices.emit(SOCKET_EVENTS.emit.login_room, {
-        userId: userData?._id,
-      });
-    } else {
-      setThreadsLoading(false);
+    if (userData) {
+      setThreadsLoading(true);
+      if (socketConn) {
+        //ALERT SERVER I'M READY
+        socketServices.emit(SOCKET_EVENTS.emit.login_room, {
+          userId: userData?._id,
+        });
+      }
     }
   }, [userData, socketConn]);
 
   useEffect(() => {
     if (socketConn) {
+      if (!userData) {
+        setThreadsLoading(false);
+      }
       //SERVER IS AWARE THAT I AM READY
       socketServices.on(SOCKET_EVENTS.on.logged_in, (res) => {
         // I AM READY

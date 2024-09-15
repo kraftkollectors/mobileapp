@@ -12,11 +12,7 @@ import React, { useEffect, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
 import { useRouter } from "expo-router";
-import {
-  LOCAL_STORAGE_PATH,
-  RemoveDataFromMemory,
-} from "../../../constants/utilities/localStorage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LogUserOut } from "../../../constants/utilities/localStorage";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -35,9 +31,10 @@ export default function AccountLinkTabComp({
     if (tryLogOut) {
       setILO(true);
 
-      //REMOVE USERDATA FROM STORAGE
+      //REMOVE USERDATA FROM LOCAL STORAGE
       try {
-        RemoveDataFromMemory(LOCAL_STORAGE_PATH.userData);
+        LogUserOut();
+
         setTimeout(() => {
           setTLO(false);
           setILO(false);
@@ -46,7 +43,7 @@ export default function AccountLinkTabComp({
             router.dismissAll();
           }
           router.replace("/main/home/");
-        }, 15000);
+        }, 5000);
       } catch (error) {
         //
       }
