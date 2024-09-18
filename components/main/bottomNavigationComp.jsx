@@ -178,7 +178,7 @@ export default function BottomNavigationComp({ activePage, userData }) {
 const styles = StyleSheet.create({
   bottomNav: {
     width: "100%",
-    height: Platform.OS === "ios" ? 96 : 124,
+    height: 96, //Platform.OS === "ios" ? 96 : 124,
     backgroundColor: COLORS.whiteBG,
     borderTopWidth: 1,
     borderTopColor: COLORS.gray50,

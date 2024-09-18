@@ -17,6 +17,7 @@ import {
 } from "../../../constants/utilities/localStorage";
 import VerticalServicesComp from "../../../components/main/homePage/verticalServicesComp";
 import BecomeArtisanAdBoardComp from "../../../components/main/homePage/becomeArtisanAdBoardComp";
+import { AppStyle } from "../../../constants/themes/style";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -87,10 +88,12 @@ export default function Home() {
           setSavedServices
         );
       }}
-      style={{
-        height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
-        backgroundColor: COLORS.whiteBG,
-      }}
+      style={[
+        AppStyle.safeArea,
+        {
+          backgroundColor: COLORS.whiteBG,
+        },
+      ]}
     >
       <DefaultStatusBar
         theme={"light"}
