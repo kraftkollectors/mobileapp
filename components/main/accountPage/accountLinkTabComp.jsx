@@ -12,7 +12,8 @@ import React, { useEffect, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
 import { useRouter } from "expo-router";
-import { LogUserOut } from "../../../constants/utilities/localStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LOCAL_STORAGE_PATH } from "../../../constants/utilities/localStorage";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -31,22 +32,7 @@ export default function AccountLinkTabComp({
     if (tryLogOut) {
       setILO(true);
 
-      //REMOVE USERDATA FROM LOCAL STORAGE
-      try {
-        LogUserOut();
-
-        setTimeout(() => {
-          setTLO(false);
-          setILO(false);
-
-          if (router.canDismiss()) {
-            router.dismissAll();
-          }
-          router.replace("/main/home/");
-        }, 5000);
-      } catch (error) {
-        //
-      }
+      logUserOut();
     }
   }, [tryLogOut]);
 
@@ -61,6 +47,27 @@ export default function AccountLinkTabComp({
         break;
     }
   }
+
+  const logUserOut = async () => {
+    //await AsyncStorage.multiRemove([LOCAL_STORAGE_PATH.userData]);
+    let key = LOCAL_STORAGE_PATH.userData;
+    /*AsyncStorage.multiRemove(keys, (err) => {
+      console.log("Err: ", err);
+      });*/
+    AsyncStorage.removeItem(key).then(() => {
+      console.log("Local storage user info removed!");
+      // Now update the UI or state
+      setTimeout(() => {
+        setTLO(false);
+        setILO(false);
+
+        if (router.canDismiss()) {
+          router.dismissAll();
+        }
+        router.replace("/main/home/");
+      }, 5000);
+    });
+  };
 
   return (
     <TouchableOpacity

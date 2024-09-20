@@ -40,6 +40,7 @@ import {
 import axios from "axios";
 import { END_POINT } from "../../../hooks/endpoints";
 import { useRouter } from "expo-router";
+import { AppStyle } from "../../../constants/themes/style";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -453,10 +454,12 @@ export default function CreatePost() {
 
   return (
     <SafeAreaView
-      style={{
-        height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
-        backgroundColor: COLORS.whiteBG,
-      }}
+      style={[
+        AppStyle.safeArea,
+        {
+          backgroundColor: COLORS.whiteBG,
+        },
+      ]}
       onLayout={() => {
         GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
         GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);

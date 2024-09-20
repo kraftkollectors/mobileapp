@@ -31,11 +31,8 @@
       [
         "expo-build-properties",
         {
-          "ios": {
-            "newArchEnabled": true
-          },
           "android": {
-            "newArchEnabled": true
+            "allowBackup": false
           }
         }
       ]

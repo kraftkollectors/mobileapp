@@ -16,6 +16,7 @@ import {
 import { END_POINT } from "../../../../hooks/endpoints";
 import axios from "axios";
 import AlertBox from "../../../../components/general/alertBox";
+import { AppStyle } from "../../../../constants/themes/style";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -121,10 +122,12 @@ export default function SocialLinks() {
         GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
         GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
       }}
-      style={{
-        height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
-        backgroundColor: COLORS.whiteBG,
-      }}
+      style={[
+        AppStyle.safeArea,
+        {
+          backgroundColor: COLORS.whiteBG,
+        },
+      ]}
     >
       <DefaultStatusBar
         theme={"light"}

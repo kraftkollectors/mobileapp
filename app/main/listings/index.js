@@ -19,6 +19,7 @@ import {
 } from "../../../constants/utilities/localStorage";
 import AlertBox from "../../../components/general/alertBox";
 import styles from "./listings.style";
+import { AppStyle } from "../../../constants/themes/style";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -74,10 +75,12 @@ export default function Listings() {
         GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
         GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
       }}
-      style={{
-        height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
-        backgroundColor: COLORS.blueNormal,
-      }}
+      style={[
+        AppStyle.safeArea,
+        {
+          backgroundColor: COLORS.blueNormal,
+        },
+      ]}
     >
       <DefaultStatusBar
         theme={"blue"}

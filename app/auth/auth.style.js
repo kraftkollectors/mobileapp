@@ -6,6 +6,7 @@ const screenHeight = Dimensions.get("screen").height;
 
 const styles = StyleSheet.create({
   safeArea: {
+    flex: 1,
     height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
     backgroundColor: COLORS.blueDark,
     position: "relative",

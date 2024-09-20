@@ -20,6 +20,7 @@ import {
 import { FETCH_CHAT_THREADS } from "../../../hooks/requests";
 import socketServices from "../../../hooks/socket";
 import { SOCKET_EVENTS } from "../../../hooks/endpoints";
+import { AppStyle } from "../../../constants/themes/style";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -118,10 +119,12 @@ export default function Messages() {
 
   return (
     <SafeAreaView
-      style={{
-        height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
-        backgroundColor: COLORS.whiteBG,
-      }}
+      style={[
+        AppStyle.safeArea,
+        {
+          backgroundColor: COLORS.whiteBG,
+        },
+      ]}
       onLayout={() => {
         GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
         GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);

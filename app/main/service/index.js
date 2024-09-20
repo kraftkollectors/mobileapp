@@ -24,6 +24,7 @@ import {
 import ReportServiceModal from "../../../components/main/profilePage/subComp/reportServiceModal";
 import RateServiceModal from "../../../components/main/profilePage/subComp/rateServiceModal";
 import AlertBox from "../../../components/general/alertBox";
+import { AppStyle } from "../../../constants/themes/style";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -149,10 +150,12 @@ export default function Service() {
         GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
         GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
       }}
-      style={{
-        height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
-        backgroundColor: COLORS.whiteBG,
-      }}
+      style={[
+        AppStyle.safeArea,
+        {
+          backgroundColor: COLORS.whiteBG,
+        },
+      ]}
     >
       <DefaultStatusBar
         theme={"light"}

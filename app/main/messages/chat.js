@@ -30,6 +30,7 @@ import socketServices from "../../../hooks/socket";
 import { SOCKET_EVENTS } from "../../../hooks/endpoints";
 import AlertBox from "../../../components/general/alertBox";
 import ViewPhotoComp from "../../../components/main/messagePage/viewPhotoComp";
+import { AppStyle } from "../../../constants/themes/style";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -225,11 +226,13 @@ export default function ChatsPage() {
 
   return (
     <SafeAreaView
-      style={{
-        height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
-        backgroundColor: COLORS.whiteBG,
-        justifyContent: "space-between",
-      }}
+      style={[
+        AppStyle.safeArea,
+        {
+          backgroundColor: COLORS.whiteBG,
+          justifyContent: "space-between",
+        },
+      ]}
       onLayout={() => {
         GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
         GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
