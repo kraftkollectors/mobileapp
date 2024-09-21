@@ -89,7 +89,7 @@ export default function Listings() {
         userId={userData && userData?._id}
         accessToken={accessToken}
       />
-      {/**STICKY TOP BAR */}
+      {/**STICKY TOP BAR*/}
       <StickyTopBar
         isVerified={userVerified}
         activeTab={currentTab}
@@ -99,10 +99,8 @@ export default function Listings() {
       {/**PAGE DISPLAY */}
       <View
         style={{
-          height:
-            Platform.OS === "ios"
-              ? screenHeight - (80 + 32 + 124)
-              : screenHeight - (80 + 48 + 124),
+          height: "auto",
+          maxHeight: screenHeight - (130 + 72),
           width: "100%",
         }}
       >

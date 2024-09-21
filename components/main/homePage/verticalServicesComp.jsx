@@ -6,20 +6,68 @@ import {
   Image,
   ScrollView,
   Platform,
+  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
 
 import RecommendCard from "./subComps/recommendCard";
 import RecommendCardLoadingTemp from "../../loadingTemplates/homePage/recommendLoadingTemp";
+import axios from "axios";
+import { END_POINT } from "../../../hooks/endpoints";
 
 const screenWidth = Dimensions.get("screen").width;
 
-export default function VerticalServicesComp({
-  sectionTitle,
-  serviceData,
-  isLoading,
-}) {
+export default function VerticalServicesComp({ sectionTitle, showAlert }) {
+  //LIST OF SERVICES
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchServices, setFetchServices] = useState(true);
+  const [serviceData, setServiceData] = useState([]);
+  //LIST OF META DATA
+  const [curPgn, setCurPgn] = useState(1);
+  const [serviceHasNextPgn, setServiceHasNextPgn] = useState(false);
+
+  //FETCH FEATURED SERVICES
+  useEffect(() => {
+    if (fetchServices) {
+      setIsLoading(true);
+
+      axios
+        .get(
+          END_POINT.services(serviceHasNextPgn ? Number(curPgn + 1) : curPgn)
+        )
+        .then((res) => {
+          if (res.data.statusCode === 201) {
+            if (serviceHasNextPgn) {
+              setServiceData((serviceSearchResult) => [
+                ...serviceSearchResult,
+                ...res.data.data?.existingRecords,
+              ]);
+            } else {
+              setServiceData(res.data.data?.existingRecords);
+            }
+
+            setCurPgn(res.data.data?.currentPage);
+            setServiceHasNextPgn(res.data.data?.hasNextPage);
+          }
+
+          setIsLoading(false);
+          setFetchServices(false);
+        })
+        .catch((err) => {
+          showAlert(
+            "error",
+            "Error Fetching Services",
+            "Something went wrong. Please reload page"
+          );
+          setIsLoading(false);
+          setFetchServices(false);
+        });
+    }
+  }, [fetchServices]);
+
   return (
     <View style={styles.featuredCont}>
       <View style={styles.featuredHeading}>
@@ -30,21 +78,51 @@ export default function VerticalServicesComp({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.featuredScroll}
       >
-        {isLoading ? (
+        <>
+          {serviceData && serviceData.length > 0 ? (
+            serviceData.map((item, index) => (
+              <RecommendCard key={index} data={item} />
+            ))
+          ) : (
+            <></>
+          )}
+        </>
+        {isLoading && (
           <>
             <RecommendCardLoadingTemp />
             <RecommendCardLoadingTemp />
           </>
-        ) : (
-          <>
-            {serviceData && serviceData.length > 0 ? (
-              serviceData.map((item, index) => (
-                <RecommendCard key={index} data={item} />
-              ))
+        )}
+
+        {serviceHasNextPgn && (
+          <View style={styles.hasNxtPgTab}>
+            {serviceResultIsLoading ? (
+              <TouchableOpacity style={styles.loadMoreBtn}>
+                <ActivityIndicator size={20} color={COLORS.black400} />
+
+                <MaterialCommunityIcons
+                  name="chevron-down"
+                  size={19}
+                  color={COLORS.black400}
+                />
+              </TouchableOpacity>
             ) : (
-              <></>
+              <TouchableOpacity
+                onPress={() => {
+                  setFetchServices(true);
+                }}
+                style={styles.loadMoreBtn}
+              >
+                <Text style={styles.loadMoreBtnText}>Load more</Text>
+
+                <MaterialCommunityIcons
+                  name="chevron-down"
+                  size={19}
+                  color={COLORS.black400}
+                />
+              </TouchableOpacity>
             )}
-          </>
+          </View>
         )}
       </ScrollView>
     </View>
@@ -69,5 +147,27 @@ const styles = StyleSheet.create({
   },
   featuredScroll: {
     gap: 12,
+  },
+  loadMoreBtn: {
+    width: 120,
+    height: 28,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.black50,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+  loadMoreBtnText: {
+    fontFamily: "EinaSemiBold",
+    fontSize: 12,
+    lineHeight: 20,
+    color: COLORS.black400,
+  },
+  hasNxtPgTab: {
+    width: "100%",
+    paddingVertical: 16,
+    alignItems: "center",
   },
 });

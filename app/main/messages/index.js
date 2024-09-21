@@ -62,7 +62,7 @@ export default function Messages() {
           );
 
           //CLEAR CHAT NOTICE
-          StoreDataToMemory(LOCAL_STORAGE_PATH.hasUnreadChat, false);
+          StoreDataToMemory(LOCAL_STORAGE_PATH.hasUnreadChat, "");
         }
       });
 

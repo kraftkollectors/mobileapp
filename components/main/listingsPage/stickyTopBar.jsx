@@ -113,13 +113,13 @@ const styles = StyleSheet.create({
     width: "auto",
     height: "auto",
     fontFamily: "EinaBold",
-    fontSize: Platform.OS === "ios" ? 14 : 16,
+    fontSize: 16,
     lineHeight: 24,
     color: COLORS.whiteBG,
   },
   stickyBar: {
     width: "100%",
-    height: Platform.OS === "ios" ? 52 : 46,
+    height: 46,
     paddingHorizontal: 16,
     backgroundColor: COLORS.whiteBG,
     flexDirection: "row",
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   stickyBtnText: {
     fontFamily: "EinaSemiBold",
-    fontSize: Platform.OS === "ios" ? 14 : 16,
+    fontSize: 16,
     lineHeight: 24,
   },
 });

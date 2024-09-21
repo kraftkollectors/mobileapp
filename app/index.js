@@ -32,6 +32,9 @@ export default function App() {
           let latLng = `${lat},${lng}`;
           StoreDataToMemory(LOCAL_STORAGE_PATH.deviceLatLng, latLng);
         }
+
+        //CLEAR CHAT NOTICE
+        StoreDataToMemory(LOCAL_STORAGE_PATH.hasUnreadChat, "");
       }
     } catch (error) {
       //

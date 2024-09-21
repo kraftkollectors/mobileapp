@@ -12,7 +12,7 @@ import {
 import ServiceCardLoadingTemp from "../../loadingTemplates/listingsPage/serviceCardLoadingTemp";
 
 export default function SavedServicesTab({ userData, accessToken, showAlert }) {
-  const [pageIsLoading, setPageIsLoading] = useState(false);
+  const [pageIsLoading, setPageIsLoading] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
   //DUMMY DATA
   const [savedServices, setSavedServices] = useState();

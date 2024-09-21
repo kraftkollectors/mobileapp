@@ -1,12 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-async function StoreDataToMemory(storagePath, dataToStore) {
+import { MMKV } from "react-native-mmkv";
+
+export const APP_STORAGE = new MMKV();
+
+/*async function StoreDataToMemory(storagePath, dataToStore) {
   try {
     const jsonValue = JSON.stringify(dataToStore);
     await AsyncStorage.setItem(`${storagePath}`, jsonValue);
     //return true;
   } catch (e) {
-    console.log(e);
+    console.log("store erro: ", e);
     // saving error
     return false;
   }
@@ -15,16 +19,55 @@ async function StoreDataToMemory(storagePath, dataToStore) {
 async function GetDataFromMemory(storagePath, setData) {
   try {
     const jsonValue = await AsyncStorage.getItem(`${storagePath}`);
-    let result = jsonValue != null ? JSON.parse(jsonValue) : null;
+    console.log("storage path: ", storagePath);
+    console.log("get json: ", jsonValue);
+    let result =
+      jsonValue &&
+      jsonValue !== null &&
+      jsonValue !== "" &&
+      jsonValue.length > 0
+        ? JSON.parse(jsonValue)
+        : jsonValue;
     setData(result);
   } catch (e) {
-    console.log(e);
+    console.log("get error: ", e);
     // read error
   }
 }
 
 const RemoveDataFromMemory = async (storagePath) => {
   await AsyncStorage.removeItem(storagePath);
+};*/
+
+//////
+const StoreDataToMemory = async (storagePath, dataToStore) => {
+  // Serialize the object into a JSON string
+  APP_STORAGE.set(storagePath, JSON.stringify(dataToStore));
+
+  return true;
+};
+
+const GetDataFromMemory = async (storagePath, setData) => {
+  //check if storagePath exists
+  let pathExists = APP_STORAGE.contains(storagePath);
+
+  if (pathExists) {
+    // Deserialize the JSON string into an object
+    const jsonVal = APP_STORAGE.getString(storagePath);
+    const finalVal = jsonVal != null ? JSON.parse(jsonVal) : jsonVal;
+
+    setData(finalVal);
+  }
+};
+
+const RemoveDataFromMemory = async (storagePath) => {
+  //check if storagePath exists
+  let pathExists = APP_STORAGE.contains(storagePath);
+
+  if (pathExists) {
+    // delete the specific key + value
+    APP_STORAGE.delete(storagePath);
+  }
 };
 
 const LOCAL_STORAGE_PATH = {

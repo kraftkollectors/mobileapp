@@ -82,7 +82,7 @@ export default function DefaultStatusBar({
     if (socketConnect && userId) {
       socketServices.on(SOCKET_EVENTS.on.received_message, (res) => {
         //SAVE NOTIFICATION
-        StoreDataToMemory(LOCAL_STORAGE_PATH.hasUnreadChat, true);
+        StoreDataToMemory(LOCAL_STORAGE_PATH.hasUnreadChat, "yes");
 
         if (systemNotification) {
           // SEND NOTIFICATION

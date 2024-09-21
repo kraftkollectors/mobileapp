@@ -12,7 +12,7 @@ async function FETCH_SERVICES(isLoading, result, showError) {
 
   try {
     axios
-      .get(END_POINT.services)
+      .get(END_POINT.services(1))
       .then((res) => {
         //MAIN DATA IN res.data.data.existingRecords
         if (res?.data.statusCode === 201) {
@@ -178,20 +178,27 @@ async function FETCH_SERVICE_USER(serviceUserId, result, isLoading, showError) {
 }
 
 async function FETCH_SERVICE_ARTISAN(serviceUserId, result) {
-  axios
-    .get(END_POINT.getArtisan(serviceUserId))
-    .then((res) => {
-      //MAIN DATA IN res.data.data.existingRecord
-      if (res.data.statusCode === 201) {
-        result(res.data.data.existingRecord);
-      }
-    })
-    .catch((err) => {
-      Alert.alert(
-        "Error Fetching Service Artisan Data",
-        "Something went wrong. Please try again"
-      );
-    });
+  try {
+    axios
+      .get(END_POINT.getArtisan(serviceUserId))
+      .then((res) => {
+        //MAIN DATA IN res.data.data.existingRecord
+        if (res.data.statusCode === 201) {
+          result(res.data.data.existingRecord);
+        }
+      })
+      .catch((err) => {
+        Alert.alert(
+          "Error Fetching Service Artisan Data",
+          "Something went wrong. Please try again"
+        );
+      });
+  } catch (error) {
+    Alert.alert(
+      "Error Fetching Service Artisan Data",
+      "Check your network connection and try again"
+    );
+  }
 }
 
 async function CHECK_SERVICE_IS_FAVOURITE(userId, serviceId, result) {

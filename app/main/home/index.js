@@ -144,8 +144,7 @@ export default function Home() {
         {/**RECOMMENDED SERVICES */}
         <VerticalServicesComp
           sectionTitle={"Recommended"}
-          serviceData={featuredServices}
-          isLoading={fsIsLoading}
+          showAlert={popAlert}
         />
       </ScrollView>
 

@@ -40,7 +40,7 @@
     "name": "Kraft Kollectors",
     "slug": "kraftkollectors",
     "description": "kraftkollectors mobile app",
-    "version": "1.0.5",
+    "version": "1.1.2",
     "orientation": "portrait",
     "icon": "./assets/photos/logo.png",
     "userInterfaceStyle": "light",
@@ -48,6 +48,9 @@
       "image": "./assets/photos/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/125c9891-5d66-4f08-a6cb-9f5781412b72"
     },
     "extra": {
       "router": {

@@ -12,8 +12,11 @@ import React, { useEffect, useState } from "react";
 import { Octicons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LOCAL_STORAGE_PATH } from "../../../constants/utilities/localStorage";
+import {
+  LOCAL_STORAGE_PATH,
+  RemoveDataFromMemory,
+  StoreDataToMemory,
+} from "../../../constants/utilities/localStorage";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -29,6 +32,32 @@ export default function AccountLinkTabComp({
   const [tryLogOut, setTLO] = useState(false);
 
   useEffect(() => {
+    const logUserOut = async () => {
+      //let key = LOCAL_STORAGE_PATH.userData;
+      try {
+        //set user_data to empty string
+        //StoreDataToMemory(LOCAL_STORAGE_PATH.userData, []);
+
+        setTimeout(() => {
+          //try to remove user_data
+          RemoveDataFromMemory(LOCAL_STORAGE_PATH.userData);
+
+          // Now update the UI or state
+          setTimeout(() => {
+            setTLO(false);
+            setILO(false);
+
+            if (router.canDismiss()) {
+              router.dismissAll();
+            }
+            router.replace("/main/home/");
+          }, 5000);
+        }, 5000);
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    };
+
     if (tryLogOut) {
       setILO(true);
 
@@ -47,27 +76,6 @@ export default function AccountLinkTabComp({
         break;
     }
   }
-
-  const logUserOut = async () => {
-    //await AsyncStorage.multiRemove([LOCAL_STORAGE_PATH.userData]);
-    let key = LOCAL_STORAGE_PATH.userData;
-    /*AsyncStorage.multiRemove(keys, (err) => {
-      console.log("Err: ", err);
-      });*/
-    AsyncStorage.removeItem(key).then(() => {
-      console.log("Local storage user info removed!");
-      // Now update the UI or state
-      setTimeout(() => {
-        setTLO(false);
-        setILO(false);
-
-        if (router.canDismiss()) {
-          router.dismissAll();
-        }
-        router.replace("/main/home/");
-      }, 5000);
-    });
-  };
 
   return (
     <TouchableOpacity
