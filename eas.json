@@ -12,7 +12,8 @@
         "simulator": true
       },
       "env": {
-        "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A"
+        "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A",
+        "EAS_BUILD_DISABLE_NPM_CACHE": "1"
       },
       "channel": "development"
     },
@@ -22,7 +23,8 @@
         "resourceClass": "m1-medium"
       },
       "env": {
-        "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A"
+        "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A",
+        "EAS_BUILD_DISABLE_NPM_CACHE": "1"
       },
       "channel": "preview"
     },
@@ -31,7 +33,8 @@
         "resourceClass": "m1-medium"
       },
       "env": {
-        "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A"
+        "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A",
+        "EAS_BUILD_DISABLE_NPM_CACHE": "1"
       },
       "channel": "production"
     }
