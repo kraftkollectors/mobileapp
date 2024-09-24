@@ -3,11 +3,11 @@ import { View, Dimensions, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import * as Location from "expo-location";
-import DefaultStatusBar from "../components/general/defaultStatusBar.comp";
+import DefaultStatusBar from "../components/general/defaultStatusBar.comp.jsx";
 import {
   LOCAL_STORAGE_PATH,
   StoreDataToMemory,
-} from "../constants/utilities/localStorage";
+} from "../constants/utilities/localStorage.js";
 
 const screenHeight = Dimensions.get("screen").height;
 export default function App() {

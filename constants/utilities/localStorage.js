@@ -1,10 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { MMKV } from "react-native-mmkv";
+//import { MMKV } from "react-native-mmkv";
 
-export const APP_STORAGE = new MMKV();
+//export const APP_STORAGE = new MMKV();
 
-/*async function StoreDataToMemory(storagePath, dataToStore) {
+async function StoreDataToMemory(storagePath, dataToStore) {
   try {
     const jsonValue = JSON.stringify(dataToStore);
     await AsyncStorage.setItem(`${storagePath}`, jsonValue);
@@ -37,10 +37,10 @@ async function GetDataFromMemory(storagePath, setData) {
 
 const RemoveDataFromMemory = async (storagePath) => {
   await AsyncStorage.removeItem(storagePath);
-};*/
+};
 
 //////
-const StoreDataToMemory = async (storagePath, dataToStore) => {
+/*const StoreDataToMemory = async (storagePath, dataToStore) => {
   // Serialize the object into a JSON string
   APP_STORAGE.set(storagePath, JSON.stringify(dataToStore));
 
@@ -68,7 +68,7 @@ const RemoveDataFromMemory = async (storagePath) => {
     // delete the specific key + value
     APP_STORAGE.delete(storagePath);
   }
-};
+};*/
 
 const LOCAL_STORAGE_PATH = {
   accessToken: "kraftkollectors_user_access_token",
