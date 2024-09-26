@@ -8,11 +8,7 @@ import SimpleTab from "../../../components/auth/simpleTab";
 import { useRouter } from "expo-router";
 import AlertBox from "../../../components/general/alertBox";
 
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import axios from "axios";
 import { END_POINT } from "../../../hooks/endpoints";
 import { GENERATE_RANDOM_NUMBER } from "../../../constants/utilities";
@@ -52,6 +48,9 @@ export default function Signup() {
         "912930599984-muu4f7tbo143m1rkl71vul9gua05idv6.apps.googleusercontent.com",
       iosClientId:
         "912930599984-qn00lf228935vjpid346r7ncag6us5hc.apps.googleusercontent.com",
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+      profileImageSize: 120,
     });
   };
 
@@ -105,6 +104,8 @@ export default function Signup() {
               StoreDataToMemory(LOCAL_STORAGE_PATH.accessToken, data?.token);
               //SAVE USER DATA
               StoreDataToMemory(LOCAL_STORAGE_PATH.userData, data?.user);
+              //UPDATE USER LOG STATUS
+              StoreDataToMemory(LOCAL_STORAGE_PATH.logStat, "logged");
 
               setTimeout(() => {
                 if (router.canDismiss) {
@@ -113,7 +114,7 @@ export default function Signup() {
                 //NAVIGATE TO REDIRECT PATH
                 router.push(goToPath);
                 setGBIL(false);
-              }, 3000);
+              }, 5000);
             }
           })
           .catch((err) => {

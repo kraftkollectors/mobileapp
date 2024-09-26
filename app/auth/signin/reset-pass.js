@@ -1,11 +1,6 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from "react-native";
 import React, { useEffect, useState } from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DefaultStatusBar from "../../../components/general/defaultStatusBar.comp";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../auth.style";
@@ -106,56 +101,53 @@ export default function ResetPass() {
         <View style={styles.innerBlock}>
           <View></View>
 
-          <KeyboardAvoidingView enabled behavior="padding">
-            <View style={styles.bottomPart}>
-              <View style={styles.whiteLogoTab}>
+          <View style={styles.bottomPart}>
+            <View style={styles.whiteLogoTab}>
+              <Image
+                source={require("../../../assets/photos/logo-white.png")}
+                style={styles.whiteLogoImg}
+              />
+            </View>
+
+            {/** */}
+            <KeyboardAwareScrollView
+              enableOnAndroid={true}
+              contentContainerStyle={styles.whiteFrameCont}
+            >
+              <TouchableOpacity onPress={goBack} style={styles.backBtn}>
                 <Image
-                  source={require("../../../assets/photos/logo-white.png")}
-                  style={styles.whiteLogoImg}
+                  source={require("../../../assets/icons/arrowLeft.png")}
+                  style={styles.backBtnImg}
+                />
+              </TouchableOpacity>
+
+              <View style={styles.headingTextCont}>
+                <Text style={styles.headingText}>Reset password</Text>
+                <View style={styles.subTextTab}>
+                  <Text style={styles.verifyText}>
+                    Enter your email address and we'll send you a link to reset
+                    your password.
+                  </Text>
+                </View>
+              </View>
+              {/** */}
+              <View style={styles.choiceBlock}>
+                <EmailInputTab
+                  input={email}
+                  setInput={setEmail}
+                  hasError={emailErr}
                 />
               </View>
-
               {/** */}
-              <KeyboardAvoidingView
-                behavior="height"
-                enabled
-                style={styles.whiteFrameCont}
-              >
-                <TouchableOpacity onPress={goBack} style={styles.backBtn}>
-                  <Image
-                    source={require("../../../assets/icons/arrowLeft.png")}
-                    style={styles.backBtnImg}
-                  />
-                </TouchableOpacity>
-
-                <View style={styles.headingTextCont}>
-                  <Text style={styles.headingText}>Reset password</Text>
-                  <View style={styles.subTextTab}>
-                    <Text style={styles.verifyText}>
-                      Enter your email address and we'll send you a link to
-                      reset your password.
-                    </Text>
-                  </View>
-                </View>
-                {/** */}
-                <View style={styles.choiceBlock}>
-                  <EmailInputTab
-                    input={email}
-                    setInput={setEmail}
-                    hasError={emailErr}
-                  />
-                </View>
-                {/** */}
-                <View>
-                  <ActionBtn
-                    btnText={"Reset Password"}
-                    handleClick={validateInput}
-                    isLoading={btnIsLoading}
-                  />
-                </View>
-              </KeyboardAvoidingView>
-            </View>
-          </KeyboardAvoidingView>
+              <View>
+                <ActionBtn
+                  btnText={"Reset Password"}
+                  handleClick={validateInput}
+                  isLoading={btnIsLoading}
+                />
+              </View>
+            </KeyboardAwareScrollView>
+          </View>
         </View>
       </SafeAreaView>
     </>

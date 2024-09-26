@@ -102,6 +102,7 @@ export default function Listings() {
           height: "auto",
           maxHeight: screenHeight - (130 + 72),
           width: "100%",
+          flex: 1,
         }}
       >
         <ScrollView

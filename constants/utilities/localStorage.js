@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+//import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { MMKV } from "react-native-mmkv";
 
@@ -48,6 +48,20 @@ const StoreDataToMemory = async (storagePath, dataToStore) => {
 };
 
 const GetDataFromMemory = async (storagePath, setData) => {
+  //if storage path is user data, check log stat
+  if (storagePath === LOCAL_STORAGE_PATH.userData) {
+    let logStat = APP_STORAGE.getString(LOCAL_STORAGE_PATH.logStat);
+    let accessToken = APP_STORAGE.getString(LOCAL_STORAGE_PATH.accessToken);
+    if (!logStat || !accessToken) {
+      setData();
+      return;
+    }
+
+    if (JSON.parse(logStat) !== "logged") {
+      setData();
+      return;
+    }
+  }
   //check if storagePath exists
   let pathExists = APP_STORAGE.contains(storagePath);
 
@@ -57,22 +71,25 @@ const GetDataFromMemory = async (storagePath, setData) => {
     const finalVal = jsonVal != null ? JSON.parse(jsonVal) : jsonVal;
 
     setData(finalVal);
+  } else {
+    setData();
   }
 };
 
 const RemoveDataFromMemory = async (storagePath) => {
   //check if storagePath exists
-  let pathExists = APP_STORAGE.contains(storagePath);
+  // delete the specific key + value
+  APP_STORAGE.delete(storagePath);
+  /*let pathExists = APP_STORAGE.contains(storagePath);
 
   if (pathExists) {
-    // delete the specific key + value
-    APP_STORAGE.delete(storagePath);
-  }
+  }*/
 };
 
 const LOCAL_STORAGE_PATH = {
   accessToken: "kraftkollectors_user_access_token",
   userData: "kraftkollectors_user_data",
+  logStat: "kraftkollectors_user_log_status",
   redirectPath: "kraftkollectors_redirect_path",
   systemNotification: "kraftkollectors_system_notification",
   searchedServices: "kraftkollectors_searched_services",
@@ -85,31 +102,21 @@ const LOCAL_STORAGE_PATH = {
 };
 
 //CHECK IF USER LOGGED ON DEVICE
-/*async function CheckLoginStatus(setStatus) {
-  try {
-    let value = await AsyncStorage.getItem(LOCAL_STORAGE_PATH.userData);
-    value = value != null ? JSON.parse(value) : null;
-
-    if (value !== null) {
-      //USER LOGGED IN
-      //CHECK IF USER EMAIL IS VERIFIED
-      if (value?.emailVerify === "false") {
-        setStatus("not-verified");
-      } else {
-        setStatus("logged");
-      }
-    } else {
-      setStatus("not-logged");
-    }
-  } catch (e) {
-    console.log("error: ", e);
-    setStatus("not-logged");
-    // error reading value
-  }
-}
-*/
 const CheckLoginStatus = async (setStatus) => {
   try {
+    let logStat = APP_STORAGE.getString(LOCAL_STORAGE_PATH.logStat);
+    let accessToken = APP_STORAGE.getString(LOCAL_STORAGE_PATH.accessToken);
+
+    if (!logStat || !accessToken) {
+      setStatus("not-logged");
+      return;
+    }
+
+    if (JSON.parse(logStat) !== "logged") {
+      setStatus("not-logged");
+      return;
+    }
+
     //check if userData exists
     let pathExists = APP_STORAGE.contains(LOCAL_STORAGE_PATH.userData);
 

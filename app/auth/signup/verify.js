@@ -1,10 +1,5 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import React, { useEffect, useState } from "react";
 import DefaultStatusBar from "../../../components/general/defaultStatusBar.comp";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -130,58 +125,59 @@ export default function Verify() {
         <View style={styles.innerBlock}>
           <View></View>
 
-          <KeyboardAvoidingView enabled behavior="padding">
-            <View style={styles.bottomPart}>
-              <View style={styles.whiteLogoTab}>
+          <View style={styles.bottomPart}>
+            <View style={styles.whiteLogoTab}>
+              <Image
+                source={require("../../../assets/photos/logo-white.png")}
+                style={styles.whiteLogoImg}
+              />
+            </View>
+
+            {/** */}
+            <KeyboardAwareScrollView
+              enableOnAndroid={true}
+              contentContainerStyle={styles.whiteFrameCont}
+            >
+              <TouchableOpacity onPress={goBack} style={styles.backBtn}>
                 <Image
-                  source={require("../../../assets/photos/logo-white.png")}
-                  style={styles.whiteLogoImg}
+                  source={require("../../../assets/icons/arrowLeft.png")}
+                  style={styles.backBtnImg}
+                />
+              </TouchableOpacity>
+
+              <View style={styles.headingTextCont}>
+                <Text style={styles.headingText}>Email Verification</Text>
+                <View style={styles.subTextTab}>
+                  <Text style={styles.verifyText}>
+                    Enter the OTP code we sent to
+                  </Text>
+                  <TouchableOpacity>
+                    <Text style={styles.verifyTextLink}>{userEmail}</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.verifyText}>to verify your email</Text>
+                </View>
+              </View>
+              {/** */}
+              <View style={styles.choiceBlock}>
+                <GenInputTab
+                  label={"OTP"}
+                  input={otp}
+                  setInput={setOtp}
+                  placeholder={""}
+                  isNumeric={true}
+                  hasError={otpErr}
                 />
               </View>
-
               {/** */}
-              <View behavior="height" enabled style={styles.whiteFrameCont}>
-                <TouchableOpacity onPress={goBack} style={styles.backBtn}>
-                  <Image
-                    source={require("../../../assets/icons/arrowLeft.png")}
-                    style={styles.backBtnImg}
-                  />
-                </TouchableOpacity>
-
-                <View style={styles.headingTextCont}>
-                  <Text style={styles.headingText}>Email Verification</Text>
-                  <View style={styles.subTextTab}>
-                    <Text style={styles.verifyText}>
-                      Enter the OTP code we sent to
-                    </Text>
-                    <TouchableOpacity>
-                      <Text style={styles.verifyTextLink}>{userEmail}</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.verifyText}>to verify your email</Text>
-                  </View>
-                </View>
-                {/** */}
-                <View style={styles.choiceBlock}>
-                  <GenInputTab
-                    label={"OTP"}
-                    input={otp}
-                    setInput={setOtp}
-                    placeholder={""}
-                    isNumeric={true}
-                    hasError={otpErr}
-                  />
-                </View>
-                {/** */}
-                <View>
-                  <ActionBtn
-                    btnText={"Continue"}
-                    handleClick={compareOtps}
-                    isLoading={btnIsLoading}
-                  />
-                </View>
+              <View>
+                <ActionBtn
+                  btnText={"Continue"}
+                  handleClick={compareOtps}
+                  isLoading={btnIsLoading}
+                />
               </View>
-            </View>
-          </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
+          </View>
         </View>
       </SafeAreaView>
     </>

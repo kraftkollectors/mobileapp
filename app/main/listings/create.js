@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -10,8 +11,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useCallback, useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
 import { Feather } from "@expo/vector-icons";
@@ -477,292 +478,283 @@ export default function CreatePost() {
       {/**STICKY HEADER */}
       <CreatePageTopBar pageTitle={"Create New Service"} />
       {/**PAGE DISPLAY */}
-      <KeyboardAvoidingView
-        enabled
-        behavior="padding"
-        style={{
-          height:
-            Platform.OS === "ios"
-              ? screenHeight - (124 + 48)
-              : screenHeight - (124 + 32 + 48),
+
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        contentContainerStyle={{
+          minHeight: screenHeight - (80 + 48),
+          backgroundColor: COLORS.gray100,
+          paddingBottom: 30,
+          paddingTop: 24,
+          gap: 16,
         }}
       >
-        <ScrollView
-          contentContainerStyle={{
-            minHeight: screenHeight - (80 + 48),
-            backgroundColor: COLORS.gray100,
-            paddingBottom: 30,
-            paddingTop: 24,
-            gap: 16,
-          }}
-        >
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Title</Text>
+        <View style={styles.createSection}>
+          <Text style={styles.sectionLabel}>Title</Text>
 
-            <SettingInputTab
-              placeholder={"Ex. I will plan and manage your events"}
-              input={title}
-              setInput={setTitle}
-              hasError={titleErr}
-            />
+          <SettingInputTab
+            placeholder={"Ex. I will plan and manage your events"}
+            input={title}
+            setInput={setTitle}
+            hasError={titleErr}
+          />
 
-            {title.length > 0 && (
-              <Text style={styles.sectionBtmText}>{defaultTitleBtm}</Text>
-            )}
-          </View>
+          {title.length > 0 && (
+            <Text style={styles.sectionBtmText}>{defaultTitleBtm}</Text>
+          )}
+        </View>
 
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Category</Text>
+        <View style={styles.createSection}>
+          <Text style={styles.sectionLabel}>Category</Text>
 
-            <>
-              <SettingSelectTab
-                placeholder={"Choose a category"}
-                selectList={categoryList}
-                selectedItem={category}
-                setSelectedItem={setCategory}
-                hasError={categoryErr}
-              />
-
-              {category && (
-                <SettingSelectTab
-                  placeholder={"Select a sub-category"}
-                  selectList={subCategoryList}
-                  selectedItem={subCategory}
-                  setSelectedItem={setSubCategory}
-                  hasError={subCategoryErr}
-                />
-              )}
-            </>
-
-            <Text style={styles.sectionBtmText}>{defaultCategoryBtm}</Text>
-          </View>
-
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Description</Text>
-
-            <SettingTextareaTab
-              placeholder={"Tell us more about your service"}
-              input={description}
-              setInput={setDescription}
-              hasError={descriptionErr}
-            />
-
-            {description.length > 0 && (
-              <Text style={styles.sectionBtmText}>{defaultDescBtm}</Text>
-            )}
-          </View>
-
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Price</Text>
-
-            <SettingInputTab
-              placeholder={"Ex. 1000"}
-              input={estimatedPrice}
-              setInput={setEstPrice}
-              isNumber={true}
-              hasError={estimatedPriceErr}
-            />
-
-            <View style={styles.priceChargeTabList}>
-              {priceChargeTab(charge, setCharge, "fixed")}
-              {priceChargeTab(charge, setCharge, "hourly")}
-            </View>
-          </View>
-
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Service Location</Text>
-
+          <>
             <SettingSelectTab
-              placeholder={"Choose your state"}
-              selectList={stateList}
-              selectedItem={state}
-              setSelectedItem={setState}
-              hasError={stateErr}
+              placeholder={"Choose a category"}
+              selectList={categoryList}
+              selectedItem={category}
+              setSelectedItem={setCategory}
+              hasError={categoryErr}
             />
 
-            {state && (
-              <View style={styles.inputBlock}>
-                <View
-                  style={[
-                    styles.inputTab,
-                    addressErr
-                      ? { borderColor: COLORS.redWarning }
-                      : { borderColor: COLORS.black100 },
-                  ]}
-                >
-                  <TextInput
-                    style={styles.inputText}
-                    placeholder={"Search for address, city, or town"}
-                    placeholderTextColor={COLORS.black100}
-                    value={address}
-                    onChangeText={(text) => setAddress(text)}
-                    onEndEditing={() => {
-                      setFindPlace(true);
-                    }}
-                    onSubmitEditing={() => {
-                      setFindPlace(true);
-                    }}
-                    inputMode={"text"}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    returnKeyLabel="Search"
-                    returnKeyType="search"
-                    enterKeyHint="search"
-                  />
-                </View>
-
-                {addressErr && (
-                  <Text
-                    style={[styles.inputBtmText, { color: COLORS.redWarning }]}
-                  >
-                    {addressErr}
-                  </Text>
-                )}
-              </View>
+            {category && (
+              <SettingSelectTab
+                placeholder={"Select a sub-category"}
+                selectList={subCategoryList}
+                selectedItem={subCategory}
+                setSelectedItem={setSubCategory}
+                hasError={subCategoryErr}
+              />
             )}
+          </>
 
-            {/**PLACE LIST */}
+          <Text style={styles.sectionBtmText}>{defaultCategoryBtm}</Text>
+        </View>
 
-            {placeLoading ? (
-              <View style={styles.placeLoadingView}>
-                <ActivityIndicator size={"large"} color={COLORS.blueNormal} />
-              </View>
-            ) : (
-              <>
-                {placeList && placeList.length > 0 && (
-                  <View
-                    style={{
-                      width: "100%",
-                      maxHeight: 320,
-                      paddingHorizontal: 16,
-                      paddingVertical: 12,
-                      borderRadius: 4,
-                      borderWidth: 1,
-                      borderColor: COLORS.black50,
-                    }}
-                  >
-                    <ScrollView
-                      showsVerticalScrollIndicator={true}
-                      nestedScrollEnabled={true}
-                      contentContainerStyle={styles.placeListScroll}
-                    >
-                      {placeList.map((item, index) =>
-                        PlaceListTab(index, item, selectPlace)
-                      )}
-                    </ScrollView>
-                  </View>
-                )}
-              </>
-            )}
+        <View style={styles.createSection}>
+          <Text style={styles.sectionLabel}>Description</Text>
+
+          <SettingTextareaTab
+            placeholder={"Tell us more about your service"}
+            input={description}
+            setInput={setDescription}
+            hasError={descriptionErr}
+          />
+
+          {description.length > 0 && (
+            <Text style={styles.sectionBtmText}>{defaultDescBtm}</Text>
+          )}
+        </View>
+
+        <View style={styles.createSection}>
+          <Text style={styles.sectionLabel}>Price</Text>
+
+          <SettingInputTab
+            placeholder={"Ex. 1000"}
+            input={estimatedPrice}
+            setInput={setEstPrice}
+            isNumber={true}
+            hasError={estimatedPriceErr}
+          />
+
+          <View style={styles.priceChargeTabList}>
+            {priceChargeTab(charge, setCharge, "fixed")}
+            {priceChargeTab(charge, setCharge, "hourly")}
           </View>
+        </View>
 
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Cover Photo</Text>
+        <View style={styles.createSection}>
+          <Text style={styles.sectionLabel}>Service Location</Text>
 
-            <TouchableOpacity
-              onPress={() => {
-                handleMediaPermission("cover");
-              }}
-              style={styles.photoSelectorTouchpad}
-            >
-              <View style={styles.photoSelectorInner}>
-                <Feather name="upload" size={20} color={COLORS.blueNormal} />
-                <Text style={styles.photoSelectorText}>Upload Photo</Text>
+          <SettingSelectTab
+            placeholder={"Choose your state"}
+            selectList={stateList}
+            selectedItem={state}
+            setSelectedItem={setState}
+            hasError={stateErr}
+          />
+
+          {state && (
+            <View style={styles.inputBlock}>
+              <View
+                style={[
+                  styles.inputTab,
+                  addressErr
+                    ? { borderColor: COLORS.redWarning }
+                    : { borderColor: COLORS.black100 },
+                ]}
+              >
+                <TextInput
+                  style={styles.inputText}
+                  placeholder={"Search for address, city, or town"}
+                  placeholderTextColor={COLORS.black100}
+                  value={address}
+                  onChangeText={(text) => setAddress(text)}
+                  onEndEditing={() => {
+                    setFindPlace(true);
+                  }}
+                  onSubmitEditing={() => {
+                    setFindPlace(true);
+                  }}
+                  inputMode={"text"}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyLabel="Search"
+                  returnKeyType="search"
+                  enterKeyHint="search"
+                />
               </View>
 
-              <Text style={styles.photoSelectorPlaceholder}>
-                .jpg and .png {"\n"} Photo must not exceed 5mb
-              </Text>
-            </TouchableOpacity>
-
-            {coverPhotoErr.length > 0 && (
-              <Text style={styles.sectionBtmErrText}>{coverPhotoErr}</Text>
-            )}
-
-            {coverPhotoFile && (
-              <View style={styles.photoPreviewTab}>
-                <TouchableOpacity
-                  onPress={() => {
-                    removeCoverPhoto();
-                  }}
-                  style={styles.photoPreviewTabClear}
+              {addressErr && (
+                <Text
+                  style={[styles.inputBtmText, { color: COLORS.redWarning }]}
                 >
-                  <Feather name="x" size={16} color={COLORS.black900} />
-                </TouchableOpacity>
+                  {addressErr}
+                </Text>
+              )}
+            </View>
+          )}
 
-                <Image
-                  source={{ uri: coverPhotoFile?.uri }}
+          {/**PLACE LIST */}
+
+          {placeLoading ? (
+            <View style={styles.placeLoadingView}>
+              <ActivityIndicator size={"large"} color={COLORS.blueNormal} />
+            </View>
+          ) : (
+            <>
+              {placeList && placeList.length > 0 && (
+                <View
                   style={{
                     width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
+                    maxHeight: 320,
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    borderRadius: 4,
+                    borderWidth: 1,
+                    borderColor: COLORS.black50,
                   }}
-                />
-              </View>
-            )}
-          </View>
+                >
+                  <ScrollView
+                    showsVerticalScrollIndicator={true}
+                    nestedScrollEnabled={true}
+                    contentContainerStyle={styles.placeListScroll}
+                  >
+                    {placeList.map((item, index) =>
+                      PlaceListTab(index, item, selectPlace)
+                    )}
+                  </ScrollView>
+                </View>
+              )}
+            </>
+          )}
+        </View>
 
-          <View style={styles.createSection}>
-            <Text style={styles.sectionLabel}>Service Photo Gallery</Text>
+        <View style={styles.createSection}>
+          <Text style={styles.sectionLabel}>Cover Photo</Text>
 
-            <TouchableOpacity
-              onPress={() => {
-                handleMediaPermission("portfolio");
-              }}
-              style={styles.photoSelectorTouchpad}
-            >
-              <View style={styles.photoSelectorInner}>
-                <Feather name="upload" size={20} color={COLORS.blueNormal} />
-                <Text style={styles.photoSelectorText}>Select Photos</Text>
-              </View>
+          <TouchableOpacity
+            onPress={() => {
+              handleMediaPermission("cover");
+            }}
+            style={styles.photoSelectorTouchpad}
+          >
+            <View style={styles.photoSelectorInner}>
+              <Feather name="upload" size={20} color={COLORS.blueNormal} />
+              <Text style={styles.photoSelectorText}>Upload Photo</Text>
+            </View>
 
-              <Text style={styles.photoSelectorPlaceholder}>
-                .jpg and .png {"\n"} Each photo must not exceed 5mb
-              </Text>
-            </TouchableOpacity>
+            <Text style={styles.photoSelectorPlaceholder}>
+              .jpg and .png {"\n"} Photo must not exceed 5mb
+            </Text>
+          </TouchableOpacity>
 
-            {portfolioErr.length > 0 && (
-              <Text style={styles.sectionBtmErrText}>{portfolioErr}</Text>
-            )}
+          {coverPhotoErr.length > 0 && (
+            <Text style={styles.sectionBtmErrText}>{coverPhotoErr}</Text>
+          )}
 
-            {portfolioPhotoFiles && portfolioPhotoFiles.length > 0 && (
-              <ScrollView horizontal={true} contentContainerStyle={{ gap: 8 }}>
-                {portfolioPhotoFiles.map((item, index) => (
-                  <View style={styles.photoPreviewTab} key={index}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        removePortfolioPhoto(index);
-                      }}
-                      style={styles.photoPreviewTabClear}
-                    >
-                      <Feather name="x" size={16} color={COLORS.black900} />
-                    </TouchableOpacity>
+          {coverPhotoFile && (
+            <View style={styles.photoPreviewTab}>
+              <TouchableOpacity
+                onPress={() => {
+                  removeCoverPhoto();
+                }}
+                style={styles.photoPreviewTabClear}
+              >
+                <Feather name="x" size={16} color={COLORS.black900} />
+              </TouchableOpacity>
 
-                    <Image
-                      source={{ uri: item?.uri }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </View>
-                ))}
-              </ScrollView>
-            )}
-          </View>
+              <Image
+                source={{ uri: coverPhotoFile?.uri }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </View>
+          )}
+        </View>
 
-          <View style={{ padding: 16 }}>
-            <SaveBtn
-              btnText={"Publish"}
-              isLoading={btnIsLoading}
-              handleClick={() => {
-                validateInputs();
-              }}
-            />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <View style={styles.createSection}>
+          <Text style={styles.sectionLabel}>Service Photo Gallery</Text>
+
+          <TouchableOpacity
+            onPress={() => {
+              handleMediaPermission("portfolio");
+            }}
+            style={styles.photoSelectorTouchpad}
+          >
+            <View style={styles.photoSelectorInner}>
+              <Feather name="upload" size={20} color={COLORS.blueNormal} />
+              <Text style={styles.photoSelectorText}>Select Photos</Text>
+            </View>
+
+            <Text style={styles.photoSelectorPlaceholder}>
+              .jpg and .png {"\n"} Each photo must not exceed 5mb
+            </Text>
+          </TouchableOpacity>
+
+          {portfolioErr.length > 0 && (
+            <Text style={styles.sectionBtmErrText}>{portfolioErr}</Text>
+          )}
+
+          {portfolioPhotoFiles && portfolioPhotoFiles.length > 0 && (
+            <ScrollView horizontal={true} contentContainerStyle={{ gap: 8 }}>
+              {portfolioPhotoFiles.map((item, index) => (
+                <View style={styles.photoPreviewTab} key={index}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      removePortfolioPhoto(index);
+                    }}
+                    style={styles.photoPreviewTabClear}
+                  >
+                    <Feather name="x" size={16} color={COLORS.black900} />
+                  </TouchableOpacity>
+
+                  <Image
+                    source={{ uri: item?.uri }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </View>
+              ))}
+            </ScrollView>
+          )}
+        </View>
+
+        <View style={{ padding: 16 }}>
+          <SaveBtn
+            btnText={"Publish"}
+            isLoading={btnIsLoading}
+            handleClick={() => {
+              validateInputs();
+            }}
+          />
+        </View>
+      </KeyboardAwareScrollView>
 
       {/**ALERT BOX */}
       {isAlert && (

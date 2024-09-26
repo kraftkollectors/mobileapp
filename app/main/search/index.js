@@ -100,7 +100,7 @@ export default function SearchPage() {
               END_POINT.searchServices(
                 q,
                 serviceHasNextPgn
-                  ? Number(currentPageServices + 1)
+                  ? parseInt(Number(currentPageServices) + 1)
                   : currentPageServices,
                 category,
                 subCategory,
@@ -148,7 +148,7 @@ export default function SearchPage() {
               END_POINT.searchArtisan(
                 q,
                 artisanHasNextPgn
-                  ? Number(currentPageArtisans + 1)
+                  ? parseInt(Number(currentPageArtisans) + 1)
                   : currentPageArtisans
               )
             )

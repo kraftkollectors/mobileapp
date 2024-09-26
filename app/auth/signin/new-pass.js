@@ -1,12 +1,5 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import React, { useEffect, useState } from "react";
 import DefaultStatusBar from "../../../components/general/defaultStatusBar.comp";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -129,82 +122,83 @@ export default function NewPass() {
         <View style={styles.innerBlock}>
           <View></View>
 
-          <KeyboardAvoidingView enabled behavior="padding">
-            <View style={styles.bottomPart}>
-              <View style={styles.whiteLogoTab}>
+          <View style={styles.bottomPart}>
+            <View style={styles.whiteLogoTab}>
+              <Image
+                source={require("../../../assets/photos/logo-white.png")}
+                style={styles.whiteLogoImg}
+              />
+            </View>
+
+            {/** */}
+            <KeyboardAwareScrollView
+              enableOnAndroid={true}
+              contentContainerStyle={styles.whiteFrameCont}
+            >
+              <TouchableOpacity onPress={goBack} style={styles.backBtn}>
                 <Image
-                  source={require("../../../assets/photos/logo-white.png")}
-                  style={styles.whiteLogoImg}
+                  source={require("../../../assets/icons/arrowLeft.png")}
+                  style={styles.backBtnImg}
                 />
-              </View>
+              </TouchableOpacity>
 
-              {/** */}
-              <ScrollView contentContainerStyle={styles.whiteFrameCont}>
-                <TouchableOpacity onPress={goBack} style={styles.backBtn}>
-                  <Image
-                    source={require("../../../assets/icons/arrowLeft.png")}
-                    style={styles.backBtnImg}
-                  />
-                </TouchableOpacity>
+              <View style={styles.headingTextCont}>
+                <Text style={styles.headingText}>New Password</Text>
 
-                <View style={styles.headingTextCont}>
-                  <Text style={styles.headingText}>New Password</Text>
-
-                  {loadError && (
-                    <View
+                {loadError && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 4,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="alert-circle-outline"
+                      size={16}
+                      color={COLORS.redWarning}
+                    />
+                    <Text
                       style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 4,
+                        fontFamily: "EinaRegular",
+                        fontSize: 14,
+                        lineHeight: 16,
+                        color: COLORS.redWarning,
                       }}
                     >
-                      <MaterialCommunityIcons
-                        name="alert-circle-outline"
-                        size={16}
-                        color={COLORS.redWarning}
-                      />
-                      <Text
-                        style={{
-                          fontFamily: "EinaRegular",
-                          fontSize: 14,
-                          lineHeight: 16,
-                          color: COLORS.redWarning,
-                        }}
-                      >
-                        {loadError}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-                {/** */}
-                <View style={styles.choiceBlock}>
-                  <GenInputTab
-                    label={"Password"}
-                    input={password}
-                    setInput={setPassword}
-                    placeholder={""}
-                    hasError={passwordErr}
-                  />
+                      {loadError}
+                    </Text>
+                  </View>
+                )}
+              </View>
+              {/** */}
+              <View style={styles.choiceBlock}>
+                <GenInputTab
+                  label={"Password"}
+                  input={password}
+                  setInput={setPassword}
+                  placeholder={""}
+                  hasError={passwordErr}
+                />
 
-                  <GenInputTab
-                    label={"Confirm password"}
-                    input={confirmPass}
-                    setInput={setConfirmPass}
-                    placeholder={""}
-                    hasError={confirmPassErr}
-                  />
-                </View>
-                {/** */}
-                <View>
-                  <ActionBtn
-                    btnText={"Continue"}
-                    handleClick={validateInputs}
-                    isLoading={btnIsLoading}
-                  />
-                </View>
-              </ScrollView>
-            </View>
-          </KeyboardAvoidingView>
+                <GenInputTab
+                  label={"Confirm password"}
+                  input={confirmPass}
+                  setInput={setConfirmPass}
+                  placeholder={""}
+                  hasError={confirmPassErr}
+                />
+              </View>
+              {/** */}
+              <View>
+                <ActionBtn
+                  btnText={"Continue"}
+                  handleClick={validateInputs}
+                  isLoading={btnIsLoading}
+                />
+              </View>
+            </KeyboardAwareScrollView>
+          </View>
         </View>
       </SafeAreaView>
     </>

@@ -1,12 +1,6 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  ScrollView,
-} from "react-native";
 import React, { useEffect, useState } from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import styles from "../auth.style";
@@ -124,6 +118,8 @@ export default function Continue() {
             StoreDataToMemory(LOCAL_STORAGE_PATH.accessToken, data?.token);
             //SAVE USER DATA
             StoreDataToMemory(LOCAL_STORAGE_PATH.userData, data?.user);
+            //UPDATE USER LOG STATUS
+            StoreDataToMemory(LOCAL_STORAGE_PATH.logStat, "logged");
 
             setTimeout(() => {
               if (data?.user.emailVerify === "false") {
@@ -137,7 +133,7 @@ export default function Continue() {
                 router.push(goToPath);
               }
               setBtnIsLoading(false);
-            }, 3000);
+            }, 5000);
           } else {
             setBtnIsLoading(false);
             setLoadError("Login attempt unsuccessful. Please try again");
@@ -192,93 +188,90 @@ export default function Continue() {
         <View style={styles.innerBlock}>
           <View></View>
 
-          <KeyboardAvoidingView enabled behavior="padding">
-            <View style={styles.bottomPart}>
-              <View style={styles.whiteLogoTab}>
+          <View style={styles.bottomPart}>
+            <View style={styles.whiteLogoTab}>
+              <Image
+                source={require("../../../assets/photos/logo-white.png")}
+                style={styles.whiteLogoImg}
+              />
+            </View>
+
+            {/**<ScrollView contentContainerStyle={styles.whiteFrameCont}> */}
+            <KeyboardAwareScrollView
+              enableOnAndroid={true}
+              contentContainerStyle={styles.whiteFrameCont}
+            >
+              <TouchableOpacity onPress={goBack} style={styles.backBtn}>
                 <Image
-                  source={require("../../../assets/photos/logo-white.png")}
-                  style={styles.whiteLogoImg}
+                  source={require("../../../assets/icons/arrowLeft.png")}
+                  style={styles.backBtnImg}
                 />
-              </View>
+              </TouchableOpacity>
 
-              {/** */}
-              <ScrollView contentContainerStyle={styles.whiteFrameCont}>
-                <TouchableOpacity onPress={goBack} style={styles.backBtn}>
-                  <Image
-                    source={require("../../../assets/icons/arrowLeft.png")}
-                    style={styles.backBtnImg}
-                  />
-                </TouchableOpacity>
+              <View style={styles.headingTextCont}>
+                <Text style={styles.headingText}>Continue with your email</Text>
 
-                <View style={styles.headingTextCont}>
-                  <Text style={styles.headingText}>
-                    Continue with your email
-                  </Text>
-
-                  {loadError && (
-                    <View
+                {loadError && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 4,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="alert-circle-outline"
+                      size={16}
+                      color={COLORS.redWarning}
+                    />
+                    <Text
                       style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 4,
+                        fontFamily: "EinaRegular",
+                        fontSize: 14,
+                        lineHeight: 16,
+                        color: COLORS.redWarning,
                       }}
                     >
-                      <MaterialCommunityIcons
-                        name="alert-circle-outline"
-                        size={16}
-                        color={COLORS.redWarning}
-                      />
-                      <Text
-                        style={{
-                          fontFamily: "EinaRegular",
-                          fontSize: 14,
-                          lineHeight: 16,
-                          color: COLORS.redWarning,
-                        }}
-                      >
-                        {loadError}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-                {/** */}
-                <View style={styles.choiceBlock}>
-                  <EmailInputTab
-                    input={email}
-                    setInput={setEmail}
-                    hasError={emailErr}
-                  />
-
-                  <PasswordInputTab
-                    input={password}
-                    setInput={setPassword}
-                    hasError={passwordErr}
-                  />
-
-                  <View style={{ width: "100%" }}>
-                    <TouchableOpacity
-                      onPress={goToReset}
-                      style={{ marginLeft: "auto" }}
-                    >
-                      <Text style={styles.forgotText}>
-                        Forgot your password?
-                      </Text>
-                    </TouchableOpacity>
+                      {loadError}
+                    </Text>
                   </View>
+                )}
+              </View>
+              {/** */}
+              <View style={styles.choiceBlock}>
+                <EmailInputTab
+                  input={email}
+                  setInput={setEmail}
+                  hasError={emailErr}
+                />
+
+                <PasswordInputTab
+                  input={password}
+                  setInput={setPassword}
+                  hasError={passwordErr}
+                />
+
+                <View style={{ width: "100%" }}>
+                  <TouchableOpacity
+                    onPress={goToReset}
+                    style={{ marginLeft: "auto" }}
+                  >
+                    <Text style={styles.forgotText}>Forgot your password?</Text>
+                  </TouchableOpacity>
                 </View>
-                {/** */}
-                <View>
-                  <ActionBtn
-                    btnText={"Log In"}
-                    handleClick={() => {
-                      validateInputs();
-                    }}
-                    isLoading={btnIsLoading}
-                  />
-                </View>
-              </ScrollView>
-            </View>
-          </KeyboardAvoidingView>
+              </View>
+              {/** */}
+              <View>
+                <ActionBtn
+                  btnText={"Log In"}
+                  handleClick={() => {
+                    validateInputs();
+                  }}
+                  isLoading={btnIsLoading}
+                />
+              </View>
+            </KeyboardAwareScrollView>
+          </View>
         </View>
       </SafeAreaView>
     </>

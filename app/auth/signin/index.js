@@ -8,11 +8,7 @@ import SimpleTab from "../../../components/auth/simpleTab";
 import { useRouter } from "expo-router";
 import AlertBox from "../../../components/general/alertBox";
 
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import axios from "axios";
 import { END_POINT } from "../../../hooks/endpoints";
 import { GENERATE_RANDOM_NUMBER } from "../../../constants/utilities";
@@ -69,7 +65,7 @@ export default function Signin() {
       const userInfo = await GoogleSignin.signIn();
       setUserGoogleInfo(userInfo?.user);
     } catch (error) {
-      console.log("google err: ", error);
+      //console.log("google err: ", error);
       popAlert("error", "Google Authentication Error", `${error.message}`);
       setGBIL(false);
     }
@@ -108,6 +104,8 @@ export default function Signin() {
               StoreDataToMemory(LOCAL_STORAGE_PATH.accessToken, data?.token);
               //SAVE USER DATA
               StoreDataToMemory(LOCAL_STORAGE_PATH.userData, data?.user);
+              //UPDATE USER LOG STATUS
+              StoreDataToMemory(LOCAL_STORAGE_PATH.logStat, "logged");
 
               setTimeout(() => {
                 if (router.canDismiss) {

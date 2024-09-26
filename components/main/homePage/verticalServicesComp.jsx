@@ -34,10 +34,10 @@ export default function VerticalServicesComp({ sectionTitle, showAlert }) {
     if (fetchServices) {
       setIsLoading(true);
 
+      let nxtPgn = parseInt(Number(curPgn) + 1);
+
       axios
-        .get(
-          END_POINT.services(serviceHasNextPgn ? Number(curPgn + 1) : curPgn)
-        )
+        .get(END_POINT.services(serviceHasNextPgn ? nxtPgn : curPgn))
         .then((res) => {
           if (res.data.statusCode === 201) {
             if (serviceHasNextPgn) {

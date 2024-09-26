@@ -13,7 +13,7 @@ export const END_POINT = {
   uploadCertificate: API + "/users/certificate",
   uploadEducation: API + "/users/education",
   makeFavourite: `${API}/users/savead`,
-  services: (pgn = 1) => `${API}/users/ads?page=${pgn}`,
+  services: (pgn) => `${API}/users/ads?page=${pgn || 1}`,
   artisan: API + "/users/artisan",
   reportService: API + "/users/reportad",
   rateService: API + "/users/rateads",

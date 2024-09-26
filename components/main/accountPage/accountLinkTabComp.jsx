@@ -35,24 +35,28 @@ export default function AccountLinkTabComp({
     const logUserOut = async () => {
       //let key = LOCAL_STORAGE_PATH.userData;
       try {
-        //set user_data to empty string
-        //StoreDataToMemory(LOCAL_STORAGE_PATH.userData, []);
+        //set user_data to empty array
+        StoreDataToMemory(LOCAL_STORAGE_PATH.userData, []);
+        //UPDATE USER LOG STATUS
+        StoreDataToMemory(LOCAL_STORAGE_PATH.logStat, "not-logged");
+        //set access_token to empty string
+        StoreDataToMemory(LOCAL_STORAGE_PATH.accessToken, "");
 
+        //try to remove user_data
+        RemoveDataFromMemory(LOCAL_STORAGE_PATH.userData);
+        //try to remove access_token
+        RemoveDataFromMemory(LOCAL_STORAGE_PATH.accessToken);
+
+        // Now update the UI or state
         setTimeout(() => {
-          //try to remove user_data
-          RemoveDataFromMemory(LOCAL_STORAGE_PATH.userData);
+          setTLO(false);
+          setILO(false);
 
-          // Now update the UI or state
-          setTimeout(() => {
-            setTLO(false);
-            setILO(false);
-
-            if (router.canDismiss()) {
-              router.dismissAll();
-            }
-            router.replace("/main/home/");
-          }, 5000);
-        }, 5000);
+          if (router.canDismiss()) {
+            router.dismissAll();
+          }
+          router.replace("/main/home/");
+        }, 10000);
       } catch (error) {
         console.log("error: ", error);
       }
