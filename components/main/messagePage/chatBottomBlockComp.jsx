@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,7 +13,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
 import { COLORS } from "../../../constants/themes/colors";
@@ -151,7 +152,7 @@ export default function ChatBottomBlockComp({
   }, [mediaStatus, pickImage, requestMediaLibraryPermission]);
 
   return (
-    <KeyboardAvoidingView behavior="padding" enabled={true}>
+    <KeyboardAwareScrollView enableOnAndroid={true}>
       <View style={styles.chatBottomBlock}>
         <ScrollView
           style={styles.chatSuggestionBlock}
@@ -230,7 +231,7 @@ export default function ChatBottomBlockComp({
           )}
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -245,6 +246,7 @@ const styles = StyleSheet.create({
   chatSuggestionBlock: {
     minWidth: screenWidth,
     maxHeight: 36,
+    paddingLeft: 16,
   },
   chatSuggestionTab: {
     width: "auto",

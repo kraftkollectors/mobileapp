@@ -205,7 +205,7 @@ export default function ChatTopBlockComp({
         </View>
       </View>
       {/**UNAVAILABLE MODAL */}
-      {unavailableModalIsVisible ? (
+      {unavailableModalIsVisible && (
         <UnavailableModal
           hideModal={() => {
             hideUnavailableModal();
@@ -213,8 +213,6 @@ export default function ChatTopBlockComp({
           profile={guestData}
           artisan={guestArtisanProfile}
         />
-      ) : (
-        <></>
       )}
     </>
   );

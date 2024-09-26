@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DefaultStatusBar from "../../../components/general/defaultStatusBar.comp";
 import { COLORS } from "../../../constants/themes/colors";
@@ -35,6 +35,7 @@ import { AppStyle } from "../../../constants/themes/style";
 const screenHeight = Dimensions.get("screen").height;
 
 export default function ChatsPage() {
+  const scrollViewRef = useRef();
   const [socketConn, setSocketConn] = useState(false);
   //ALERTS
   const [isAlert, showAlert] = useState(false);
@@ -230,6 +231,7 @@ export default function ChatsPage() {
         AppStyle.safeArea,
         {
           backgroundColor: COLORS.whiteBG,
+          flexDirection: "column",
           justifyContent: "space-between",
         },
       ]}
@@ -245,6 +247,7 @@ export default function ChatsPage() {
         userId={userData && userData?._id}
         accessToken={accessToken}
       />
+
       {/**TOP BAR */}
       <ChatTopBlockComp
         guestId={guestId}
@@ -255,79 +258,109 @@ export default function ChatsPage() {
       />
 
       {/**CHAT DISPLAY */}
-      {messages && (
-        <ScrollView
-          contentContainerStyle={{
-            width: "100%",
-            minHeight: screenHeight - (160 + 72),
-            paddingVertical: 30,
-            paddingHorizontal: 16,
-            gap: 8,
-            backgroundColor: COLORS.gray100,
-          }}
-          ref={(ref) => {
-            this.scrollView = ref;
-          }}
-          onLayout={() => {
-            this.scrollView.scrollToEnd({ animated: true });
-          }}
-        >
-          {hasNxtPgn && (
-            <View style={styles.hasNxtPgTab}>
-              {moreMsgIsLoading ? (
-                <TouchableOpacity style={styles.loadMoreBtn}>
-                  <ActivityIndicator size={20} color={COLORS.black300} />
 
-                  <MaterialCommunityIcons
-                    name="chevron-up"
-                    size={19}
-                    color={COLORS.black300}
-                  />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    setLoadMore(true);
-                  }}
-                  style={styles.loadMoreBtn}
-                >
-                  <Text style={styles.loadMoreBtnText}>See more</Text>
+      <ScrollView
+        contentContainerStyle={{
+          width: "100%",
+          minHeight: screenHeight - (160 + 72),
+          paddingVertical: 30,
+          paddingHorizontal: 16,
+          gap: 8,
+        }}
+        ref={scrollViewRef}
+        onContentSizeChange={(w, h) => {
+          let sh = screenHeight - (72 + 160);
 
-                  <MaterialCommunityIcons
-                    name="chevron-up"
-                    size={19}
-                    color={COLORS.black300}
-                  />
-                </TouchableOpacity>
-              )}
-            </View>
-          )}
+          scrollViewRef?.current?.scrollTo({
+            x: 0,
+            y: sh,
+            animated: true,
+          });
 
-          <>
-            {groupedMessages &&
-              groupedMessages.map((itm, indx) => (
-                <View key={indx} style={styles.groupContainer}>
-                  <View style={styles.groupDateBlock}>
-                    <View style={styles.groupDateTab}>
-                      <Text style={styles.groupDate}>{itm.date}</Text>
-                    </View>
-                  </View>
+          if (messages && messages?.length <= 10) {
+            scrollViewRef?.current?.scrollToEnd({ animated: true });
+          }
+        }}
+      >
+        {hasNxtPgn && (
+          <View style={styles.hasNxtPgTab}>
+            {moreMsgIsLoading ? (
+              <TouchableOpacity style={styles.loadMoreBtn}>
+                <ActivityIndicator size={20} color={COLORS.black300} />
 
-                  <View style={styles.chatGroups}>
-                    {itm?.chats.map((item, index) => (
-                      <ChatComp
-                        key={index}
-                        data={item}
-                        userData={userData}
-                        socketConnected={socketConn}
-                        showPhotos={setViewPhotos}
-                      />
-                    ))}
+                <MaterialCommunityIcons
+                  name="chevron-up"
+                  size={19}
+                  color={COLORS.black300}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  setLoadMore(true);
+                }}
+                style={styles.loadMoreBtn}
+              >
+                <Text style={styles.loadMoreBtnText}>See more</Text>
+
+                <MaterialCommunityIcons
+                  name="chevron-up"
+                  size={19}
+                  color={COLORS.black300}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+
+        <>
+          {groupedMessages &&
+            groupedMessages.map((itm, indx) => (
+              <View key={indx} style={styles.groupContainer}>
+                <View style={styles.groupDateBlock}>
+                  <View style={styles.groupDateTab}>
+                    <Text style={styles.groupDate}>{itm.date}</Text>
                   </View>
                 </View>
-              ))}
-          </>
-        </ScrollView>
+
+                <View style={styles.chatGroups}>
+                  {itm?.chats.map((item, index) => (
+                    <ChatComp
+                      key={index}
+                      data={item}
+                      userData={userData}
+                      socketConnected={socketConn}
+                      showPhotos={setViewPhotos}
+                    />
+                  ))}
+                </View>
+              </View>
+            ))}
+        </>
+      </ScrollView>
+
+      {messageLoading && (
+        <View
+          style={{
+            width: "100%",
+            padding: 8,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 4,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "EinaSemiBold",
+              fontSize: 14,
+              color: COLORS.black200,
+            }}
+          >
+            Loading messages...
+          </Text>
+          <ActivityIndicator size={"small"} color={COLORS.black200} />
+        </View>
       )}
 
       {/**BOTTOM BAR */}

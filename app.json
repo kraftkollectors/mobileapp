@@ -44,7 +44,7 @@
     "name": "Kraft Kollectors",
     "slug": "kraftkollectors",
     "description": "kraftkollectors mobile app",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "runtimeVersion": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/photos/logo.png",
