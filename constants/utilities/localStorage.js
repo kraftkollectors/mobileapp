@@ -85,7 +85,7 @@ const LOCAL_STORAGE_PATH = {
 };
 
 //CHECK IF USER LOGGED ON DEVICE
-async function CheckLoginStatus(setStatus) {
+/*async function CheckLoginStatus(setStatus) {
   try {
     let value = await AsyncStorage.getItem(LOCAL_STORAGE_PATH.userData);
     value = value != null ? JSON.parse(value) : null;
@@ -107,12 +107,41 @@ async function CheckLoginStatus(setStatus) {
     // error reading value
   }
 }
+*/
+const CheckLoginStatus = async (setStatus) => {
+  try {
+    //check if userData exists
+    let pathExists = APP_STORAGE.contains(LOCAL_STORAGE_PATH.userData);
+
+    if (pathExists) {
+      // Deserialize the JSON string into an object
+      const jsonVal = APP_STORAGE.getString(LOCAL_STORAGE_PATH.userData);
+      const value = jsonVal != null ? JSON.parse(jsonVal) : jsonVal;
+
+      if (value !== null) {
+        //USER LOGGED IN
+        //CHECK IF USER EMAIL IS VERIFIED
+        if (value?.emailVerify === "false") {
+          setStatus("not-verified");
+        } else {
+          setStatus("logged");
+        }
+      } else {
+        setStatus("not-logged");
+      }
+    } else {
+      setStatus("not-logged");
+    }
+  } catch (e) {
+    setStatus("not-logged");
+  }
+};
 
 //ADD SEARCHED SERVICE
-async function AddToSearchedService(serviceId) {
+const AddToSearchedService = async (serviceId) => {
   //CHECK IF LIST EXIST
   let searchClone = [];
-  searchClone = await AsyncStorage.getItem(LOCAL_STORAGE_PATH.searchedServices);
+  searchClone = APP_STORAGE.getString(LOCAL_STORAGE_PATH.searchedServices);
   searchClone = searchClone != null ? JSON.parse(searchClone) : null;
 
   var newList = [];
@@ -140,9 +169,10 @@ async function AddToSearchedService(serviceId) {
   }
 
   //STORE LIST
-  const jsonValue = JSON.stringify(newList);
-  await AsyncStorage.setItem(LOCAL_STORAGE_PATH.searchedServices, jsonValue);
-}
+  APP_STORAGE.set(LOCAL_STORAGE_PATH.searchedServices, JSON.stringify(newList));
+  /*const jsonValue = JSON.stringify(newList);
+  await AsyncStorage.setItem(LOCAL_STORAGE_PATH.searchedServices, jsonValue);*/
+};
 
 export {
   StoreDataToMemory,

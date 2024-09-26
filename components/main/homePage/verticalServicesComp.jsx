@@ -96,7 +96,7 @@ export default function VerticalServicesComp({ sectionTitle, showAlert }) {
 
         {serviceHasNextPgn && (
           <View style={styles.hasNxtPgTab}>
-            {serviceResultIsLoading ? (
+            {isLoading ? (
               <TouchableOpacity style={styles.loadMoreBtn}>
                 <ActivityIndicator size={20} color={COLORS.black400} />
 

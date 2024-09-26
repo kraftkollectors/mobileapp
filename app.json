@@ -38,7 +38,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Kraft Kollectors is requesting access to your location."
         }
-      ]
+      ],
+      "@react-native-google-signin/google-signin"
     ],
     "name": "Kraft Kollectors",
     "slug": "kraftkollectors",
@@ -54,14 +55,14 @@
       "backgroundColor": "#FFFFFF"
     },
     "updates": {
-      "url": "https://u.expo.dev/125c9891-5d66-4f08-a6cb-9f5781412b72"
+      "url": "https://u.expo.dev/70e2a1c0-5f81-4224-bd04-f592193f0b21"
     },
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "125c9891-5d66-4f08-a6cb-9f5781412b72"
+        "projectId": "70e2a1c0-5f81-4224-bd04-f592193f0b21"
       }
     },
     "ios": {

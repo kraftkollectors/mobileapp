@@ -51,6 +51,9 @@ export default function Signin() {
         "912930599984-muu4f7tbo143m1rkl71vul9gua05idv6.apps.googleusercontent.com",
       iosClientId:
         "912930599984-qn00lf228935vjpid346r7ncag6us5hc.apps.googleusercontent.com",
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+      profileImageSize: 120,
     });
   };
 
@@ -66,6 +69,7 @@ export default function Signin() {
       const userInfo = await GoogleSignin.signIn();
       setUserGoogleInfo(userInfo?.user);
     } catch (error) {
+      console.log("google err: ", error);
       popAlert("error", "Google Authentication Error", `${error.message}`);
       setGBIL(false);
     }

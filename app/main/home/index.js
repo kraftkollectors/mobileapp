@@ -69,7 +69,7 @@ export default function Home() {
   const [searchServicesLoading, setSearchedServicesLoading] = useState(false);
 
   useEffect(() => {
-    if (savedServices && userData) {
+    if (savedServices) {
       FETCH_SAVED_SEARCH(
         savedServices,
         setSearchedServicesLoading,
