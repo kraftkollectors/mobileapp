@@ -45,6 +45,23 @@ import { AppStyle } from "../../../constants/themes/style";
 
 const screenHeight = Dimensions.get("screen").height;
 
+//DEBOUNCE FUNC
+const useDebouncedValue = (inputValue, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(inputValue);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue, delay]);
+
+  return debouncedValue;
+};
+
 export default function CreatePost() {
   const [socketConn, setSocketConn] = useState(false);
   //ALERTS
@@ -169,6 +186,21 @@ export default function CreatePost() {
       setFindPlace(false);
     }
   }, [findPlace, address]);
+
+  //DEBOUNCING
+  const debouncedSearchTerm = useDebouncedValue(address, 1000);
+
+  useEffect(() => {
+    // API call or other actions to be performed with debounced value
+    FETCH_PLACES_LIST(
+      address,
+      LOCAL_STORAGE_PATH.API.glp,
+      setPlaceList,
+      setPlaceLoading,
+      showAlert
+    );
+  }, [debouncedSearchTerm]);
+  //////
 
   function selectPlace(id, place) {
     let queryFields = "formatted_address,geometry,name";

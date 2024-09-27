@@ -89,6 +89,7 @@ export default function LocationModal({
       showAlert
     );
   }, [debouncedSearchTerm]);
+  //////
 
   function selectPlace(id, place) {
     let queryFields = "formatted_address,geometry,name";
