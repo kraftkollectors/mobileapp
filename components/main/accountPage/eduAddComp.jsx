@@ -1,15 +1,15 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  KeyboardAvoidingView,
   TouchableOpacity,
   ScrollView,
   Dimensions,
   Alert,
   Platform,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SettingInputTab from "./subComps/settingInputTab";
 import SettingSelectTab from "./subComps/settingSelectTab";
 import SaveBtn from "./subComps/saveBtn";
@@ -62,18 +62,18 @@ export default function EduAddComp({
     setDegreeErr("");
     setAreaOfStudyErr("");
 
-    if (universityName.trim() === "" || universityName.length < 5) {
-      setUniversityNameErr("Please ensure you provide accurate information");
+    if (universityName.trim() === "") {
+      setUniversityNameErr("Please provide a school name to proceed");
       return;
     }
 
-    if (degree.trim() === "" || degree.length < 1) {
+    if (degree.trim() === "") {
       setDegreeErr("Please choose a degree to proceed");
       return;
     }
 
-    if (areaOfStudy.trim() === "" || areaOfStudy.length < 3) {
-      setAreaOfStudyErr("Please ensure you provide accurate information");
+    if (areaOfStudy.trim() === "") {
+      setAreaOfStudyErr("Please provide an area of study to proceed");
       return;
     }
 
@@ -177,20 +177,36 @@ export default function EduAddComp({
 
   return (
     <View style={styles.pagePopupBlock}>
-      <View></View>
+      <TouchableOpacity
+        onPress={() => {
+          handleClick();
+        }}
+      >
+        <View
+          style={{
+            height: screenHeight,
+            width: screenWidth,
+            position: "absolute",
+            zIndex: -1,
+          }}
+        ></View>
+      </TouchableOpacity>
 
-      <KeyboardAvoidingView enabled behavior="padding">
-        <View style={styles.pageModalTab}>
-          <View style={styles.pageModalCancelTab}>
-            <TouchableOpacity
-              onPress={() => {
-                handleClick();
-              }}
-            >
-              <Text style={styles.pageModalCancelText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
+      <View style={styles.pageModalTab}>
+        <View style={styles.pageModalCancelTab}>
+          <TouchableOpacity
+            onPress={() => {
+              handleClick();
+            }}
+            style={{
+              width: 124,
+            }}
+          >
+            <Text style={styles.pageModalCancelText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
 
+        <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={16}>
           <ScrollView showsVerticalScrollIndicator={false}>
             {/** */}
             <SettingInputTab
@@ -236,8 +252,8 @@ export default function EduAddComp({
             }}
             isLoading={btnIsLoading}
           />
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
+      </View>
     </View>
   );
 }
@@ -256,18 +272,19 @@ const styles = StyleSheet.create({
   pageModalTab: {
     width: "100%",
     height: "auto",
-    maxHeight: screenHeight - 24,
+    maxHeight: screenHeight - 92,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    paddingBottom: Platform.OS === "ios" ? 48 : 64,
+    paddingBottom: 64,
     backgroundColor: COLORS.whiteBG,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     gap: 8,
   },
   pageModalCancelTab: {
-    width: "auto",
-    marginLeft: "auto",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
     paddingBottom: 10,
   },
   pageModalCancelText: {
@@ -275,5 +292,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: COLORS.redWarning,
+    textAlign: "right",
   },
 });

@@ -197,7 +197,9 @@ export default function ReviewSummaryCard({
           <Text style={styles.rcTopOverall}>Overall rating</Text>
           {/** */}
           <View style={styles.rcTopAvgTab}>
-            <Text style={styles.rcTopAvg}>{overallRating}</Text>
+            <Text style={styles.rcTopAvg}>
+              {isNaN(overallRating) ? 0 : overallRating}
+            </Text>
             <StarRatingDisplay rating={overallRating} starSize={20} />
           </View>
           {/** */}

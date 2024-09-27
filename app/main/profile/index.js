@@ -44,6 +44,13 @@ export default function Profile() {
   const [userData, setUserData] = useState();
   const [accessToken, setAccessToken] = useState("");
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   const local = useLocalSearchParams();
   const userId = local?._id;
 
@@ -94,10 +101,6 @@ export default function Profile() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {

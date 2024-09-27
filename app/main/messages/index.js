@@ -30,6 +30,13 @@ export default function Messages() {
   const [accessToken, setAccessToken] = useState();
   const [threadsLoading, setThreadsLoading] = useState(true);
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   const [chatThreads, setChatThreads] = useState();
 
   useEffect(() => {
@@ -125,10 +132,6 @@ export default function Messages() {
           backgroundColor: COLORS.whiteBG,
         },
       ]}
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-      }}
     >
       <DefaultStatusBar
         theme={"light"}

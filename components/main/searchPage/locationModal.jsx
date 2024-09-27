@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -10,14 +11,31 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as Location from "expo-location";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/themes/colors";
 import { LOCAL_STORAGE_PATH } from "../../../constants/utilities/localStorage";
 import { FETCH_PLACES_LIST } from "../../../hooks/requests";
 import axios from "axios";
-import { GENERATE_RANDOM_NUMBER } from "../../../constants/utilities";
+import { DEBOUNCE, GENERATE_RANDOM_NUMBER } from "../../../constants/utilities";
+
+//DEBOUNCE FUNC
+const useDebouncedValue = (inputValue, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(inputValue);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue, delay]);
+
+  return debouncedValue;
+};
 
 export default function LocationModal({
   showLocation,
@@ -46,7 +64,7 @@ export default function LocationModal({
   }, []);
 
   useEffect(() => {
-    if (findPlace && searchQuery && searchQuery.length > 3) {
+    if (findPlace && searchQuery && searchQuery.length > 0) {
       FETCH_PLACES_LIST(
         searchQuery,
         LOCAL_STORAGE_PATH.API.glp,
@@ -56,7 +74,21 @@ export default function LocationModal({
       );
       setFindPlace(false);
     }
-  }, [findPlace, searchQuery]);
+  }, [findPlace]);
+
+  //DEBOUNCING
+  const debouncedSearchTerm = useDebouncedValue(searchQuery, 1000);
+
+  useEffect(() => {
+    // API call or other actions to be performed with debounced value
+    FETCH_PLACES_LIST(
+      searchQuery,
+      LOCAL_STORAGE_PATH.API.glp,
+      setPlaceList,
+      setPlaceLoading,
+      showAlert
+    );
+  }, [debouncedSearchTerm]);
 
   function selectPlace(id, place) {
     let queryFields = "formatted_address,geometry,name";
@@ -72,6 +104,9 @@ export default function LocationModal({
         setLatitude(res.data?.result?.geometry?.location?.lat);
         setRadius(rangeList[0]);
         setPlaceList();
+        //SHOW RESULT
+        showResult(true);
+        showLocation(false);
       })
       .catch((err) => {
         showAlert(
@@ -170,8 +205,8 @@ export default function LocationModal({
         ></View>
       </TouchableOpacity>
 
-      <KeyboardAvoidingView enabled behavior="padding">
-        <View style={styles.modalTab}>
+      <View style={styles.modalTab}>
+        <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={16}>
           <View style={styles.modalTitleTab}>
             <Text style={styles.modalTitle}>Choose Location</Text>
           </View>
@@ -229,8 +264,8 @@ export default function LocationModal({
 
             {ShowResultBtn(showResult, showLocation)}
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
+      </View>
     </View>
   );
 }
@@ -264,7 +299,7 @@ function ShowResultBtn(showResult, showLocation) {
       style={[styles.modalBtn, styles.modalBtnPri]}
     >
       <Text style={[styles.modalBtnText, { color: COLORS.whiteBG }]}>
-        Show results
+        Show Result
       </Text>
     </TouchableOpacity>
   );
@@ -281,7 +316,7 @@ function ClearAllBtn(clearLocation, showResult, showLocation) {
       style={[styles.modalBtn, styles.modalBtnSec]}
     >
       <Text style={[styles.modalBtnText, { color: COLORS.black500 }]}>
-        Clear all
+        Reset Location
       </Text>
     </TouchableOpacity>
   );

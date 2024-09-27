@@ -1,6 +1,7 @@
-import { Dimensions, Platform, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
+import { Dimensions, Platform, ScrollView, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import DefaultStatusBar from "../../../../components/general/defaultStatusBar.comp";
 import BottomNavigationComp from "../../../../components/main/bottomNavigationComp";
 import { COLORS } from "../../../../constants/themes/colors";
@@ -38,6 +39,13 @@ export default function SocialLinks() {
   const [userData, setUserData] = useState();
   const [accessToken, setAccessToken] = useState("");
   const [artisanProfile, setArtisanProfile] = useState();
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   useEffect(() => {
     if (userData && userData.isArtisan) {
       FETCH_SERVICE_ARTISAN(userData?._id, setArtisanProfile);
@@ -118,10 +126,6 @@ export default function SocialLinks() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {
@@ -150,7 +154,11 @@ export default function SocialLinks() {
         }}
       >
         {/**SOCIAL LINKS */}
-        <View style={styles.pageSection}>
+        <KeyboardAwareScrollView
+          enableOnAndroid={true}
+          extraScrollHeight={16}
+          contentContainerStyle={styles.pageSection}
+        >
           <SettingInputTab
             label={"Instagram"}
             placeholder={"Ex. @example_123"}
@@ -189,7 +197,7 @@ export default function SocialLinks() {
               setBtnIsLoading(true);
             }}
           />
-        </View>
+        </KeyboardAwareScrollView>
       </ScrollView>
 
       {/**ALERT BOX */}

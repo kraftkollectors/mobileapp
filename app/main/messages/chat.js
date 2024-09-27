@@ -59,6 +59,12 @@ export default function ChatsPage() {
 
   const [userData, setUserData] = useState();
   const [accessToken, setAccessToken] = useState("");
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
 
   const [messages, setMessages] = useState();
   const [messageLoading, setMessageLoading] = useState(true);
@@ -235,10 +241,6 @@ export default function ChatsPage() {
           justifyContent: "space-between",
         },
       ]}
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
     >
       <DefaultStatusBar
         theme={"light"}

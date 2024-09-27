@@ -47,6 +47,13 @@ export default function Certification() {
   const [accessToken, setAccessToken] = useState("");
   const [pageIsLoading, setPageIsLoading] = useState(false);
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   //POPUP TO ADD NEW DATA
   const [showPopup, setShowPopup] = useState(false);
 
@@ -113,10 +120,6 @@ export default function Certification() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {

@@ -57,6 +57,13 @@ export default function Listings() {
   const [userData, setUserData] = useState();
   const [accessToken, setAccessToken] = useState("");
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   //CHECK IF USER VERIFIED OR NOT
   const [userVerified, setUserVerified] = useState(false);
   useEffect(() => {
@@ -71,10 +78,6 @@ export default function Listings() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {

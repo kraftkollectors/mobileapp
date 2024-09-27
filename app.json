@@ -44,7 +44,7 @@
     "name": "Kraft Kollectors",
     "slug": "kraftkollectors",
     "description": "kraftkollectors mobile app",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "runtimeVersion": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/photos/logo.png",
@@ -92,8 +92,7 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
-      ],
-      "softwareKeyboardLayoutMode": "pan"
+      ]
     }
   }
 }

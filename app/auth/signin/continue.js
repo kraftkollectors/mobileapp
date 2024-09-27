@@ -14,6 +14,7 @@ import { END_POINT } from "../../../hooks/endpoints";
 import {
   GetDataFromMemory,
   LOCAL_STORAGE_PATH,
+  RemoveDataFromMemory,
   StoreDataToMemory,
 } from "../../../constants/utilities/localStorage";
 import { VALIDATE_EMAIL } from "../../../constants/utilities";
@@ -116,7 +117,8 @@ export default function Continue() {
           if (res.data?.statusCode === 201 || res.data?.statusCode === 200) {
             //SAVE USER ACCESS TOKEN
             StoreDataToMemory(LOCAL_STORAGE_PATH.accessToken, data?.token);
-            //SAVE USER DATA
+            //SAVE NEW USER DATA
+            //RemoveDataFromMemory(LOCAL_STORAGE_PATH.userData);
             StoreDataToMemory(LOCAL_STORAGE_PATH.userData, data?.user);
             //UPDATE USER LOG STATUS
             StoreDataToMemory(LOCAL_STORAGE_PATH.logStat, "logged");
@@ -126,11 +128,11 @@ export default function Continue() {
                 //ATTEMPT EMAIL VERIFICATION
                 setEV(true);
               } else {
-                if (router.canDismiss) {
+                if (router.canDismiss()) {
                   router.dismissAll();
                 }
-                //NAVIGATE TO REDIRECT PATH
-                router.push(goToPath);
+                //REDIRECT TO HOME SCREEN
+                router.replace("/main/home/");
               }
               setBtnIsLoading(false);
             }, 5000);

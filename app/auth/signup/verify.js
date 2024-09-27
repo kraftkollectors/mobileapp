@@ -79,8 +79,11 @@ export default function Verify() {
                 `/auth/signin/new-pass?otp=${sentOtp}&stored=${local?.stored}&email=${userEmail}`
               );
             } else {
-              //RETURN TO PREVIOUS SCREEN
-              router.replace(goToPath);
+              if (router.canDismiss()) {
+                router.dismissAll();
+              }
+              //NAVIGATE TO HOME SCREEN
+              router.replace("/main/home/");
             }
           } else {
             setOtpErr("Email verification failed. Please try again");

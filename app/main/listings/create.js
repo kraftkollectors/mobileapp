@@ -66,6 +66,13 @@ export default function CreatePost() {
   const [accessToken, setAccessToken] = useState("");
   const [btnIsLoading, setBtnIsLoading] = useState(false);
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   const defaultTitleBtm =
     "Using relevant keywords is crucial for potential buyers to find your service easily. Ensure it reflects the essence of your offering effectively";
   const defaultCategoryBtm =
@@ -117,6 +124,8 @@ export default function CreatePost() {
       catArr.push(cat.category);
     });
     setCategoryList(catArr);
+
+    FETCH_STATES_LIST(setOnlineStates, popAlert);
   }, []);
 
   useEffect(() => {
@@ -461,11 +470,6 @@ export default function CreatePost() {
           backgroundColor: COLORS.whiteBG,
         },
       ]}
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-        FETCH_STATES_LIST(setOnlineStates, popAlert);
-      }}
     >
       <DefaultStatusBar
         theme={"light"}

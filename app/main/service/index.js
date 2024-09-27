@@ -70,6 +70,13 @@ export default function Service() {
   const [userData, setUserData] = useState();
   const [accessToken, setAccessToken] = useState("");
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   const [serviceDataIsLoading, setServiceDataIsLoading] = useState(false);
   const [serviceData, setServiceData] = useState();
   useEffect(() => {
@@ -146,10 +153,6 @@ export default function Service() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {

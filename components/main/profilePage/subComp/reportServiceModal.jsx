@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Octicons } from "@expo/vector-icons";
 import { COLORS } from "../../../../constants/themes/colors";
 import ModalBtn from "./modalBtn";
@@ -97,20 +98,22 @@ export default function ReportServiceModal({
           </Text>
         </View>
 
-        <ProfileTextareaTab
-          placeholder={"What is your complaint?"}
-          input={report}
-          setInput={setReport}
-          hasError={reportErr}
-        />
+        <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={16}>
+          <ProfileTextareaTab
+            placeholder={"What is your complaint?"}
+            input={report}
+            setInput={setReport}
+            hasError={reportErr}
+          />
 
-        <ModalBtn
-          btnText={"Submit"}
-          handleClick={() => {
-            validateInput();
-          }}
-          isLoading={btnIsLoading}
-        />
+          <ModalBtn
+            btnText={"Submit"}
+            handleClick={() => {
+              validateInput();
+            }}
+            isLoading={btnIsLoading}
+          />
+        </KeyboardAwareScrollView>
       </View>
     </View>
   );

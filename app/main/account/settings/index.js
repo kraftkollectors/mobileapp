@@ -1,6 +1,7 @@
-import { Alert, Dimensions, Platform, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
+import { Alert, Dimensions, Platform, ScrollView, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import DefaultStatusBar from "../../../../components/general/defaultStatusBar.comp";
 import BottomNavigationComp from "../../../../components/main/bottomNavigationComp";
 import { COLORS } from "../../../../constants/themes/colors";
@@ -40,6 +41,13 @@ export default function GeneralInfo() {
   const [accessToken, setAccessToken] = useState("");
   const [btnIsLoading, setBtnIsLoading] = useState(false);
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   //USER INPUT
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -47,6 +55,7 @@ export default function GeneralInfo() {
     if (userData) {
       setFirstName(userData?.firstName);
       setLastName(userData?.lastName);
+      console.log("refreshed n user");
     }
   }, [userData]);
 
@@ -129,10 +138,6 @@ export default function GeneralInfo() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {
@@ -164,7 +169,11 @@ export default function GeneralInfo() {
         <GeneralInfoComp data={userData} />
 
         {/**CHANGE NAME */}
-        <View style={styles.pageSection}>
+        <KeyboardAwareScrollView
+          enableOnAndroid={true}
+          extraScrollHeight={16}
+          contentContainerStyle={styles.pageSection}
+        >
           <SettingInputTab
             label={"First Name"}
             placeholder={"Ex. Johnson"}
@@ -186,7 +195,7 @@ export default function GeneralInfo() {
             handleClick={() => checkInputs()}
             isLoading={btnIsLoading}
           />
-        </View>
+        </KeyboardAwareScrollView>
       </ScrollView>
 
       {/**ALERT BOX */}

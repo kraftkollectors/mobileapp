@@ -38,6 +38,13 @@ export default function SearchPage() {
   const [userData, setUserData] = useState();
   const [accessToken, setAccessToken] = useState("");
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   const [activeGroup, setActiveGroup] = useState("services"); //services, artisans
   const [catFromParams, setCFP] = useState("");
 
@@ -214,6 +221,7 @@ export default function SearchPage() {
     setLongitude("");
     setLatitude("");
     setRadius("");
+    setLocationString("");
   }
 
   function resetSearch() {
@@ -222,10 +230,6 @@ export default function SearchPage() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {
@@ -251,16 +255,12 @@ export default function SearchPage() {
       {/**PAGE DISPLAY */}
       <View
         style={{
-          minHeight:
-            Platform.OS === "ios"
-              ? screenHeight - (122 + 96)
-              : screenHeight - (122 + 124),
-          height:
-            Platform.OS === "ios"
-              ? screenHeight - (122 + 96)
-              : screenHeight - (122 + 124),
+          height: "auto",
+          maxHeight: screenHeight - (130 + 72),
+          overflow: "hidden",
           backgroundColor: COLORS.gray100,
           paddingBottom: 30,
+          flex: 1,
         }}
       >
         {(q.length > 0 && (serviceSearchIsLoading || artisanSearchIsLoading)) ||

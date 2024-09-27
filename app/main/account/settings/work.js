@@ -42,6 +42,13 @@ export default function WorkHour() {
   const [accessToken, setAccessToken] = useState("");
   const [artisanProfile, setArtisanProfile] = useState();
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   useEffect(() => {
     if (userData && userData.isArtisan) {
       FETCH_SERVICE_ARTISAN(userData?._id, setArtisanProfile);
@@ -135,10 +142,6 @@ export default function WorkHour() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {

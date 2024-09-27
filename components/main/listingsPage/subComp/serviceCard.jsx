@@ -52,7 +52,7 @@ export default function ServiceCard({
       <View style={styles.serviceCardThumbnail}>
         <Image
           source={LOAD_SERVICE_THUMBNAIL(data?.coverPhoto)}
-          style={{ width: "100%", height: "100%", objectFit: "fill" }}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </View>
 

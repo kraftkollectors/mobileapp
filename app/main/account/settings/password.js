@@ -1,6 +1,7 @@
-import { Alert, Dimensions, Platform, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
+import { Alert, Dimensions, Platform, ScrollView, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import DefaultStatusBar from "../../../../components/general/defaultStatusBar.comp";
 import BottomNavigationComp from "../../../../components/main/bottomNavigationComp";
 import { COLORS } from "../../../../constants/themes/colors";
@@ -37,6 +38,13 @@ export default function ChangePassword() {
   const [userData, setUserData] = useState([]);
   const [accessToken, setAccessToken] = useState("");
   const [btnIsLoading, setBtnIsLoading] = useState(false);
+
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
 
   //TAKE INPUTS
   //const [oldPassword, setOldPassword] = useState('');
@@ -121,10 +129,6 @@ export default function ChangePassword() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {
@@ -153,7 +157,10 @@ export default function ChangePassword() {
         }}
       >
         {/**CHANGE PHONE */}
-        <View style={styles.pageSection}>
+        <KeyboardAwareScrollView
+          enableOnAndroid={true}
+          contentContainerStyle={styles.pageSection}
+        >
           {/*<SettingInputTab label={'Old Password'} placeholder={'Old Password'} />*/}
           <SettingInputTab
             label={"New Password"}
@@ -175,7 +182,7 @@ export default function ChangePassword() {
             handleClick={() => validateInputs()}
             isLoading={btnIsLoading}
           />
-        </View>
+        </KeyboardAwareScrollView>
       </ScrollView>
 
       {/**ALERT BOX */}

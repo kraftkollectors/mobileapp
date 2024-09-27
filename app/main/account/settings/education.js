@@ -48,6 +48,12 @@ export default function Education() {
   const [userData, setUserData] = useState([]);
   const [accessToken, setAccessToken] = useState("");
   const [pageIsLoading, setPageIsLoading] = useState(false);
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
 
   //POPUP TO ADD NEW DATA
   const [showPopup, setShowPopup] = useState(false);
@@ -152,10 +158,6 @@ export default function Education() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {

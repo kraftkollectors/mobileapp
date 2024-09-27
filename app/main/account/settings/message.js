@@ -1,6 +1,7 @@
-import { Dimensions, Platform, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
+import { Dimensions, Platform, ScrollView, Text, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import DefaultStatusBar from "../../../../components/general/defaultStatusBar.comp";
 import BottomNavigationComp from "../../../../components/main/bottomNavigationComp";
 import { COLORS } from "../../../../constants/themes/colors";
@@ -38,6 +39,13 @@ export default function AwayMessage() {
   const [userData, setUserData] = useState();
   const [accessToken, setAccessToken] = useState("");
   const [artisanProfile, setArtisanProfile] = useState();
+
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
 
   useEffect(() => {
     if (userData && userData.isArtisan) {
@@ -129,10 +137,6 @@ export default function AwayMessage() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {
@@ -161,7 +165,10 @@ export default function AwayMessage() {
         }}
       >
         {/**AWAY MESSAGE */}
-        <View style={styles.pageSection}>
+        <KeyboardAwareScrollView
+          enableOnAndroid={true}
+          contentContainerStyle={styles.pageSection}
+        >
           <SettingTextareaTab
             label={"Away Message"}
             placeholder={"Ex. Thank you for reaching out"}
@@ -188,7 +195,7 @@ export default function AwayMessage() {
             }}
             isLoading={btnIsLoading}
           />
-        </View>
+        </KeyboardAwareScrollView>
       </ScrollView>
 
       {/**ALERT BOX */}

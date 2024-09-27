@@ -42,7 +42,9 @@ import axios from "axios";
 import { END_POINT } from "../../../hooks/endpoints";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PhotoSliderComp from "../../../components/main/servicePage/photoSliderComp";
+import { AppStyle } from "../../../constants/themes/style";
 
+const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
 
 export default function EditPost() {
@@ -66,6 +68,13 @@ export default function EditPost() {
   const [accessToken, setAccessToken] = useState("");
   const [btnIsLoading, setBtnIsLoading] = useState(false);
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   const defaultTitleBtm =
     "Using relevant keywords is crucial for potential buyers to find your service easily. Ensure it reflects the essence of your offering effectively";
   const defaultCategoryBtm =
@@ -80,7 +89,7 @@ export default function EditPost() {
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [description, setDescription] = useState("");
-  const [estimatedPrice, setEstPrice] = useState(0);
+  const [estimatedPrice, setEstPrice] = useState("");
   const [charge, setCharge] = useState("fixed"); //fixed, hourly
   const [state, setState] = useState("");
   const [address, setAddress] = useState("");
@@ -117,7 +126,15 @@ export default function EditPost() {
       catArr.push(cat.category);
     });
     setCategoryList(catArr);
+
+    FETCH_STATES_LIST(setOnlineStates, popAlert);
   }, []);
+
+  /////check if editting or creating
+  const local = useLocalSearchParams();
+  const [serviceToEdit, setSTE] = useState();
+  const [dataPopulated, setDPop] = useState(false);
+  const [STEloading, setSTELoading] = useState(false);
 
   useEffect(() => {
     if (category) {
@@ -128,6 +145,7 @@ export default function EditPost() {
       serviceCat.forEach((cat) => {
         if (cat.category === category) {
           setSubCategoryList(cat.sub);
+          setSubCategory(serviceToEdit?.subCategory);
         }
       });
     }
@@ -143,10 +161,7 @@ export default function EditPost() {
     }
   }, [onlineStates]);
 
-  //check if editting or creating
-  const local = useLocalSearchParams();
-  const [serviceToEdit, setSTE] = useState();
-  const [STEloading, setSTELoading] = useState(false);
+  ////////
   useEffect(() => {
     if (local && local?._id) {
       FETCH_SERVICE_DATA(local?._id, setSTE, setSTELoading, popAlert);
@@ -154,20 +169,21 @@ export default function EditPost() {
   }, [local]);
   //if(edit) adjust
   useEffect(() => {
-    if (serviceToEdit) {
+    if (serviceToEdit && !dataPopulated) {
       setSTELoading(true);
       setTimeout(() => {
         setTitle(serviceToEdit?.title);
         setCategory(serviceToEdit?.category);
         setSubCategory(serviceToEdit?.subCategory);
         setDescription(serviceToEdit?.description);
-        setEstPrice(Number(serviceToEdit?.estimatedPrice));
+        setEstPrice(serviceToEdit?.estimatedPrice);
         setCharge(serviceToEdit?.charge);
         setState(serviceToEdit?.state);
         setAddress(serviceToEdit?.address);
         setLongitude(serviceToEdit?.longitude);
         setLatitude(serviceToEdit?.latitude);
 
+        setDPop(true);
         setSTELoading(false);
       }, 8000);
     }
@@ -488,15 +504,12 @@ export default function EditPost() {
 
   return (
     <SafeAreaView
-      style={{
-        height: Platform.OS === "ios" ? screenHeight + 32 : screenHeight,
-        backgroundColor: COLORS.whiteBG,
-      }}
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-        FETCH_STATES_LIST(setOnlineStates, popAlert);
-      }}
+      style={[
+        AppStyle.safeArea,
+        {
+          backgroundColor: COLORS.whiteBG,
+        },
+      ]}
     >
       <DefaultStatusBar
         theme={"light"}
@@ -591,7 +604,7 @@ export default function EditPost() {
             placeholder={"Ex. 1000"}
             input={estimatedPrice}
             setInput={setEstPrice}
-            isNumber={serviceToEdit ? true : false}
+            isNumber={serviceToEdit && dataPopulated ? true : false}
             hasError={estimatedPriceErr}
           />
 
@@ -698,6 +711,25 @@ export default function EditPost() {
           />
         </View>
       </KeyboardAwareScrollView>
+
+      {/**LOADING BLOCK */}
+      {STEloading && !dataPopulated && (
+        <View
+          style={{
+            width: screenWidth,
+            height: screenHeight,
+            backgroundColor: "rgba(0,0,0,0.6)",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 100,
+          }}
+        >
+          <ActivityIndicator size={"large"} color={COLORS.whiteBG} />
+        </View>
+      )}
 
       {/**ALERT BOX */}
       {isAlert && (

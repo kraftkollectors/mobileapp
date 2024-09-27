@@ -35,7 +35,7 @@ export default function SettingInputTab({
           style={styles.inputText}
           placeholder={placeholder}
           placeholderTextColor={COLORS.black100}
-          value={input}
+          value={`${input}`}
           onChangeText={(text) => setInput(text)}
           inputMode={isNumber ? "numeric" : "text"}
           autoCapitalize="none"

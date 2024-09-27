@@ -49,6 +49,13 @@ export default function Account() {
   const [artisanData, setArtisanData] = useState();
   const [accessToken, setAccessToken] = useState("");
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   //CHECK IF ARTISAN AND RETURN ARTISAN DATA
   useEffect(() => {
     if (userData && userData.isArtisan) {
@@ -138,10 +145,6 @@ export default function Account() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {

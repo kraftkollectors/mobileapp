@@ -411,7 +411,7 @@ async function FETCH_MORE_CHATS(
         result((prev) => [...res.data.data.existingRecords.reverse(), ...prev]);
         hasNxtPgn(res.data.data?.hasNextPage);
         let chatsCount = res.data.data.existingRecords.length;
-        let lastChat = res.data.data.existingRecords[0];
+        let lastChat = res.data.data.existingRecords[chatsCount - 1];
         lastChat && setTime(lastChat?.timestamp);
         isLoading(false);
       })

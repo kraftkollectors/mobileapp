@@ -236,6 +236,16 @@ function GENERATE_CURRENT_GREETING() {
   return "Good evening";
 }
 
+function DEBOUNCE(func, timeout = 2000) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
+}
+
 export {
   ROUNDTO,
   TRUNCATESTRING,
@@ -253,4 +263,5 @@ export {
   FORMAT_CHAT_TIME,
   GENERATE_RANDOM_NUMBER,
   GENERATE_CURRENT_GREETING,
+  DEBOUNCE,
 };

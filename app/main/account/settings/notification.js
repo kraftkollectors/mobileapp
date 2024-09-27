@@ -38,9 +38,19 @@ export default function ManageNotification() {
   const [userData, setUserData] = useState([]);
   const [accessToken, setAccessToken] = useState("");
   const [btnIsLoading, setBtnIsLoading] = useState(false);
+  const [systemNotification, setSystemNotification] = useState(false);
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+    GetDataFromMemory(
+      LOCAL_STORAGE_PATH.systemNotification,
+      setSystemNotification
+    );
+  }, []);
+  ///////////
 
   //OPTIONS
-  const [systemNotification, setSystemNotification] = useState(false);
   const [messages, setMessages] = useState(false);
   const [reviews, setReviews] = useState(false);
 
@@ -113,14 +123,6 @@ export default function ManageNotification() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-        GetDataFromMemory(
-          LOCAL_STORAGE_PATH.systemNotification,
-          setSystemNotification
-        );
-      }}
       style={[
         AppStyle.safeArea,
         {

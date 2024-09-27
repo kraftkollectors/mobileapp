@@ -1,14 +1,13 @@
+import React, { useState } from "react";
 import {
   Dimensions,
-  KeyboardAvoidingView,
   Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Feather from "@expo/vector-icons/Feather";
 import { COLORS } from "../../../constants/themes/colors";
 import FilterSortBy from "./subComp/filterSortBy";
@@ -55,8 +54,8 @@ export default function FilterModal({
         ></View>
       </TouchableOpacity>
 
-      <KeyboardAvoidingView enabled behavior="padding">
-        <View style={styles.modalTab}>
+      <View style={styles.modalTab}>
+        <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={16}>
           <View style={styles.modalTitleTab}>
             <Text style={styles.modalTitle}>Filter</Text>
           </View>
@@ -93,8 +92,8 @@ export default function FilterModal({
 
             {ShowResultBtn(showResult, showFilter)}
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
+      </View>
     </View>
   );
 }
@@ -109,7 +108,7 @@ function ShowResultBtn(showResult, showFilter) {
       style={[styles.modalBtn, styles.modalBtnPri]}
     >
       <Text style={[styles.modalBtnText, { color: COLORS.whiteBG }]}>
-        Show results
+        Apply
       </Text>
     </TouchableOpacity>
   );
@@ -126,7 +125,7 @@ function ClearAllBtn(clearFilter, showResult, showFilter) {
       style={[styles.modalBtn, styles.modalBtnSec]}
     >
       <Text style={[styles.modalBtnText, { color: COLORS.black500 }]}>
-        Clear all
+        Reset Filters
       </Text>
     </TouchableOpacity>
   );
@@ -164,16 +163,18 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 10,
+    flex: 1,
     justifyContent: "space-between",
   },
   modalTab: {
     width: "100%",
     height: "auto",
-    minHeight: 200,
+    minHeight: 320,
     maxHeight: screenHeight - 92,
     backgroundColor: COLORS.whiteBG,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
+    paddingBottom: 64,
     gap: 32,
   },
   modalTitleTab: {

@@ -1,6 +1,7 @@
-import { Dimensions, Platform, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
+import { Dimensions, Platform, ScrollView, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { SafeAreaView } from "react-native-safe-area-context";
 import DefaultStatusBar from "../../../../components/general/defaultStatusBar.comp";
 import BottomNavigationComp from "../../../../components/main/bottomNavigationComp";
 import { COLORS } from "../../../../constants/themes/colors";
@@ -39,6 +40,13 @@ export default function ChangePhone() {
   const [accessToken, setAccessToken] = useState("");
   const [artisanProfile, setArtisanProfile] = useState();
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
+
   useEffect(() => {
     if (userData && userData.isArtisan) {
       FETCH_SERVICE_ARTISAN(userData?._id, setArtisanProfile);
@@ -61,7 +69,7 @@ export default function ChangePhone() {
     //CLEAR ERRORS
     setPhoneErr("");
 
-    if (phoneNumber.trim() === "" || phoneNumber.length < 8) {
+    if (phoneNumber.trim() === "" || phoneNumber.length < 5) {
       setPhoneErr("Please provide an accurate phone number");
       return;
     }
@@ -123,10 +131,6 @@ export default function ChangePhone() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-      }}
       style={[
         AppStyle.safeArea,
         {
@@ -155,7 +159,11 @@ export default function ChangePhone() {
         }}
       >
         {/**CHANGE PHONE */}
-        <View style={styles.pageSection}>
+        <KeyboardAwareScrollView
+          enableOnAndroid={true}
+          extraScrollHeight={16}
+          contentContainerStyle={styles.pageSection}
+        >
           <SettingInputTab
             label={"Phone Number"}
             placeholder={"Ex. 0123456789"}
@@ -172,7 +180,7 @@ export default function ChangePhone() {
             }}
             isLoading={btnIsLoading}
           />
-        </View>
+        </KeyboardAwareScrollView>
       </ScrollView>
 
       {/**ALERT BOX */}

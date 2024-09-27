@@ -113,6 +113,8 @@ const styles = StyleSheet.create({
   baseTextTab: {
     maxWidth: "100%",
     flexDirection: "row",
+    flexWrap: "wrap",
+    paddingHorizontal: 32,
     gap: 3,
     justifyContent: "center",
     textAlign: "center",

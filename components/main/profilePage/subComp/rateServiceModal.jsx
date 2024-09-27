@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -5,9 +6,8 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
-  KeyboardAvoidingView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Octicons } from "@expo/vector-icons";
 import { COLORS } from "../../../../constants/themes/colors";
 import ModalBtn from "./modalBtn";
@@ -89,30 +89,26 @@ export default function RateServiceModal({
 
   return (
     <View style={styles.popupModalFrame}>
-      <KeyboardAvoidingView
-        enabled
-        behavior="padding"
-        style={{ width: "100%" }}
-      >
-        <View style={styles.popupModalBox}>
-          <TouchableOpacity onPress={hideModal} style={styles.modalCancelBtn}>
-            <Octicons name="x" size={20} color={COLORS.black500} />
-          </TouchableOpacity>
+      <View style={styles.popupModalBox}>
+        <TouchableOpacity onPress={hideModal} style={styles.modalCancelBtn}>
+          <Octicons name="x" size={20} color={COLORS.black500} />
+        </TouchableOpacity>
 
-          <View style={styles.modalTextTab}>
-            <Text style={styles.modalHeading}>Rate Service</Text>
-            <Text style={styles.modalBody}>
-              Kindly provide genuine feedback to benefit both future customers
-              and the artisan in attracting more clients.
-            </Text>
+        <View style={styles.modalTextTab}>
+          <Text style={styles.modalHeading}>Rate Service</Text>
+          <Text style={styles.modalBody}>
+            Kindly provide genuine feedback to benefit both future customers and
+            the artisan in attracting more clients.
+          </Text>
 
-            <StarRatingClickable
-              rating={rating}
-              setRating={setRating}
-              starSize={40}
-            />
-          </View>
+          <StarRatingClickable
+            rating={rating}
+            setRating={setRating}
+            starSize={40}
+          />
+        </View>
 
+        <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={16}>
           <ProfileTextareaTab
             placeholder={"Write a review"}
             input={review}
@@ -127,8 +123,8 @@ export default function RateServiceModal({
             }}
             isLoading={btnIsLoading}
           />
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
+      </View>
     </View>
   );
 }

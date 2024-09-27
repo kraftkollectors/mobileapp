@@ -108,11 +108,11 @@ export default function Signup() {
               StoreDataToMemory(LOCAL_STORAGE_PATH.logStat, "logged");
 
               setTimeout(() => {
-                if (router.canDismiss) {
+                if (router.canDismiss()) {
                   router.dismissAll();
                 }
-                //NAVIGATE TO REDIRECT PATH
-                router.push(goToPath);
+                //NAVIGATE TO HOME SCREEN
+                router.replace("/main/home/");
                 setGBIL(false);
               }, 5000);
             }
@@ -204,7 +204,7 @@ export default function Signup() {
                 />
               </View>
               {/** */}
-              <Text style={styles.baseTextTab}>
+              <View style={styles.baseTextTab}>
                 <Text style={styles.baseText}>
                   By signing up, you agree to our{" "}
                 </Text>
@@ -213,7 +213,7 @@ export default function Signup() {
                     Terms, Conitions & Privacy Policy
                   </Text>
                 </TouchableOpacity>
-              </Text>
+              </View>
             </View>
           </View>
         </View>

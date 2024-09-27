@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
@@ -7,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useEffect, useState } from "react";
 import { Octicons, SimpleLineIcons, FontAwesome6 } from "@expo/vector-icons";
 import DefaultStatusBar from "../../../../components/general/defaultStatusBar.comp";
 import BottomNavigationComp from "../../../../components/main/bottomNavigationComp";
@@ -46,6 +47,13 @@ export default function Support() {
   const [userData, setUserData] = useState([]);
   const [accessToken, setAccessToken] = useState("");
   const [btnIsLoading, setBtnIsLoading] = useState(false);
+
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+  }, []);
+  ///////////
 
   //COLLECT DATA
   const [email, setEmail] = useState("");
@@ -154,9 +162,6 @@ export default function Support() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-      }}
       style={[
         AppStyle.safeArea,
         {
@@ -185,7 +190,10 @@ export default function Support() {
         }}
       >
         {/**SUPPORT */}
-        <View style={[styles.pageSection, { gap: 20 }]}>
+        <KeyboardAwareScrollView
+          enableOnAndroid={true}
+          contentContainerStyle={[styles.pageSection, { gap: 20 }]}
+        >
           <View style={{ gap: 8 }}>
             <Text
               style={{
@@ -299,7 +307,7 @@ export default function Support() {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </ScrollView>
 
       {/**ALERT BOX */}

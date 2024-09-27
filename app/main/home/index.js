@@ -27,6 +27,14 @@ export default function Home() {
   const [accessToken, setAccessToken] = useState("");
   const [savedServices, setSavedServices] = useState();
 
+  //FETCH USER DATA
+  useEffect(() => {
+    GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
+    GetDataFromMemory(LOCAL_STORAGE_PATH.searchedServices, setSavedServices);
+  }, []);
+  ///////////
+
   //ALERTS
   const [isAlert, showAlert] = useState(false);
   const [alertStat, setAlertStat] = useState("success");
@@ -80,14 +88,6 @@ export default function Home() {
 
   return (
     <SafeAreaView
-      onLayout={() => {
-        GetDataFromMemory(LOCAL_STORAGE_PATH.userData, setUserData);
-        GetDataFromMemory(LOCAL_STORAGE_PATH.accessToken, setAccessToken);
-        GetDataFromMemory(
-          LOCAL_STORAGE_PATH.searchedServices,
-          setSavedServices
-        );
-      }}
       style={[
         AppStyle.safeArea,
         {
