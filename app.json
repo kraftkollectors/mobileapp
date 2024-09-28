@@ -84,6 +84,7 @@
     },
     "android": {
       "package": "com.polybotics.kraftkollectors",
+      "versionCode": 1,
       "adapativeIcon": {
         "foregroundImage": "./assets/photos/logo.png",
         "backgroundColor": "#FFFFFF"
