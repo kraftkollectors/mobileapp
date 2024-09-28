@@ -1,7 +1,8 @@
 {
   "cli": {
     "version": ">= 11.0.2",
-    "requireCommit": true
+    "requireCommit": true,
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -13,7 +14,7 @@
       },
       "env": {
         "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A",
-        "EXPO_PUBLIC_APP_VERSION": "1.2.4",
+        "EXPO_PUBLIC_APP_VERSION": "1.2.5",
         "EAS_BUILD_DISABLE_NPM_CACHE": "1"
       },
       "channel": "development"
@@ -25,7 +26,7 @@
       },
       "env": {
         "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A",
-        "EXPO_PUBLIC_APP_VERSION": "1.2.4",
+        "EXPO_PUBLIC_APP_VERSION": "1.2.5",
         "EAS_BUILD_DISABLE_NPM_CACHE": "1"
       },
       "channel": "preview"
@@ -36,10 +37,11 @@
       },
       "env": {
         "EXPO_PUBLIC_API_KEY": "AIzaSyD5zRbkap5XBLXB7kzIUwYur_UOIBB700A",
-        "EXPO_PUBLIC_APP_VERSION": "1.2.4",
+        "EXPO_PUBLIC_APP_VERSION": "1.2.5",
         "EAS_BUILD_DISABLE_NPM_CACHE": "1"
       },
-      "channel": "production"
+      "channel": "production",
+      "autoIncrement": true
     }
   },
   "submit": {

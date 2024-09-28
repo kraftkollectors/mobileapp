@@ -152,7 +152,7 @@ export default function ChatBottomBlockComp({
   }, [mediaStatus, pickImage, requestMediaLibraryPermission]);
 
   return (
-    <KeyboardAwareScrollView enableOnAndroid={true}>
+    <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={32}>
       <View style={styles.chatBottomBlock}>
         <ScrollView
           style={styles.chatSuggestionBlock}
@@ -210,7 +210,6 @@ export default function ChatBottomBlockComp({
             enterKeyHint="send"
             returnKeyType="send"
             returnKeyLabel="send"
-            onEndEditing={sendMessage}
             onSubmitEditing={sendMessage}
           />
 

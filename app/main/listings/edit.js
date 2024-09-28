@@ -47,6 +47,23 @@ import { AppStyle } from "../../../constants/themes/style";
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
 
+//DEBOUNCE FUNC
+const useDebouncedValue = (inputValue, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(inputValue);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue, delay]);
+
+  return debouncedValue;
+};
+
 export default function EditPost() {
   const [socketConn, setSocketConn] = useState(false);
   //ALERTS
@@ -206,6 +223,21 @@ export default function EditPost() {
       setFindPlace(false);
     }
   }, [findPlace, address]);
+
+  //DEBOUNCING
+  const debouncedSearchTerm = useDebouncedValue(address, 1000);
+
+  useEffect(() => {
+    // API call or other actions to be performed with debounced value
+    FETCH_PLACES_LIST(
+      address,
+      LOCAL_STORAGE_PATH.API.glp,
+      setPlaceList,
+      setPlaceLoading,
+      popAlert
+    );
+  }, [debouncedSearchTerm]);
+  //////
 
   function selectPlace(id, place) {
     let queryFields = "formatted_address,geometry,name";
@@ -465,7 +497,7 @@ export default function EditPost() {
       };
 
       axios
-        .patch(END_POINT.editArtisanService, formData, {
+        .patch(END_POINT.editArtisanService(serviceToEdit?._id), formData, {
           headers: {
             "Content-Type": "application/json",
             "x-access-token": `${accessToken}`,
@@ -474,7 +506,6 @@ export default function EditPost() {
         .then((res) => {
           setBtnIsLoading(false);
           if (res.data.statusCode === 201) {
-            let serviceId = res.data.data?.ad?._id;
             //GO TO SERVICE
 
             popAlert(
@@ -487,7 +518,7 @@ export default function EditPost() {
               if (router.canDismiss()) {
                 router.dismissAll();
               }
-              router.push(`/main/service?_id=${serviceId}`);
+              router.push(`/main/service/?_id=${serviceToEdit?._id}`);
             }, 2500);
           }
         })
