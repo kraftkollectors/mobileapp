@@ -40,14 +40,14 @@ const RemoveDataFromMemory = async (storagePath) => {
 };*/
 
 //////
-const StoreDataToMemory = async (storagePath, dataToStore) => {
+export const StoreDataToMemory = async (storagePath, dataToStore) => {
   // Serialize the object into a JSON string
   APP_STORAGE.set(storagePath, JSON.stringify(dataToStore));
 
   return true;
 };
 
-const GetDataFromMemory = async (storagePath, setData) => {
+export const GetDataFromMemory = async (storagePath, setData) => {
   //if storage path is user data, check log stat
   if (storagePath === LOCAL_STORAGE_PATH.userData) {
     let logStat = APP_STORAGE.getString(LOCAL_STORAGE_PATH.logStat);
@@ -76,7 +76,7 @@ const GetDataFromMemory = async (storagePath, setData) => {
   }
 };
 
-const RemoveDataFromMemory = async (storagePath) => {
+export const RemoveDataFromMemory = async (storagePath) => {
   //check if storagePath exists
   // delete the specific key + value
   APP_STORAGE.delete(storagePath);
@@ -86,7 +86,7 @@ const RemoveDataFromMemory = async (storagePath) => {
   }*/
 };
 
-const LOCAL_STORAGE_PATH = {
+export const LOCAL_STORAGE_PATH = {
   accessToken: "kraftkollectors_user_access_token",
   userData: "kraftkollectors_user_data",
   logStat: "kraftkollectors_user_log_status",
@@ -102,7 +102,7 @@ const LOCAL_STORAGE_PATH = {
 };
 
 //CHECK IF USER LOGGED ON DEVICE
-const CheckLoginStatus = async (setStatus) => {
+export const CheckLoginStatus = async (setStatus) => {
   try {
     let logStat = APP_STORAGE.getString(LOCAL_STORAGE_PATH.logStat);
     let accessToken = APP_STORAGE.getString(LOCAL_STORAGE_PATH.accessToken);
@@ -145,7 +145,7 @@ const CheckLoginStatus = async (setStatus) => {
 };
 
 //ADD SEARCHED SERVICE
-const AddToSearchedService = async (serviceId) => {
+export const AddToSearchedService = async (serviceId) => {
   //CHECK IF LIST EXIST
   let searchClone = [];
   searchClone = APP_STORAGE.getString(LOCAL_STORAGE_PATH.searchedServices);
@@ -179,13 +179,4 @@ const AddToSearchedService = async (serviceId) => {
   APP_STORAGE.set(LOCAL_STORAGE_PATH.searchedServices, JSON.stringify(newList));
   /*const jsonValue = JSON.stringify(newList);
   await AsyncStorage.setItem(LOCAL_STORAGE_PATH.searchedServices, jsonValue);*/
-};
-
-export {
-  StoreDataToMemory,
-  GetDataFromMemory,
-  RemoveDataFromMemory,
-  CheckLoginStatus,
-  AddToSearchedService,
-  LOCAL_STORAGE_PATH,
 };

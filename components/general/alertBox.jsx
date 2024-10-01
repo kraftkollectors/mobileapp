@@ -6,7 +6,7 @@ export default function AlertBox({ status, heading, message, showAlert }) {
   useEffect(() => {
     setTimeout(() => {
       showAlert(false);
-    }, 5000);
+    }, 10000);
   });
 
   return (

@@ -17,6 +17,7 @@ import { COLORS } from "../../../constants/themes/colors";
 import { YEAR_ARRAY } from "../../../constants/json";
 import { END_POINT } from "../../../hooks/endpoints";
 import axios from "axios";
+import { contains_forbidden_words, isEmpty } from "../../../constants";
 
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
@@ -59,13 +60,27 @@ export default function CertAddComp({
     setCertificateNameErr("");
     setCertifiedByErr("");
 
-    if (certificateName.trim() === "") {
-      setCertificateNameErr("Please provide a certificate name to proceed");
+    //certificate name
+    if (isEmpty(certificateName, "Certificate name", setCertificateNameErr)) {
+      return;
+    }
+    if (
+      contains_forbidden_words(
+        certificateName,
+        "Certificate name",
+        setCertificateNameErr
+      )
+    ) {
       return;
     }
 
-    if (certifiedBy.trim() === "" || certifiedBy.length < 1) {
-      setCertifiedByErr("Please provide a name to proceed");
+    //certified by
+    if (isEmpty(certifiedBy, "Certificate by", setCertifiedByErr)) {
+      return;
+    }
+    if (
+      contains_forbidden_words(certifiedBy, "Certificate by", setCertifiedByErr)
+    ) {
       return;
     }
 

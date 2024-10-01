@@ -1,4 +1,4 @@
-const COLORS = {
+export const COLORS = {
   primary: "rgba(38, 128, 191, 1)",
   primary2: "rgba(38, 128, 191, 0.5)",
   secondary: "rgba(224, 164, 79, 1)",
@@ -31,5 +31,3 @@ const COLORS = {
   violetFaded: "rgba(188,188,188,0.12)",
   violetNormal: "rgba(127,69,229,1)",
 };
-
-export { COLORS };

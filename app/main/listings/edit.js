@@ -43,6 +43,11 @@ import { END_POINT } from "../../../hooks/endpoints";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PhotoSliderComp from "../../../components/main/servicePage/photoSliderComp";
 import { AppStyle } from "../../../constants/themes/style";
+import {
+  contains_forbidden_words,
+  has_less_words,
+  isEmpty,
+} from "../../../constants";
 
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
@@ -387,14 +392,14 @@ export default function EditPost() {
     setPortfolioErr("");
 
     //TITLE
-    if (!title) {
-      setTitleErr("Provide a title for your service");
+    if (isEmpty(title, "Service title", setTitleErr)) {
       return;
-    } else {
-      if (title.split(" ").length < 4) {
-        setTitleErr("Service title provided is not clear enough");
-        return;
-      }
+    }
+    if (has_less_words(4, title, "Service title", setTitleErr)) {
+      return;
+    }
+    if (contains_forbidden_words(title, "Service title", setTitleErr)) {
+      return;
     }
 
     //CATEGORY
@@ -410,14 +415,22 @@ export default function EditPost() {
     }
 
     //DESCRIPTION
-    if (!description) {
-      setDescriptionErr("Tell your target users more about the service");
+    if (isEmpty(description, "Service description", setDescriptionErr)) {
       return;
-    } else {
-      if (description.split(" ").length < 10) {
-        setDescriptionErr("Service description must be more than 10 words");
-        return;
-      }
+    }
+    if (
+      has_less_words(10, description, "Service description", setDescriptionErr)
+    ) {
+      return;
+    }
+    if (
+      contains_forbidden_words(
+        description,
+        "Service description",
+        setDescriptionErr
+      )
+    ) {
+      return;
     }
 
     //PRICE

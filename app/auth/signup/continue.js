@@ -19,6 +19,7 @@ import {
   LOCAL_STORAGE_PATH,
   StoreDataToMemory,
 } from "../../../constants/utilities/localStorage";
+import { is_less_than_min, isEmpty } from "../../../constants";
 
 export default function Continue() {
   const router = useRouter();
@@ -73,17 +74,26 @@ export default function Continue() {
     setFirstNameErr("");
     setLastNameErr("");
     //CHECK OTHER INPUTS
-    if (userName == "" || userName.length < 4) {
-      setUserNameErr("Ensure an adequate Username is provided");
+    if (isEmpty(userName, "Username", setUserNameErr)) {
+      return;
+    }
+    if (is_less_than_min(3, userName, "Username", setUserNameErr)) {
       return;
     }
 
-    if (firstName === "" || firstName.length < 3) {
-      setFirstNameErr("Please provide a correct name");
+    //first name
+    if (isEmpty(firstName, "First Name", setFirstNameErr)) {
       return;
     }
-    if (lastName === "" || lastName.length < 3) {
-      setLastNameErr("Please provide a correct name");
+    if (is_less_than_min(3, firstName, "First Name", setFirstNameErr)) {
+      return;
+    }
+
+    //last name
+    if (isEmpty(lastName, "Last Name", setLastNameErr)) {
+      return;
+    }
+    if (is_less_than_min(3, lastName, "Last Name", setLastNameErr)) {
       return;
     }
 

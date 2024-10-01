@@ -31,6 +31,7 @@ import { SOCKET_EVENTS } from "../../../hooks/endpoints";
 import AlertBox from "../../../components/general/alertBox";
 import ViewPhotoComp from "../../../components/main/messagePage/viewPhotoComp";
 import { AppStyle } from "../../../constants/themes/style";
+import { contains_forbidden_words } from "../../../constants";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -98,7 +99,20 @@ export default function ChatsPage() {
     }
   }, [myChat, socketConn]);
 
+  const [chatSendingError, setCSE] = useState("");
+  useEffect(() => {
+    if (chatSendingError) {
+      popAlert("error", "Message Not Sent", chatSendingError);
+      setCSE("");
+      return;
+    }
+  }, [chatSendingError]);
+
   async function sendMessage() {
+    if (contains_forbidden_words(myChat, "Your message", setCSE)) {
+      return;
+    }
+
     if (socketConn && myChat && myChat.trim().length > 0) {
       socketServices.emit(SOCKET_EVENTS.emit.send_message, {
         message: `${myChat.trim()}`,

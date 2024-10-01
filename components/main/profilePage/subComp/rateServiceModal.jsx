@@ -15,6 +15,11 @@ import ProfileTextareaTab from "./profileTextareaTab";
 import StarRatingClickable from "../../../general/starRatingClickable";
 import axios from "axios";
 import { END_POINT } from "../../../../hooks/endpoints";
+import {
+  contains_forbidden_words,
+  has_less_words,
+  isEmpty,
+} from "../../../../constants";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
@@ -37,14 +42,16 @@ export default function RateServiceModal({
     //CLEAR ERROR
     setReviewErr("");
 
-    if (review.trim() === "") {
-      setReviewErr("Please share your experience in words");
+    //review
+    if (isEmpty(review, "Service review", setReviewErr)) {
       return;
     }
 
-    let numOfWords = review.trim().split(" ");
-    if (numOfWords.length < 5) {
-      setReviewErr("Reviews must be at least 5 words long");
+    if (has_less_words(5, review, "Service review", setReviewErr)) {
+      return;
+    }
+
+    if (contains_forbidden_words(review, "Service review", setReviewErr)) {
       return;
     }
 

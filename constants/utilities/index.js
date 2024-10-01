@@ -1,11 +1,11 @@
 import moment from "moment";
 
-function ROUNDTO(value, precision) {
+export const ROUNDTO = (value, precision) => {
   var multiplier = Math.pow(10, precision || 0);
   return Math.round(value * multiplier) / multiplier;
-}
+};
 
-function TRUNCATESTRING(str, num) {
+export const TRUNCATESTRING = (str, num) => {
   if (str.length > num) {
     return str.length > 6
       ? str.slice(0, num - 3) + "..."
@@ -13,18 +13,18 @@ function TRUNCATESTRING(str, num) {
   } else {
     return str;
   }
-}
+};
 
-function FORMATNUMBERWITHCOMMA(number) {
+export const FORMATNUMBERWITHCOMMA = (number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+};
 
-function VALIDATE_EMAIL(email) {
+export const VALIDATE_EMAIL = (email) => {
   const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$/;
   return pattern.test(email);
-}
+};
 
-function FORMAT_DATE_MEMBER_SINCE(date) {
+export const FORMAT_DATE_MEMBER_SINCE = (date) => {
   const dt = new Date(date);
   const monthArr = [
     "Jan",
@@ -42,9 +42,9 @@ function FORMAT_DATE_MEMBER_SINCE(date) {
   ];
 
   return `${monthArr[dt.getMonth()]} ${dt.getFullYear()}`;
-}
+};
 
-function FORMAT_DATE_SLASH(date) {
+export const FORMAT_DATE_SLASH = (date) => {
   const dt = new Date(date);
   let showMnth =
     dt.getMonth() < 10 ? `0${dt.getMonth() + 1}` : `${dt.getMonth + 1}`;
@@ -52,9 +52,9 @@ function FORMAT_DATE_SLASH(date) {
   return `${
     dt.getDate() < 10 ? "0" + dt.getDate() : dt.getDate()
   }/${showMnth}/${dt.getFullYear()}`;
-}
+};
 
-function FORMAT_TIME_STRING_12H(time) {
+export const FORMAT_TIME_STRING_12H = (time) => {
   if (time) {
     // Check correct time format and split into components
     time = time
@@ -70,9 +70,9 @@ function FORMAT_TIME_STRING_12H(time) {
     }
     return time.join(""); // return adjusted time or original string
   }
-}
+};
 
-function CHECK_WITHIN_WORKTIME(targetTime, timeFrom, timeTo) {
+export const CHECK_WITHIN_WORKTIME = (targetTime, timeFrom, timeTo) => {
   const dt = new Date();
   let showMnth =
     dt.getMonth() < 9 ? `0${dt.getMonth() + 1}` : `${dt.getMonth + 1}`;
@@ -82,21 +82,21 @@ function CHECK_WITHIN_WORKTIME(targetTime, timeFrom, timeTo) {
   let toDate = `${dt.getFullYear()}-${showMnth}-${dt.getDate()} ${timeTo}`;
 
   return moment(tgDate).isBetween(fromDate, toDate);
-}
+};
 
-function LOAD_PROFILE_THUMBNAIL(targetUrl) {
+export const LOAD_PROFILE_THUMBNAIL = (targetUrl) => {
   return targetUrl
     ? { uri: targetUrl }
     : require("../../assets/photos/no-profile.png");
-}
+};
 
-function LOAD_SERVICE_THUMBNAIL(targetUrl) {
+export const LOAD_SERVICE_THUMBNAIL = (targetUrl) => {
   return targetUrl
     ? { uri: `${targetUrl}` }
     : require("../../assets/photos/no-service.png");
-}
+};
 
-function ConvertToISOFormat(datetimeStr) {
+export const ConvertToISOFormat = (datetimeStr) => {
   // Split date and time
   const [datePart, timePart] = datetimeStr.split(" ");
 
@@ -114,9 +114,9 @@ function ConvertToISOFormat(datetimeStr) {
 
   // Construct the final ISO format datetime string
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
-}
+};
 
-function FORMAT_TIME_LAST_SEEN(targetTime) {
+export const FORMAT_TIME_LAST_SEEN = (targetTime) => {
   targetTime = ConvertToISOFormat(targetTime);
   var dt = new Date(targetTime);
   var seconds = Math.floor((new Date() - dt) / 1000);
@@ -144,9 +144,9 @@ function FORMAT_TIME_LAST_SEEN(targetTime) {
   }
 
   return "Last seen " + Math.floor(seconds) + "s ago";
-}
+};
 
-function FORMAT_TIME_AGO(targetTime) {
+export const FORMAT_TIME_AGO = (targetTime) => {
   setTimeout(() => {
     FORMAT_TIME_AGO(targetTime);
   }, 10000);
@@ -183,9 +183,9 @@ function FORMAT_TIME_AGO(targetTime) {
   }
 
   return Math.floor(seconds) + " seconds ago";
-}
+};
 
-function CHECK_IS_ONLINE(lastSeen) {
+export const CHECK_IS_ONLINE = (lastSeen) => {
   lastSeen = ConvertToISOFormat(lastSeen);
   var dt = new Date(lastSeen);
   var seconds = Math.floor((new Date() - dt) / 1000);
@@ -197,9 +197,9 @@ function CHECK_IS_ONLINE(lastSeen) {
   } else {
     return true;
   }
-}
+};
 
-function FORMAT_CHAT_TIME(targetTime) {
+export const FORMAT_CHAT_TIME = (targetTime) => {
   var dt = new Date(targetTime);
   var seconds = Math.floor((new Date() - dt) / 1000);
 
@@ -215,13 +215,13 @@ function FORMAT_CHAT_TIME(targetTime) {
   }
 
   return "Just now";
-}
+};
 
-function GENERATE_RANDOM_NUMBER(min, max) {
+export const GENERATE_RANDOM_NUMBER = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
-function GENERATE_CURRENT_GREETING() {
+export const GENERATE_CURRENT_GREETING = () => {
   let dt = new Date();
   let hour = dt.getHours();
 
@@ -234,9 +234,9 @@ function GENERATE_CURRENT_GREETING() {
   }
 
   return "Good evening";
-}
+};
 
-function DEBOUNCE(func, timeout = 2000) {
+export const DEBOUNCE = (func, timeout = 2000) => {
   let timer;
   return (...args) => {
     clearTimeout(timer);
@@ -244,24 +244,4 @@ function DEBOUNCE(func, timeout = 2000) {
       func.apply(this, args);
     }, timeout);
   };
-}
-
-export {
-  ROUNDTO,
-  TRUNCATESTRING,
-  FORMATNUMBERWITHCOMMA,
-  VALIDATE_EMAIL,
-  FORMAT_DATE_MEMBER_SINCE,
-  FORMAT_DATE_SLASH,
-  FORMAT_TIME_STRING_12H,
-  CHECK_WITHIN_WORKTIME,
-  LOAD_PROFILE_THUMBNAIL,
-  LOAD_SERVICE_THUMBNAIL,
-  FORMAT_TIME_AGO,
-  FORMAT_TIME_LAST_SEEN,
-  CHECK_IS_ONLINE,
-  FORMAT_CHAT_TIME,
-  GENERATE_RANDOM_NUMBER,
-  GENERATE_CURRENT_GREETING,
-  DEBOUNCE,
 };

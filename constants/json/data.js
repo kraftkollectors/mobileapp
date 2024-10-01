@@ -311,4 +311,41 @@ function SERVICE_CATEGORIES() {
   ];
 }
 
-export { WORK_TIME_LIST, YEAR_ARRAY, EDU_DEGREE_ARRAY, SERVICE_CATEGORIES };
+const FORBIDDEN_WORDS = [
+  "fuck",
+  "fucker",
+  "fucking",
+  "motherfucking",
+  "mother-fucking",
+  "bitch",
+  "sex",
+  "sexist",
+  "nigga",
+  "rape",
+  "racism",
+  "molest",
+  "blowjob",
+  "jerk off",
+  "my dick",
+  "cunt",
+  "slut",
+  "whore",
+  "prostitute",
+  "asshole",
+  "kill you",
+  "assault",
+  "assualt",
+  "riffle",
+  "nude",
+  "tobacco",
+  "cocaine",
+  "heroin",
+];
+
+export {
+  WORK_TIME_LIST,
+  YEAR_ARRAY,
+  EDU_DEGREE_ARRAY,
+  SERVICE_CATEGORIES,
+  FORBIDDEN_WORDS,
+};

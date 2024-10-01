@@ -18,6 +18,7 @@ import {
 import AlertBox from "../../../components/general/alertBox";
 import { useLocalSearchParams } from "expo-router";
 import { AppStyle } from "../../../constants/themes/style";
+import { contains_forbidden_words } from "../../../constants";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -91,10 +92,28 @@ export default function SearchPage() {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
 
+  //filter error
+  const [containsBadWords, setCBW] = useState("");
+  useEffect(() => {
+    if (containsBadWords) {
+      popAlert("error", "Search Request Prohibited", containsBadWords);
+      return;
+    }
+  }, [containsBadWords]);
+
   //HANDLE SEARCH REQUEST
   useEffect(() => {
     if (startSearch && (q.length > 0 || subCategory)) {
       try {
+        setCBW("");
+        //filter for bad words
+        if (contains_forbidden_words(q, `Your search query - ${q} -`, setCBW)) {
+          setStartSearch(false);
+          throw new Error("query contains bad word");
+
+          return;
+        }
+
         setTotalServiceRes(0);
         setTotalArtisanRes(0);
         setSearchText(q);
@@ -189,11 +208,17 @@ export default function SearchPage() {
             });
         }
       } catch (error) {
-        popAlert(
-          "error",
-          "Search Attempt Unsuccessful",
-          "Network Error. Please check your connection and try again"
-        );
+        let errHead = "Search Attempt Unsuccessful";
+        let errMsg =
+          "Network Error. Please check your connection and try again";
+
+        if (error.message.toLowerCase() === "query contains bad word") {
+          errHead = "Search Request Prohibited";
+          errMsg =
+            "Your search query may contain word(s) that conflict with our policies. Please check and remove appropriately";
+        }
+
+        popAlert("error", errHead, errMsg);
         setStartSearch(false);
         setServiceSearchIsLoading(false);
         setArtisanSearchIsLoading(false);
@@ -263,7 +288,9 @@ export default function SearchPage() {
           flex: 1,
         }}
       >
-        {(q.length > 0 && (serviceSearchIsLoading || artisanSearchIsLoading)) ||
+        {((!containsBadWords || containsBadWords.length < 1) &&
+          q.length > 0 &&
+          (serviceSearchIsLoading || artisanSearchIsLoading)) ||
         serviceSearchResult ||
         artisanSearchResult ? (
           <SearchResultComp
